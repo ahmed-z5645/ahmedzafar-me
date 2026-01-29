@@ -1,26 +1,64 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
+/* 1. SETUP THEME & COLORS */
+@theme {
+  /* This connects standard Tailwind classes to your variables */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  
+  /* Your Custom Colors */
+  --color-stoat-red: #D93025;
+  --color-paper-cream: #FDFCF8;
+  --color-ink-blue: #1A0DAB;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* 2. ENABLE MANUAL DARK MODE (Crucial Step) */
+/* This line tells Tailwind: "Use dark mode styles whenever the .dark class is found" */
+@variant dark (&:where(.dark, .dark *));
+
+/* 3. DEFINE THE COLOR VARIABLES */
+:root {
+  /* Default (Light Mode) */
+  --background: #ffffff;
+  --foreground: #171717;
 }
 
+/* This selector listens for the class your "D" button adds */
+.dark {
+  /* Dark Mode Overrides */
+  --background: #0a0a0a;
+  --foreground: #ededed;
+}
+
+/* 4. BASE STYLES */
 body {
   background: var(--background);
   color: var(--foreground);
+  /* Smooth color transition */
+  transition: background-color 0.3s ease, color 0.3s ease;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 1. Light Mode Notebook */
+html.show-notes body {
+  /* We use !important to ensure this overrides the default background */
+  background-color: #FDFCF8 !important; 
+  background-image: linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px) !important;
+  background-size: 100% 32px !important;
+}
+
+/* 2. Dark Mode Notebook */
+html.dark.show-notes body {
+  background-color: #1a1a1a !important;
+  background-image: linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px) !important;
+}
+
+/* 3. The Handwritten Notes (ensure they reveal) */
+.note-annotation {
+  display: none;
+}
+html.show-notes .note-annotation {
+  display: block;
 }
