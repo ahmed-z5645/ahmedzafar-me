@@ -1,0 +1,38 @@
+[
+  {
+    "id": "stoat",
+    "company": "Stoat",
+    "role": "Co-Founder and CTO",
+    "date": "NOW",
+    "description": ["Machine learning infra and deployment", "Instantly  deploy  and  serve  your models!"],
+    "link": "https://stoated.dev"
+  },
+  {
+    "id": "teaching",
+    "company": "McMaster University",
+    "role": "Lead Teaching Assistant",
+    "date": "NOW",
+    "description": ["Teaching incredibly talented students to design, code, build, and think ambitiously :)."],
+    "note": "jfsdlkfj;askljfkas",
+    "link": "https://www.eng.mcmaster.ca/ibiomed/"
+  },
+  {
+    "id": "arche",
+    "company": "Arche Biotechnologies",
+    "role": "Software Engineering Intern",
+    "date": "2024",
+    "description": ["Designed platform architecture and shipped full stack for a leading health tech start up."],
+    "note": "jfsdlkfj;askljfkas",
+    "link": "https://www.archebiotech.ca/"
+  },
+  {
+    "id": "research",
+    "company": "Biomedic.ai Labs",
+    "role": "AI/ML Researcher Intern",
+    "date": "2024",
+    "description": ["Shipped models to predict surgical intention.", "Built an application to assess the use of machine learning in research"],
+    "note": "jfsdlkfj;askljfkas",
+    "link": "https://biomedic.ai/"
+  }
+
+]

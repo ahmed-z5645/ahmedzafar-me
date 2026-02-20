@@ -2,6 +2,7 @@ import Image from "next/image";
 import Links from "./components/links/links";
 import Footer from "./components/footer/footer";
 import Header from "./components/header/header";
+import Info from "./components/positions/info";
 
 export default function Home() {
   return (
@@ -20,7 +21,7 @@ export default function Home() {
         </div>
         <div id="right">
           <Header />
-            
+            <Info />
           <Footer />
         </div>
       </main>
