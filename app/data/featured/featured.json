@@ -1,16 +1,59 @@
 [
   {
-    "id": "gpunum",
-    "title": "Parallelizing statistical methods on the GPU",
-    "description": "Python Package • In Progress",
-    "link": "https://github.com/yourusername/gpunum",
-    "video": "/thumbnails/main/gpunum_thumbnail.mp4"
+    "id": "stoat",
+    "title": "Bridging the final mile in artificial intelligence deployment",
+    "description": "Devtool • On Hiatus",
+    "link": "https://stoated.dev",
+    "image": "/thumbnails/main/stoat_thumbnail.webp"
   },
   {
-    "id": "peptide-evaluator",
-    "title": "Physics Driven Drug Evaluation",
-    "description": "Personal Project • In Progress",
-    "link": "https://github.com/yourusername/peptide-project",
-    "video": "/thumbnails/main/pepscore_thumbnail.mp4"
+    "id": "2p03",
+    "title": "Mathematically modelling a genetic circuit to detect cancer",
+    "description": "Personal Project • Completed April 2025",
+    "link": "",
+    "video": "/thumbnails/main/2p03_thumbnail.mp4"
+  },
+  {
+    "id": "bmett",
+    "title": "Leading full-stack, machine learning, and firmware development",
+    "description": "Extracurricular • In Progress",
+    "link": "",
+    "image": "/thumbnails/main/bmett_thumbnail.webp"
+  },
+  {
+    "id": "corkboard",
+    "title": "Breaking into the cities live music scene",
+    "description": "Extracurricular • In Progress",
+    "link": "",
+    "image": "/thumbnails/main/corkboard_thumbnail.webp"
+  },
+  {
+    "id": "askjulian",
+    "title": "Predicting music ratings",
+    "description": "Personal Project • March 2025",
+    "link": "",
+    "video": "/thumbnails/main/askjulian_thumbnail.mp4"
+  },
+  {
+    "id": "oec",
+    "title": "Predicting COVID-19 and wildfire outcomes with machine learning",
+    "description": "Ontario Engineering Competition • January 2025",
+    "link": "",
+    "video": "/thumbnails/main/oec_thumbnail.mp4"
+  },
+  {
+    "id": "dashtab",
+    "title": "Fuelling productivity with 29 000+ monthly database reads",
+    "description": "Personal Project • October 2024",
+    "link": "",
+    "image": "/thumbnails/main/dashtab_thumbnail.webp"
+  },
+  {
+    "id": "rehabilitmate",
+    "title": "Reinforcing mind-muscle connection with real time rehabiliation support",
+    "description": "Design Project • April 2024",
+    "link": "",
+    "image": "/thumbnails/main/rehabilimate_thumbnail.webp"
   }
+
 ]

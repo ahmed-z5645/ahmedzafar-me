@@ -5,6 +5,7 @@ import Header from "./components/header/header";
 import Info from "./components/positions/info";
 import ProjectCard from "./components/cards/card";
 import currentlyWorking from "./data/current/current.json";
+import featured from "./data/featured/featured.json";
 
 export default function Home() {
   return (
@@ -29,6 +30,9 @@ export default function Home() {
               <ProjectCard key={project.title} project={project} />
             ))}
             <h1>Featured Projects</h1>
+            {featured.map((project) => (
+              <ProjectCard key={project.title} project={project} />
+            ))}
           <Footer />
         </div>
       </main>
