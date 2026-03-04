@@ -1,0 +1,16 @@
+[
+  {
+    "id": "gpunum",
+    "title": "Parallelizing statistical methods on the GPU",
+    "description": "Python Package • In Progress",
+    "link": "https://github.com/yourusername/gpunum",
+    "video": "/thumbnails/main/gpunum_thumbnail.mp4"
+  },
+  {
+    "id": "peptide-evaluator",
+    "title": "Physics Driven Drug Evaluation",
+    "description": "Personal Project • In Progress",
+    "link": "https://github.com/yourusername/peptide-project",
+    "video": "/thumbnails/main/pepscore_thumbnail.mp4"
+  }
+]

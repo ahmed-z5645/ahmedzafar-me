@@ -3,6 +3,8 @@ import Links from "./components/links/links";
 import Footer from "./components/footer/footer";
 import Header from "./components/header/header";
 import Info from "./components/positions/info";
+import ProjectCard from "./components/cards/card";
+import currentlyWorking from "./data/current/current.json";
 
 export default function Home() {
   return (
@@ -22,6 +24,11 @@ export default function Home() {
         <div id="right">
           <Header />
             <Info />
+            <h1>Current Research and Development</h1>
+            {currentlyWorking.map((project) => (
+              <ProjectCard key={project.title} project={project} />
+            ))}
+            <h1>Featured Projects</h1>
           <Footer />
         </div>
       </main>
