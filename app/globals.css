@@ -2,63 +2,87 @@
 
 /* 1. SETUP THEME & COLORS */
 @theme {
-  /* This connects standard Tailwind classes to your variables */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  
-  /* Your Custom Colors */
-  --color-stoat-red: #D93025;
-  --color-paper-cream: #FDFCF8;
-  --color-ink-blue: #1A0DAB;
+  --font-serif: var(--font-newsreader);
 }
 
-/* 2. ENABLE MANUAL DARK MODE (Crucial Step) */
-/* This line tells Tailwind: "Use dark mode styles whenever the .dark class is found" */
 @variant dark (&:where(.dark, .dark *));
 
-/* 3. DEFINE THE COLOR VARIABLES */
+/* 3. DEFINE THE COLOR VARIABLES (Updated to your Figma specs) */
 :root {
   /* Default (Light Mode) */
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #FAFCFD;
+  --foreground: #32404F;
+  --text-main: #32404F;
 }
 
-/* This selector listens for the class your "D" button adds */
 .dark {
   /* Dark Mode Overrides */
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #1C1C1C;
+  --foreground: #FAFCFD;
+  --text-main: #FAFCFD;
 }
 
 /* 4. BASE STYLES */
 body {
   background: var(--background);
   color: var(--foreground);
-  /* Smooth color transition */
   transition: background-color 0.3s ease, color 0.3s ease;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-geist-sans), sans-serif; 
+  font-size: 15px; 
+  line-height: normal; 
 }
 
-/* 1. Light Mode Notebook */
+/* Notes Feature */
 html.show-notes body {
-  /* We use !important to ensure this overrides the default background */
-  background-color: #FDFCF8 !important; 
-  background-image: linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px) !important;
+  background-color: #FAFCFD !important; 
+  background-image: linear-gradient(to bottom, rgba(50,64,79,0.05) 1px, transparent 1px) !important;
   background-size: 100% 32px !important;
 }
 
-/* 2. Dark Mode Notebook */
 html.dark.show-notes body {
-  background-color: #1a1a1a !important;
-  background-image: linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px) !important;
+  background-color: #1C1C1C !important;
+  background-image: linear-gradient(to bottom, rgba(250,252,253,0.05) 1px, transparent 1px) !important;
 }
 
-/* 3. The Handwritten Notes (ensure they reveal) */
 .note-annotation {
   display: none;
 }
 html.show-notes .note-annotation {
   display: block;
+}
+
+/* Custom Sequential Left-to-Right Wipe */
+.hero-title-group {
+  cursor: default;
+}
+
+.wipe-word {
+  display: inline-block;
+  padding-right: 0.25em; /* Pushes the clipping box wider to catch the italic tail */
+  margin-right: -0.25em; /* Pulls the next text back so your spacing doesn't get ruined */
+  
+  background: linear-gradient(to right, #1E5B1A 50%, var(--text-main) 50%);
+  background-size: 200% auto;
+  background-position: 100% 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  transition: background-position 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.wipe-1 { transition-delay: 0.4s; }
+.wipe-2 { transition-delay: 0s; }
+
+/* Hover IN (Forward Animation): word 1 wipes, then word 2 follows */
+.hero-title-group:hover .wipe-1 {
+  background-position: 0 0; 
+  transition-delay: 0s; 
+}
+.hero-title-group:hover .wipe-2 {
+  background-position: 0 0;
+  transition-delay: 0.4s; 
 }

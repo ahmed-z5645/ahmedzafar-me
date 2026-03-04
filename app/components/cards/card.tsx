@@ -1,26 +1,28 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
+/**
+ * ProjectCard Component
+ * Displays a project title (Newsreader), description (Geist Mono 15px), 
+ * and media (Image or Video) with sharp corners and tight vertical spacing.
+ */
 export default function ProjectCard({ project }) {
-  // We define the card layout once so we don't duplicate code
   const CardContent = (
-    <div className="
-      flex flex-col overflow-hidden rounded-2xl 
-      border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 
-      transition-all hover:shadow-xl dark:hover:border-neutral-700 
-      break-inside-avoid mb-6 /* Crucial for Masonry grids! */
-    ">
+    /* Column-break-inside-avoid is essential for the masonry layout in the parent */
+    <div className="flex flex-col mb-8 break-inside-avoid group cursor-pointer">
       
-      {/* MEDIA CONTAINER: No forced height or aspect ratio */}
-      <div className="relative w-full bg-neutral-100 dark:bg-neutral-800">
-        
+      {/* MEDIA CONTAINER 
+          To round corners again: Add 'rounded-xl' to the className below.
+      */}
+      <div className="relative w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/10">
         {project.video ? (
           <video 
             autoPlay 
             loop 
             muted 
             playsInline
-            className="w-full h-auto transition-transform duration-700 group-hover:scale-105"
+            /* To round corners again: Add 'rounded-xl' to the className below. */
+            className="w-full h-auto rounded-xl transition-transform duration-700 group-hover:scale-[1.02]"
           >
             <source src={project.video} type="video/mp4" />
           </video>
@@ -28,37 +30,42 @@ export default function ProjectCard({ project }) {
           <Image 
             src={project.image} 
             alt={project.title}
-            // Next.js requires these numbers, but CSS w-full/h-auto overrides 
-            // them to let the browser scale it naturally.
             width={1200} 
             height={800} 
-            className="w-full h-auto transition-transform duration-700 group-hover:scale-105 object-cover"
+            /* To round corners again: Add 'rounded-xl' to the className below. */
+            className="w-full h-auto rounded-xl transition-transform duration-700 group-hover:scale-[1.02] object-cover"
           />
-        ) : null}
-
+        ) : (
+          /* Fallback for projects without media */
+          <div className="w-full h-64 bg-neutral-200 dark:bg-neutral-800" />
+        )}
       </div>
 
-      {/* TEXT CONTENT */}
-      <div className="p-6">
-        <h3 className="font-serif text-2xl font-medium text-neutral-900 dark:text-neutral-100">
+      {/* TEXT CONTENT 
+          mt-1.5 pulls the text up so it's practically touching the media.
+      */}
+      <div className="mt-1.5">
+        <h3 className="font-[family-name:var(--font-newsreader)] text-[17px] leading-[1.2] text-[#32404F] dark:text-[#FAFCFD]">
           {project.title}
         </h3>
-        <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-400">
-          {project.description}
-        </p>
+        
+        {project.description && (
+          <p className="mt-0.5 font-[family-name:var(--font-geist-mono)] text-[15px] leading-tight text-[#32404F]/[0.58] dark:text-[#FAFCFD]/[0.58]">
+            {project.description}
+          </p>
+        )}
       </div>
       
     </div>
   );
 
-  // If the JSON includes a link, make the whole card clickable.
-  // Otherwise, just render the static card.
+  /* Wrap in Next.js Link if a URL is provided in the JSON data */
   return project.link ? (
-    <Link href={project.link} className="block group">
+    <Link href={project.link} className="block">
       {CardContent}
     </Link>
   ) : (
-    <div className="group block">
+    <div className="block">
       {CardContent}
     </div>
   );

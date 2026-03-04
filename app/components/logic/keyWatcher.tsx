@@ -4,6 +4,11 @@ import { useEffect } from "react";
 
 export default function KeyWatcher() {
   useEffect(() => {
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.documentElement.classList.add('dark');
+    }
+    
     const handleKeyDown = (e: KeyboardEvent) => {
       // Ignore if user is typing in an input field (good practice)
       if (['INPUT', 'TEXTAREA'].includes((e.target as HTMLElement).tagName)) return;
