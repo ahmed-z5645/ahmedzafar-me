@@ -45,7 +45,7 @@ export default function ProjectCard({ project }) {
           mt-1.5 pulls the text up so it's practically touching the media.
       */}
       <div className="mt-1.5">
-        <h3 className="font-[family-name:var(--font-newsreader)] text-[17px] leading-[1.2] text-[#32404F] dark:text-[#FAFCFD]">
+        <h3 className="font-[family-name:var(--font-newsreader)] text-[18px] leading-[1.2] text-[#32404F] dark:text-[#FAFCFD]">
           {project.title}
         </h3>
         

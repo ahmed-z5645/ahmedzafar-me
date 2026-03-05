@@ -15,9 +15,9 @@ export default function Info() {
           
           {/* Column 2: Company */}
           <div>
-            <h3 className="text-[15px] text-[#32404F] dark:text-[#FAFCFD]">
+            <a href={job.link} className="cursor-pointer text-[15px] text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#429c3b] transition-colors">
               {job.company}
-            </h3>
+            </a>
           </div>
 
           {/* Column 3: Role & Description */}
