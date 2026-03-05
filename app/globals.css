@@ -86,3 +86,14 @@ html.show-notes .note-annotation {
   background-position: 0 0;
   transition-delay: 0.4s; 
 }
+
+/* Hide default cursor globally */
+* {
+  cursor: none !important;
+}
+
+/* Ensure interactive elements still show the "none" cursor 
+   so our custom square can take over */
+a, button, [role="button"], .group {
+  cursor: none !important;
+}

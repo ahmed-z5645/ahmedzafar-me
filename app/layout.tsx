@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Newsreader  } from "next/font/google";
 import KeyWatcher from "./components/logic/keyWatcher";
 import "./globals.css";
+import Cursor from "../app/components/cursor";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,6 +36,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${newsReader.variable} antialiased`}
         suppressHydrationWarning
       >
+        <Cursor />
         <KeyWatcher />
         {children}
       </body>
