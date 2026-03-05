@@ -21,11 +21,11 @@
     "image": "/thumbnails/main/bmett_thumbnail.webp"
   },
   {
-    "id": "corkboard",
-    "title": "Breaking into the cities live music scene",
-    "description": "Extracurricular • In Progress",
+    "id": "dashtab",
+    "title": "Fuelling productivity with 29 000+ monthly database reads",
+    "description": "Personal Project • October 2024",
     "link": "",
-    "image": "/thumbnails/main/corkboard_thumbnail.webp"
+    "image": "/thumbnails/main/dashtab_thumbnail.webp"
   },
   {
     "id": "askjulian",
@@ -35,6 +35,13 @@
     "video": "/thumbnails/main/askjulian_thumbnail.mp4"
   },
   {
+    "id": "corkboard",
+    "title": "Breaking into the cities live music scene",
+    "description": "Extracurricular • In Progress",
+    "link": "",
+    "image": "/thumbnails/main/corkboard_thumbnail.webp"
+  },
+  {
     "id": "oec",
     "title": "Predicting COVID-19 and wildfire outcomes with machine learning",
     "description": "Ontario Engineering Competition • January 2025",
@@ -42,14 +49,7 @@
     "video": "/thumbnails/main/oec_thumbnail.mp4"
   },
   {
-    "id": "dashtab",
-    "title": "Fuelling productivity with 29 000+ monthly database reads",
-    "description": "Personal Project • October 2024",
-    "link": "",
-    "image": "/thumbnails/main/dashtab_thumbnail.webp"
-  },
-  {
-    "id": "rehabilitmate",
+    "id": "rehabilimate",
     "title": "Reinforcing mind-muscle connection with real time rehabiliation support",
     "description": "Design Project • April 2024",
     "link": "",
