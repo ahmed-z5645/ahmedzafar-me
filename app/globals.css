@@ -2,14 +2,22 @@
 
 /* 1. SETUP THEME & COLORS */
 @theme {
+  /* Colors */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-accent: var(--accent);
   --color-glass: var(--glass-bg);
   --color-surface: var(--glass-surface);
+
+  /* Fonts */
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-serif: var(--font-newsreader);
+
+  /* Font sizes */
+  --text-body: 15px;    /* base text: nav, captions, labels, body copy */
+  --text-card: 18px;    /* card/project titles */
+  --text-hero: 50px;    /* main hero h1 */
 }
 
 @variant dark (&:where(.dark, .dark *));

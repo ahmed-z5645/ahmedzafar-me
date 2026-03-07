@@ -15,15 +15,15 @@ export default function Home() {
             LEFT COLUMN 
             ========================================= */}
         <div className="lg:w-[40%] lg:h-screen lg:sticky lg:top-0 flex flex-col p-8 pb-0 lg:pt-9 lg:pb-12 lg:pl-24 lg:pr-12">
-          <p className="font-[family-name:var(--font-geist-mono)] text-[15px] text-foreground/[0.58]">
+          <p className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58]">
               ISSUE 02 | SPRING 2026
           </p>
           <div className="mt-8 lg:mt-18">
-            <h1 className="hero-title-group font-[family-name:var(--font-newsreader)] text-[50px] leading-[1.1] tracking-tight text-foreground">
+            <h1 className="hero-title-group font-[family-name:var(--font-newsreader)] text-hero leading-[1.1] tracking-tight text-foreground">
               I’m Ahmed, a <span className="italic wipe-word wipe-1">software</span><br />
               and <span className="italic wipe-word wipe-2">biomedical</span> engineer.
             </h1>
-            <div className="font-[family-name:var(--font-geist-sans)] note-annotation text-[15px] mt-4 italic text-accent">
+            <div className="font-[family-name:var(--font-geist-sans)] note-annotation text-body mt-4 italic text-accent">
               Software AND biomedical, not software with biomedical, not biomedical with software. <br /> I’ve worked too hard in this dual degree taking ALL the software courses, and ALL the BME courses.
             </div>
 
@@ -49,7 +49,7 @@ export default function Home() {
 
           {/* Section: R&D */}
           <section className="mb-12" id="research">
-            <h2 className="font-[family-name:var(--font-geist-mono)] text-[15px] text-foreground/[0.58] mb-4 tracking-wide">
+            <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-4 tracking-wide">
               [Current Research and Development]
             </h2>
             <div className="columns-1 xl:columns-2 gap-6 w-full">
@@ -61,7 +61,7 @@ export default function Home() {
 
           {/* Section: Featured */}
           <section className="mb-12" id="featured">
-            <h2 className="font-[family-name:var(--font-geist-mono)] text-[15px] text-foreground/[0.58] mb-4 tracking-wide">
+            <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-4 tracking-wide">
               [Featured Projects]
             </h2>
             <div className="columns-1 xl:columns-2 gap-6 w-full">

@@ -48,14 +48,20 @@ Each entry supports an optional `"note"` field. Notes are hidden by default and 
 
 - Tailwind CSS v4 (configured via `@import "tailwindcss"` in `globals.css` — no `tailwind.config` file).
 - Dark mode: `.dark` class on `<html>`, not media query.
-- **Colour palette:**
-  - Background: `#F7F7F7` (light) / `#121417` (dark)
-  - Primary ink: `#32404F` (light) / `#FAFCFD` (dark)
-  - Dimmed text: use solid `#5A6978` (not opacity) for accessibility on small text
-  - Accent green: `#1E5B1A` — active links, notes, highlights
+- **Colour palette** (all defined as CSS variables in `globals.css`, exposed as Tailwind tokens):
+  - Background: `#F7F7F7` (light) / `#121417` (dark) → `bg-background`
+  - Primary ink: `#32404F` (light) / `#FAFCFD` (dark) → `text-foreground`, `text-foreground/58` for dimmed
+  - Accent green: `#1E5B1A` → `text-accent`, `bg-accent`, `hover:text-accent`
+  - Glass surfaces: `bg-glass/40` (desktop nav), `bg-surface/80` or `/95` (mobile)
+  - Dimmed text: use `text-foreground/58` (not a hardcoded hex) for secondary text
+- **Font size tokens** (defined in `@theme` in `globals.css`):
+  - `text-body` — 15px, used for all body text, captions, nav, labels
+  - `text-card` — 18px, used for card/project titles
+  - `text-hero` — 50px, used for the main hero h1
 - **Typography rules:**
-  - `Newsreader` (serif) — hero text and card/section titles
-  - `Geist Mono` — technical details, dates, navigation labels, captions
-  - `Geist Sans` — body text and hidden notes
+  - `Newsreader` (serif) — hero text and card/section titles → `font-[family-name:var(--font-newsreader)]`
+  - `Geist Mono` — technical details, dates, navigation labels, captions → `font-[family-name:var(--font-geist-mono)]`
+  - `Geist Sans` — body text and hidden notes → `font-[family-name:var(--font-geist-sans)]`
+  - Note: always use the explicit `family-name` arbitrary syntax shown above, not the shorthand `font-mono`/`font-sans`/`font-serif` utilities — Next.js scopes font variables to `body`, so the Tailwind shorthands don't resolve them correctly.
 - The hero title has a CSS wipe animation (`.wipe-word`, `.wipe-1`, `.wipe-2`) that colour-wipes words to brand green on hover.
 - Media thumbnails live in `public/thumbnails/main/` as `.webp` images or `.mp4` videos.

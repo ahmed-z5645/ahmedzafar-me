@@ -52,18 +52,18 @@ export default function ProjectCard({ project }) {
           mt-1.5 pulls the text up so it's practically touching the media.
       */}
       <div className="mt-1.5">
-        <h3 className="font-[family-name:var(--font-newsreader)] text-[18px] leading-[1.2] text-foreground">
+        <h3 className="font-[family-name:var(--font-newsreader)] text-card leading-[1.2] text-foreground">
           {project.title}
         </h3>
 
         {project.description && (
-          <p className="mt-0.5 font-[family-name:var(--font-geist-mono)] text-[15px] leading-tight text-foreground/[0.58]">
+          <p className="mt-0.5 font-[family-name:var(--font-geist-mono)] text-body leading-tight text-foreground/[0.58]">
             {project.description}
           </p>
         )}
 
         {project.note && (
-          <div className="font-[family-name:var(--font-geist-sans)] note-annotation text-[15px] mt-1.5 italic text-accent">
+          <div className="font-[family-name:var(--font-geist-sans)] note-annotation text-body mt-1.5 italic text-accent">
             ↳ {project.note}
           </div>
         )}

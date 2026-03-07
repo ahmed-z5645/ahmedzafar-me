@@ -1,6 +1,6 @@
 export default function Links() {
   return (
-    <div className="font-[family-name:var(--font-geist-mono)] text-[15px] leading-relaxed text-foreground/[0.58] space-y-8">
+    <div className="font-[family-name:var(--font-geist-mono)] text-body leading-relaxed text-foreground/[0.58] space-y-8">
       <div className="hidden lg:block">
         <p>Press [N] to see notes</p>
         <p>
