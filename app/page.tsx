@@ -15,8 +15,10 @@ export default function Home() {
             LEFT COLUMN 
             ========================================= */}
         <div className="lg:w-[40%] lg:h-screen lg:sticky lg:top-0 flex flex-col p-8 pb-0 lg:pt-9 lg:pb-12 lg:pl-24 lg:pr-12">
-          
-          <div className="mt-8 lg:mt-23">
+          <p className="font-[family-name:var(--font-geist-mono)] text-[15px] text-[#32404F]/[0.58] dark:text-[#FAFCFD]/[0.58]">
+              ISSUE 02 | SPRING 2026 
+          </p>
+          <div className="mt-8 lg:mt-18">
             <h1 className="hero-title-group font-[family-name:var(--font-newsreader)] text-[50px] leading-[1.1] tracking-tight text-[#32404F] dark:text-[#FAFCFD]">
               I’m Ahmed, a <span className="italic wipe-word wipe-1">software</span><br />
               and <span className="italic wipe-word wipe-2">biomedical</span> engineer.
