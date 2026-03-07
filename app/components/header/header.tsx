@@ -8,11 +8,11 @@ export default function Header() {
 
   return (
     <>
-      <nav className="hidden lg:flex sticky top-8 z-50 backdrop-blur-md bg-[#FAFCFD]/40 dark:bg-[#1C1C1C]/40 rounded-xl px-10 lg:px-20 py-4 mb-10 justify-between items-center font-[family-name:var(--font-geist-mono)] text-[15px] shadow-sm border border-[#32404F]/10 dark:border-[#FAFCFD]/10 transition-colors w-full">
-        <Link href="#experience" className="text-[#1E5B1A] dark:text-[#429c3b] transition-colors">Experience</Link>
-        <Link href="/fun" className="text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#429c3b] transition-colors">Fun</Link>
-        <Link href="/about" className="text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#429c3b] transition-colors">About</Link>
-        <a href="/Ahmed_Zafar_Resume.pdf" className="text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#429c3b] transition-colors">Resume</a>
+      <nav className="hidden lg:flex sticky top-8 z-50 backdrop-blur-md bg-[#F7F7F7]/40 dark:bg-[#1C1C1C]/40 rounded-xl px-10 lg:px-20 py-4 mb-10 justify-between items-center font-[family-name:var(--font-geist-mono)] text-[15px] shadow-sm border border-[#32404F]/10 dark:border-[#FAFCFD]/10 transition-colors w-full">
+        <Link href="#experience" className="text-[#1E5B1A] dark:text-[#1E5B1A] transition-colors">Experience</Link>
+        <Link href="/fun" className="text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#1E5B1A] transition-colors">Fun</Link>
+        <Link href="/about" className="text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#1E5B1A] transition-colors">About</Link>
+        <a href="/Ahmed_Zafar_Resume.pdf" className="text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#1E5B1A] transition-colors">Resume</a>
       </nav>
 
       {/* =========================================
@@ -40,10 +40,10 @@ export default function Header() {
         {/* The Dropdown Menu */}
         {isMenuOpen && (
           <nav className="absolute top-16 right-0 flex flex-col backdrop-blur-xl bg-[#FAFCFD]/95 dark:bg-[#1C1C1C]/95 rounded-xl p-6 gap-6 font-[family-name:var(--font-geist-mono)] text-[15px] shadow-lg border border-[#32404F]/10 dark:border-[#FAFCFD]/10 text-right min-w-[200px]">
-            <Link href="#experience" onClick={() => setIsMenuOpen(false)} className="text-[#1E5B1A] dark:text-[#429c3b]">Experience</Link>
-            <Link href="/fun" onClick={() => setIsMenuOpen(false)} className="text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#429c3b]">Fun</Link>
-            <Link href="/about" onClick={() => setIsMenuOpen(false)} className="text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#429c3b]">About</Link>
-            <a href="/Ahmed_Zafar_Resume.pdf" onClick={() => setIsMenuOpen(false)} className="text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#429c3b]">Resume</a>
+            <Link href="#experience" onClick={() => setIsMenuOpen(false)} className="text-[#1E5B1A] dark:text-[#1E5B1A]">Experience</Link>
+            <Link href="/fun" onClick={() => setIsMenuOpen(false)} className="text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#1E5B1A]">Fun</Link>
+            <Link href="/about" onClick={() => setIsMenuOpen(false)} className="text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#1E5B1A]">About</Link>
+            <a href="/Ahmed_Zafar_Resume.pdf" onClick={() => setIsMenuOpen(false)} className="text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#1E5B1A]">Resume</a>
           </nav>
         )}
       </div>

@@ -21,6 +21,10 @@ export default function Home() {
               I’m Ahmed, a <span className="italic wipe-word wipe-1">software</span><br />
               and <span className="italic wipe-word wipe-2">biomedical</span> engineer.
             </h1>
+            <div className="font-[family-name:var(--font-geist-sans)] note-annotation text-[15px] mt-4 italic text-[#1E5B1A]">
+              Software AND biomedical, not software with biomedical, not biomedical with software. <br /> I've worked too hard in this dual degree taking ALL the software courses, and ALL the BME courses. 
+            </div>
+
           </div>
           
           <div className="mt-12 mb-0 lg:mb-0 lg:mt-auto">

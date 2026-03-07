@@ -11,14 +11,16 @@
     "title": "Mathematically modelling a genetic circuit to detect cancer",
     "description": "Personal Project • Completed April 2025",
     "link": "",
-    "video": "/thumbnails/main/2p03_thumbnail.mp4"
+    "video": "/thumbnails/main/2p03_thumbnail.mp4",
+    "note": "Designed a cancer detection system using a synthetic gene circuit, all in the form of a breathalizer. Took years off my life."
   },
   {
     "id": "bmett",
     "title": "Leading full-stack, machine learning, and firmware development",
     "description": "Extracurricular • In Progress",
     "link": "",
-    "image": "/thumbnails/main/bmett_thumbnail.webp"
+    "image": "/thumbnails/main/bmett_thumbnail.webp",
+    "note": "Competing against 10 universities across Canada on March 14th. Wish us luck :)."
   },
   {
     "id": "dashtab",
@@ -32,7 +34,8 @@
     "title": "Predicting music ratings",
     "description": "Personal Project • March 2025",
     "link": "",
-    "video": "/thumbnails/main/askjulian_thumbnail.mp4"
+    "video": "/thumbnails/main/askjulian_thumbnail.mp4",
+    "note": "Born out of spite, but taught me to practically apply and deployment machine learning models."
   },
   {
     "id": "corkboard",
@@ -46,14 +49,16 @@
     "title": "Predicting COVID-19 and wildfire outcomes with machine learning",
     "description": "Ontario Engineering Competition • January 2025",
     "link": "",
-    "video": "/thumbnails/main/oec_thumbnail.mp4"
+    "video": "/thumbnails/main/oec_thumbnail.mp4",
+    "note": "Such an incredible experience to compete after winning 1st place at the McMaster Engineering Competition!"
   },
   {
     "id": "rehabilimate",
     "title": "Reinforcing mind-muscle connection with real time rehabiliation support",
     "description": "Design Project • April 2024",
     "link": "",
-    "image": "/thumbnails/main/rehabilimate_thumbnail.webp"
+    "image": "/thumbnails/main/rehabilimate_thumbnail.webp",
+    "note": "Presented at the 2024 iBiomed Showcase. Still proud of our team of first years for taking on such an ambitious project and executing it so well."
   }
 
 ]

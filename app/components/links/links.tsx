@@ -11,13 +11,13 @@ export default function Links() {
       </div>
 
       <div className="flex flex-wrap gap-4">
-        <a href="https://linkedin.com/in/ahmed-z5645" className="hover:text-[#1E5B1A] dark:hover:text-[#429c3b] transition-colors">LinkedIn</a>
+        <a href="https://linkedin.com/in/ahmed-z5645" className="hover:text-[#1E5B1A] dark:hover:text-[#1E5B1A] transition-colors">LinkedIn</a>
         <span className="opacity-50">•</span>
-        <a href="mailto:ahmed.zafar5645@gmail.com" className="hover:text-[#1E5B1A] dark:hover:text-[#429c3b] transition-colors">Email</a>
+        <a href="mailto:ahmed.zafar5645@gmail.com" className="hover:text-[#1E5B1A] dark:hover:text-[#1E5B1A] transition-colors">Email</a>
         <span className="opacity-50">•</span>
-        <a href="https://github.com/ahmed-z5645" className="hover:text-[#1E5B1A] dark:hover:text-[#429c3b] transition-colors">Github</a>
+        <a href="https://github.com/ahmed-z5645" className="hover:text-[#1E5B1A] dark:hover:text-[#1E5B1A] transition-colors">Github</a>
         <span className="opacity-50">•</span>
-        <a href="https://music.apple.com/profile/_ahmed_" className="hover:text-[#1E5B1A] dark:hover:text-[#429c3b] transition-colors">Apple Music</a>
+        <a href="https://music.apple.com/profile/_ahmed_" className="hover:text-[#1E5B1A] dark:hover:text-[#1E5B1A] transition-colors">Apple Music</a>
       </div>
     </div>
   );

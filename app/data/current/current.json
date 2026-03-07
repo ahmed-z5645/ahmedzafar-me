@@ -4,13 +4,15 @@
     "title": "Parallelizing statistical methods on the GPU",
     "description": "Python Package • In Progress",
     "link": "https://github.com/yourusername/gpunum",
-    "video": "/thumbnails/main/gpunum_thumbnail.mp4"
+    "video": "/thumbnails/main/gpunum_thumbnail.mp4",
+    "note": "Aiming to accelerate statistical computations by leveraging GPU parallelism, making data analysis faster and more efficient."
   },
   {
     "id": "peptide-evaluator",
     "title": "Combining physics and machine learning to evaluate peptide stability",
     "description": "Personal Project • In Progress",
     "link": "https://github.com/yourusername/peptide-project",
-    "video": "/thumbnails/main/pepscore_thumbnail.mp4"
+    "video": "/thumbnails/main/pepscore_thumbnail.mp4",
+    "note": "Probably my favourite and most interdisciplinary project ever?"
   }
 ]

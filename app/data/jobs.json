@@ -4,7 +4,7 @@
     "company": "Stoat",
     "role": "Co-Founder and CTO",
     "date": "NOW",
-    "description": ["Machine learning infra and deployment", "Instantly  deploy  and  serve  your models!"],
+    "description": ["Machine learning infra and deployment.", "Instantly  deploy  and  serve  your models!"],
     "link": "https://stoated.dev"
   },
   {
@@ -13,7 +13,7 @@
     "role": "Lead Teaching Assistant",
     "date": "NOW",
     "description": ["Teaching incredibly talented students to design, code, build, and think ambitiously :)."],
-    "note": "jfsdlkfj;askljfkas",
+    "note": "To my old and new students, you all continue to amaze me with your achievements.",
     "link": "https://www.eng.mcmaster.ca/ibiomed/"
   },
   {
@@ -22,7 +22,6 @@
     "role": "Software Engineering Intern",
     "date": "2024",
     "description": ["Designed platform architecture and shipped full stack for a leading health tech start up."],
-    "note": "jfsdlkfj;askljfkas",
     "link": "https://www.archebiotech.ca/"
   },
   {
@@ -30,8 +29,8 @@
     "company": "Biomedic.ai Labs",
     "role": "AI/ML Researcher Intern",
     "date": "2024",
-    "description": ["Shipped models to predict surgical intention.", "Built an application to assess the use of machine learning in research"],
-    "note": "jfsdlkfj;askljfkas",
+    "description": ["Shipped models to predict surgical intention.", "Built an application to assess the use of machine learning in research."],
+    "note": "Such a fast and rewarding first co-op experience!",
     "link": "https://biomedic.ai/"
   }
 

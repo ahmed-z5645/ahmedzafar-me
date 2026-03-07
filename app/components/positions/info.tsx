@@ -10,12 +10,11 @@ export default function Info() {
           {/* Column 1: Date */}
           <div className="font-[family-name:var(--font-geist-mono)] text-[15px] text-[#32404F]/[0.58] dark:text-[#FAFCFD]/[0.58]">
             {job.date}
-            {job.note && <div className="font-[family-name:var(--font-geist-sans)] note-annotation text-[15px] mt-1 italic text-[#1E5B1A]">{job.note}</div>}
           </div>
           
           {/* Column 2: Company */}
           <div>
-            <a href={job.link} className="cursor-pointer text-[15px] text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#429c3b] transition-colors">
+            <a href={job.link} className="cursor-pointer text-[15px] text-[#32404F] dark:text-[#FAFCFD] hover:text-[#1E5B1A] dark:hover:text-[#1E5B1A] transition-colors">
               {job.company}
             </a>
           </div>
@@ -29,6 +28,7 @@ export default function Info() {
               {job.description.map((bulletPoint, index) => (
                 <li key={index} className="pl-1">{bulletPoint}</li>
               ))}
+              {job.note && <li className="font-[family-name:var(--font-geist-sans)] note-annotation text-[15px] mt-1 italic text-[#1E5B1A] pl-1">{job.note}</li>}
             </ul>
           </div>
 

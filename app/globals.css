@@ -11,17 +11,16 @@
 
 @variant dark (&:where(.dark, .dark *));
 
-/* 3. DEFINE THE COLOR VARIABLES (Updated to your Figma specs) */
 :root {
-  /* Default (Light Mode) */
-  --background: #FAFCFD;
+  /* "White Smoke" - Brighter, clean, but anti-glare */
+  --background: #F7F7F7; 
+  
   --foreground: #32404F;
   --text-main: #32404F;
 }
 
 .dark {
-  /* Dark Mode Overrides */
-  --background: #1C1C1C;
+  --background: #121417; 
   --foreground: #FAFCFD;
   --text-main: #FAFCFD;
 }
@@ -38,8 +37,8 @@ body {
 
 /* Notes Feature */
 html.show-notes body {
-  background-color: #FAFCFD !important; 
-  background-image: linear-gradient(to bottom, rgba(50,64,79,0.05) 1px, transparent 1px) !important;
+  background-color: #F7F7F7 !important; 
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.075) 1px, transparent 1px) !important;
   background-size: 100% 32px !important;
 }
 
@@ -49,10 +48,26 @@ html.dark.show-notes body {
 }
 
 .note-annotation {
-  display: none;
+  opacity: 0;
+  max-height: 0;
+  transform: translateY(-8px);
+  filter: blur(4px);
+  overflow: hidden;
+  pointer-events: none;
+  /* Override any Tailwind margins while hidden so it collapses perfectly */
+  margin-top: 0 !important; 
+  margin-bottom: 0 !important;
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
+
 html.show-notes .note-annotation {
-  display: block;
+  opacity: 1;
+  max-height: 150px; /* Gives enough room for a multi-line note to expand */
+  transform: translateY(0);
+  filter: blur(0);
+  pointer-events: auto;
+  /* Restore the top margin (matches Tailwind's mt-1.5 to mt-2) */
+  margin-top: 0.5rem !important; 
 }
 
 /* Custom Sequential Left-to-Right Wipe */
