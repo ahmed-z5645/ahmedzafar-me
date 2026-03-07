@@ -4,6 +4,9 @@
 @theme {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-glass: var(--glass-bg);
+  --color-surface: var(--glass-surface);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
   --font-serif: var(--font-newsreader);
@@ -13,16 +16,23 @@
 
 :root {
   /* "White Smoke" - Brighter, clean, but anti-glare */
-  --background: #F7F7F7; 
-  
+  --background: #F7F7F7;
+
   --foreground: #32404F;
   --text-main: #32404F;
+  --accent: #1E5B1A;
+  --glass-bg: #F7F7F7;       /* desktop nav glass */
+  --glass-surface: #FAFCFD;  /* mobile element glass */
+  --notes-bg: #F2F0ED;       /* ruled notepad background */
 }
 
 .dark {
-  --background: #121417; 
+  --background: #121417;
   --foreground: #FAFCFD;
   --text-main: #FAFCFD;
+  --glass-bg: #1C1C1C;
+  --glass-surface: #1C1C1C;
+  --notes-bg: #1C1C1C;
 }
 
 /* 4. BASE STYLES */
@@ -37,13 +47,13 @@ body {
 
 /* Notes Feature */
 html.show-notes body {
-  background-color: #F2F0ED !important; 
+  background-color: var(--notes-bg) !important;
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.075) 1px, transparent 1px) !important;
   background-size: 100% 32px !important;
 }
 
 html.dark.show-notes body {
-  background-color: #1C1C1C !important;
+  background-color: var(--notes-bg) !important;
   background-image: linear-gradient(to bottom, rgba(250,252,253,0.05) 1px, transparent 1px) !important;
 }
 
@@ -80,7 +90,7 @@ html.show-notes .note-annotation {
   padding-right: 0.25em; /* Pushes the clipping box wider to catch the italic tail */
   margin-right: -0.25em; /* Pulls the next text back so your spacing doesn't get ruined */
   
-  background: linear-gradient(to right, #1E5B1A 50%, var(--text-main) 50%);
+  background: linear-gradient(to right, var(--accent) 50%, var(--text-main) 50%);
   background-size: 200% auto;
   background-position: 100% 0;
   -webkit-background-clip: text;
@@ -119,21 +129,16 @@ a, button, [role="button"], .group {
 
 /* Applied Globally: The whole site */
 *::selection {
-  /* This is your signature #1E5B1A at 15% opacity */
-  background-color: rgba(30, 91, 26, 0.15); 
-  
-  /* OPTIONAL: Uncomment this line if you want the text to become fully white on highlight. 
-     (Leaving it commented out makes the navy text look like it's submerged in the green wash.) */
-  color: #1E5b1a;
+  background-color: color-mix(in srgb, var(--accent) 15%, transparent);
+  color: var(--accent);
 }
 
 /* Specific Firefox Support (Because they use their own syntax) */
 *::-moz-selection {
-  background-color: rgba(30, 91, 26, 0.15);
-  /*color: #FAFCFD;*/
+  background-color: color-mix(in srgb, var(--accent) 15%, transparent);
 }
 
 *.dark ::selection {
-  background-color: rgba(30, 91, 26, 0.30);
-  color: #FAFCFD;
+  background-color: color-mix(in srgb, var(--accent) 30%, transparent);
+  color: var(--foreground);
 }
