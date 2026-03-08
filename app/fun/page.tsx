@@ -37,7 +37,7 @@ export default function Fun() {
           <div className="lg:w-[60%] p-8 lg:pt-8 lg:pr-24 lg:pl-12 flex flex-col">
             <Header />
             <section>
-              <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-6 tracking-wide">
+              <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-4 tracking-wide">
                 [GitHub Activity]
               </h2>
               <GithubCalendarSection />
@@ -71,7 +71,7 @@ export default function Fun() {
             BOTTOM — full-width project grid
             ========================================= */}
         <div className="p-8 lg:px-24 lg:py-12">
-          <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-6 tracking-wide">
+          <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-4 tracking-wide">
             [Side Projects]
           </h2>
           <div className="columns-1 md:columns-2 xl:columns-3 gap-6 w-full">
