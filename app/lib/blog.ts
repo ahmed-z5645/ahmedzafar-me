@@ -19,9 +19,11 @@ export interface Post extends PostMeta {
   content: string;
 }
 
-function readPostFile(filename: string): Post | null {
+// ─── Core logic (injectable postsDir for testability) ─────────────────────────
+
+function readPostFile(postsDir: string, filename: string): Post | null {
   const slug = filename.replace(/\.mdx?$/, "");
-  const fullPath = path.join(POSTS_DIR, filename);
+  const fullPath = path.join(postsDir, filename);
   const raw = fs.readFileSync(fullPath, "utf-8");
   const { data, content } = matter(raw);
 
@@ -40,22 +42,22 @@ function readPostFile(filename: string): Post | null {
   };
 }
 
-export function getAllPosts(): PostMeta[] {
-  if (!fs.existsSync(POSTS_DIR)) return [];
+function getAllPostsFrom(postsDir: string): PostMeta[] {
+  if (!fs.existsSync(postsDir)) return [];
 
   const files = fs
-    .readdirSync(POSTS_DIR)
+    .readdirSync(postsDir)
     .filter((f) => f.endsWith(".mdx") || f.endsWith(".md"));
 
   return files
-    .map(readPostFile)
+    .map((f) => readPostFile(postsDir, f))
     .filter((p): p is Post => p !== null)
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
-export function getPostBySlug(slug: string): Post | null {
-  const mdxPath = path.join(POSTS_DIR, `${slug}.mdx`);
-  const mdPath = path.join(POSTS_DIR, `${slug}.md`);
+function getPostBySlugFrom(postsDir: string, slug: string): Post | null {
+  const mdxPath = path.join(postsDir, `${slug}.mdx`);
+  const mdPath = path.join(postsDir, `${slug}.md`);
   const filename = fs.existsSync(mdxPath)
     ? `${slug}.mdx`
     : fs.existsSync(mdPath)
@@ -63,18 +65,32 @@ export function getPostBySlug(slug: string): Post | null {
     : null;
 
   if (!filename) return null;
-  return readPostFile(filename);
+  return readPostFile(postsDir, filename);
 }
 
-export function getAllTags(): string[] {
-  const posts = getAllPosts();
+function getAllTagsFrom(postsDir: string): string[] {
+  const posts = getAllPostsFrom(postsDir);
   const tagSet = new Set<string>();
   posts.forEach((p) => p.tags.forEach((t) => tagSet.add(t)));
   return Array.from(tagSet).sort();
 }
 
-export function getPostsByTag(tag: string): PostMeta[] {
-  return getAllPosts().filter((p) =>
+function getPostsByTagFrom(postsDir: string, tag: string): PostMeta[] {
+  return getAllPostsFrom(postsDir).filter((p) =>
     p.tags.map((t) => t.toLowerCase()).includes(tag.toLowerCase())
   );
 }
+
+// ─── Public API (uses real POSTS_DIR) ─────────────────────────────────────────
+
+export const getAllPosts = () => getAllPostsFrom(POSTS_DIR);
+export const getPostBySlug = (slug: string) => getPostBySlugFrom(POSTS_DIR, slug);
+export const getAllTags = () => getAllTagsFrom(POSTS_DIR);
+export const getPostsByTag = (tag: string) => getPostsByTagFrom(POSTS_DIR, tag);
+
+// ─── Test exports (injectable postsDir) ───────────────────────────────────────
+
+export const _testGetAllPosts = getAllPostsFrom;
+export const _testGetPostBySlug = getPostBySlugFrom;
+export const _testGetAllTags = getAllTagsFrom;
+export const _testGetPostsByTag = getPostsByTagFrom;
