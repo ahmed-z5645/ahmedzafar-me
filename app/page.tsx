@@ -19,7 +19,7 @@ export default function Home() {
               ISSUE 02 | SPRING 2026
           </p>
           <div className="mt-8 lg:mt-18">
-            <h1 className="hero-title-group font-[family-name:var(--font-newsreader)] text-hero leading-[1.1] tracking-tight text-foreground">
+            <h1 className="hero-title-group font-[family-name:var(--font-boska)] text-hero leading-[1.1] tracking-tight text-foreground">
               I’m Ahmed, a <span className="italic wipe-word wipe-1">software</span><br />
               and <span className="italic wipe-word wipe-2">biomedical</span> engineer.
             </h1>

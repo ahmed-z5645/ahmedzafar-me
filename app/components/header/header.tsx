@@ -22,7 +22,7 @@ export default function Header() {
   return (
     <>
       <nav className="hidden lg:flex sticky top-8 z-50 backdrop-blur-md bg-glass/40 rounded-xl px-10 lg:px-20 py-4 mb-10 justify-between items-center font-[family-name:var(--font-geist-mono)] text-body shadow-sm border border-foreground/10 transition-colors w-full">
-        <Link href="#experience" className={experienceClass}>Experience</Link>
+        <Link href="/" className={experienceClass}>Experience</Link>
         <Link href="/fun" className={navClass("/fun")}>Fun</Link>
         <Link href="/about" className={navClass("/about")}>About</Link>
         <a href="/Ahmed_Zafar_Resume.pdf" className="text-foreground hover:text-accent transition-colors">Resume</a>

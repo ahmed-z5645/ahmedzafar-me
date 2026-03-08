@@ -17,12 +17,15 @@ export default function Fun() {
           {/* LEFT — issue label + hero */}
           <div className="lg:w-[40%] flex flex-col p-8 pb-0 lg:pt-9 lg:pb-12 lg:pl-24 lg:pr-12">
             <p className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58]">
-              ISSUE 02 | ENGINEERING PLAYGROUND
+              ISSUE 02 | SPRING 2026
             </p>
             <div className="mt-8 lg:mt-18">
-              <h1 className="font-[family-name:var(--font-newsreader)] text-hero leading-[1.1] tracking-tight text-foreground">
-                Engineering Playground.
+              <h1 className="hero-title-group font-[family-name:var(--font-boska)] text-hero leading-[1.1] tracking-tight text-foreground mb-2">
+                Programming should be <span className="italic wipe-word wipe-1">fun</span>. Keep building things that <span className="italic wipe-word wipe-2">excite</span> you.
               </h1>
+              <p className="text-body text-foreground/[0.58]">
+                Every project on this page was built purely for fun — no work, no clients, no deadlines. Just me, an idea, and the freedom to explore it. I hope these reflections of my curiosity and passion for programming inspire you to create something just for the joy of it too.
+              </p>
             </div>
           </div>
 
@@ -36,9 +39,8 @@ export default function Fun() {
               <GithubCalendarSection />
             </section>
           </div>
-
         </div>
-
+        
         {/* =========================================
             BOTTOM — full-width project grid
             ========================================= */}

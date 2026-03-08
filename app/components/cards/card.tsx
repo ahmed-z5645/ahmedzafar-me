@@ -52,7 +52,7 @@ export default function ProjectCard({ project }) {
           mt-1.5 pulls the text up so it's practically touching the media.
       */}
       <div className="mt-1.5">
-        <h3 className="font-[family-name:var(--font-newsreader)] text-card leading-[1.2] text-foreground">
+        <h3 className="font-[family-name:var(--font-boska)] text-card leading-[1.2] text-foreground">
           {project.title}
         </h3>
 

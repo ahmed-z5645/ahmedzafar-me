@@ -18,7 +18,7 @@ This is a Next.js 16 personal portfolio site using the App Router, React 19, Tai
 
 ### Layout & Pages
 
-- `app/layout.tsx` — Root layout. Mounts two global client components (`<Cursor />` and `<KeyWatcher />`) that apply to every page. Loads three fonts via `next/font/google`: Geist Sans (`--font-geist-sans`), Geist Mono (`--font-geist-mono`), and Newsreader (`--font-newsreader`).
+- `app/layout.tsx` — Root layout. Mounts two global client components (`<Cursor />` and `<KeyWatcher />`) that apply to every page. Loads three fonts via `next/font/google`: Geist Sans (`--font-geist-sans`), Geist Mono (`--font-geist-mono`), and Boska (`--font-boska`).
 - `app/page.tsx` — Main page. Asymmetrical split-screen: sticky left column (intro/links) and scrollable right column (experience, R&D projects, featured projects). Outer container is `max-w-[1600px] mx-auto` — use this on all pages.
 - `app/about/page.tsx` — Stub. Intended as a single-column editorial reading experience.
 - `app/fun/page.tsx` — Stub. Intended for masonry grids (`columns-1 md:columns-2 lg:columns-3`) showcasing media, music, and photography.
@@ -59,7 +59,7 @@ Each entry supports an optional `"note"` field. Notes are hidden by default and 
   - `text-card` — 18px, used for card/project titles
   - `text-hero` — 50px, used for the main hero h1
 - **Typography rules:**
-  - `Newsreader` (serif) — hero text and card/section titles → `font-[family-name:var(--font-newsreader)]`
+  - `Boska` (serif) — hero text and card/section titles → `font-[family-name:var(--font-boska)]`
   - `Geist Mono` — technical details, dates, navigation labels, captions → `font-[family-name:var(--font-geist-mono)]`
   - `Geist Sans` — body text and hidden notes → `font-[family-name:var(--font-geist-sans)]`
   - Note: always use the explicit `family-name` arbitrary syntax shown above, not the shorthand `font-mono`/`font-sans`/`font-serif` utilities — Next.js scopes font variables to `body`, so the Tailwind shorthands don't resolve them correctly.

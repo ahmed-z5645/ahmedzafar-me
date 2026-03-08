@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Newsreader  } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
+import localFont from "next/font/local";
 import KeyWatcher from "./components/logic/keyWatcher";
 import "./globals.css";
 import Cursor from "../app/components/cursor";
@@ -14,11 +15,21 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const newsReader = Newsreader({
-  variable: "--font-newsreader",
-  subsets: ["latin"],
-  style: ['normal', 'italic']
-})
+const boska = localFont({
+  src: [
+    {
+      path: "../public/fonts/Boska-Variable.woff2",
+      style: "normal",
+      weight: "100 900",
+    },
+    {
+      path: "../public/fonts/Boska-VariableItalic.woff2",
+      style: "italic",
+      weight: "100 900",
+    },
+  ],
+  variable: "--font-boska",
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -33,7 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${newsReader.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${boska.variable} antialiased`}
         suppressHydrationWarning
       >
         <Cursor />
