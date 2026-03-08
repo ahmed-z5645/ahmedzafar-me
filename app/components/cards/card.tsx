@@ -6,7 +6,7 @@ import Image from 'next/image';
  * Displays a project title (Newsreader), description (Geist Mono 15px), 
  * and media (Image or Video) with sharp corners and tight vertical spacing.
  */
-export default function ProjectCard({ project }) {
+export default function ProjectCard({ project }: { project: Record<string, string | undefined> }) {
   const CardContent = (
     /* Column-break-inside-avoid is essential for the masonry layout in the parent */
     <div className="flex flex-col mb-8 break-inside-avoid group cursor-pointer">
@@ -25,11 +25,11 @@ export default function ProjectCard({ project }) {
             <source src={project.video} type="video/mp4" />
           </video>
         ) : project.image ? (
-          <Image 
-            src={project.image} 
-            alt={project.title}
-            width={1200} 
-            height={800} 
+          <Image
+            src={project.image!}
+            alt={project.title ?? ""}
+            width={1200}
+            height={800}
             /* Removed: transition-transform duration-700 group-hover:scale-[1.02] */
             className="w-full h-auto object-cover"
           />
