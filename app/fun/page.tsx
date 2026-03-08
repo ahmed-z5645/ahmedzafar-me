@@ -20,11 +20,14 @@ export default function Fun() {
               ISSUE 02 | SPRING 2026
             </p>
             <div className="mt-8 lg:mt-18">
-              <h1 className="hero-title-group font-[family-name:var(--font-boska)] text-hero leading-[1.1] tracking-tight text-foreground mb-2">
-                Programming should be <span className="italic wipe-word wipe-1">fun</span>. Keep building things that <span className="italic wipe-word wipe-2">excite</span> you.
+              <h1 className="hero-title-group font-[family-name:var(--font-newsreader)] text-hero leading-[1.1] tracking-tight text-foreground mb-2">
+                Engineering should be <span className="italic wipe-word wipe-1">fun</span>. Keep building things that <span className="italic wipe-word wipe-2">excite</span> you.
               </h1>
               <p className="text-body text-foreground/[0.58]">
-                Every project on this page was built purely for fun — no work, no clients, no deadlines. Just me, an idea, and the freedom to explore it. I hope these reflections of my curiosity and passion for programming inspire you to create something just for the joy of it too.
+                Every project on this page was built for fun. I hope these reflections of curiosity for programming inspire you to create something just for the joy of it too.
+                <br />
+                <br />
+                Currently putting off a lot of fun projects to focus on being Software Lead @ the <a className="text-accent" href="">McMaster Biomedical Engineering Technical Team</a>, and contributing Open Source @ the <a className="text-accent" href="">Google DSC McMaster.</a>
               </p>
             </div>
           </div>
@@ -37,6 +40,23 @@ export default function Fun() {
                 [GitHub Activity]
               </h2>
               <GithubCalendarSection />
+              <div className="font-[family-name:var(--font-geist-sans)] note-annotation text-body mt-4 italic text-accent">
+                I think GitHub Contributions are sort of a toxic metric within the tech community. 
+                <br />
+                For whoever needs to hear this: you don't have to code everyday to be a good engineer. Take your time, and do what you enjoy! You're doing great.
+              </div>
+
+              <div className="font-[family-name:var(--font-geist-mono)] text-body leading-relaxed text-foreground/[0.58] space-y-8 mt-2">
+                <div className="hidden lg:block">
+                  <p>Press [N] to see notes</p>
+                  <p>
+                    Press [D] to{' '}
+                    <span className="dark:hidden">dim the lights</span>
+                    <span className="hidden dark:inline">turn on the lights</span>
+                  </p>
+                </div>
+              </div>
+
             </section>
           </div>
         </div>
