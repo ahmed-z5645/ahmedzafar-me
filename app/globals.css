@@ -120,6 +120,12 @@ html.show-notes .note-annotation {
   transition-delay: 0.4s; 
 }
 
+/* Kinetic ticker */
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
 /* Hide default cursor globally */
 * {
   cursor: none !important;
