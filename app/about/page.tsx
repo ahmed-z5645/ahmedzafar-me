@@ -38,7 +38,7 @@ export default function About() {
               <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-6 tracking-wide">
                 [Photos]
               </h2>
-              <div className="columns-1 md:columns-2 gap-6 w-full">
+              <div className="columns-1 md:columns-3 gap-6 w-full">
                 {photos.map((photo) => (
                   <ProjectCard key={photo.id} project={photo} />
                 ))}
