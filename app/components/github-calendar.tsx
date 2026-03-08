@@ -8,9 +8,6 @@ const theme = {
   dark:  ["#2A2A2A", "#1A3D18", "#1D5019", "#1D651A", "#1E5B1A"],
 };
 
-// react-activity-calendar renders ~53 week columns.
-// Each column is (blockSize + blockMargin) wide, blockMargin defaults to 4.
-// Solving for blockSize: blockSize = floor(containerWidth / 53) - 4
 const BLOCK_MARGIN = 4;
 const WEEKS = 53;
 
@@ -19,29 +16,31 @@ export default function GithubCalendar() {
   const [blockSize, setBlockSize] = useState(12);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Sync dark mode with the html class
   useEffect(() => {
-    setIsDark(document.documentElement.classList.contains("dark"));
-    const mo = new MutationObserver(() =>
-      setIsDark(document.documentElement.classList.contains("dark"))
-    );
+    // --- Dark mode observer ---
+    const updateDark = () => {
+      const next = document.documentElement.classList.contains("dark");
+      setIsDark(prev => (prev === next ? prev : next));
+    };
+    updateDark();
+    const mo = new MutationObserver(updateDark);
     mo.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
-    return () => mo.disconnect();
-  }, []);
 
-  // Recompute blockSize whenever the container resizes
-  useEffect(() => {
+    // --- Resize observer ---
     const calculate = () => {
       if (!containerRef.current) return;
       const width = containerRef.current.clientWidth;
-      const computed = Math.floor(width / WEEKS) - BLOCK_MARGIN;
-      setBlockSize(Math.max(6, Math.min(computed, 14)));
+      const next = Math.max(6, Math.min(Math.floor(width / WEEKS) - BLOCK_MARGIN, 14));
+      setBlockSize(prev => (prev === next ? prev : next));
     };
-
     calculate();
     const ro = new ResizeObserver(calculate);
     if (containerRef.current) ro.observe(containerRef.current);
-    return () => ro.disconnect();
+
+    return () => {
+      mo.disconnect();
+      ro.disconnect();
+    };
   }, []);
 
   return (
