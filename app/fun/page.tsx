@@ -1,7 +1,7 @@
 import Header from "../components/header/header";
 import Footer from "../components/footer/footer";
 import ProjectCard from "../components/cards/card";
-import GithubCalendar from "../components/github-calendar";
+import GithubCalendarSection from "../components/github-calendar-section";
 import funProjects from "../data/fun.json";
 
 export default function Fun() {
@@ -26,7 +26,7 @@ export default function Fun() {
           <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-6 tracking-wide">
             [GitHub Activity]
           </h2>
-          <GithubCalendar />
+          <GithubCalendarSection />
         </section>
 
         {/* Side Projects */}
