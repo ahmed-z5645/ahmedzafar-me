@@ -2,16 +2,29 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+
+  const navClass = (href: string) =>
+    pathname === href
+      ? "text-accent transition-colors"
+      : "text-foreground hover:text-accent transition-colors";
+
+  // Home page uses an anchor (#experience), not a route — always active on "/"
+  const experienceClass =
+    pathname === "/"
+      ? "text-accent transition-colors"
+      : "text-foreground hover:text-accent transition-colors";
 
   return (
     <>
       <nav className="hidden lg:flex sticky top-8 z-50 backdrop-blur-md bg-glass/40 rounded-xl px-10 lg:px-20 py-4 mb-10 justify-between items-center font-[family-name:var(--font-geist-mono)] text-body shadow-sm border border-foreground/10 transition-colors w-full">
-        <Link href="#experience" className="text-accent transition-colors">Experience</Link>
-        <Link href="/fun" className="text-foreground hover:text-accent transition-colors">Fun</Link>
-        <Link href="/about" className="text-foreground hover:text-accent transition-colors">About</Link>
+        <Link href="#experience" className={experienceClass}>Experience</Link>
+        <Link href="/fun" className={navClass("/fun")}>Fun</Link>
+        <Link href="/about" className={navClass("/about")}>About</Link>
         <a href="/Ahmed_Zafar_Resume.pdf" className="text-foreground hover:text-accent transition-colors">Resume</a>
       </nav>
 
@@ -19,7 +32,7 @@ export default function Header() {
           MOBILE HEADER
           ========================================= */}
       <div className="lg:hidden fixed top-6 right-6 z-[100]">
-        
+
         {/* Elegant Circular Glass Hamburger Button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -40,9 +53,9 @@ export default function Header() {
         {/* The Dropdown Menu */}
         {isMenuOpen && (
           <nav className="absolute top-16 right-0 flex flex-col backdrop-blur-xl bg-surface/95 rounded-xl p-6 gap-6 font-[family-name:var(--font-geist-mono)] text-body shadow-lg border border-foreground/10 text-right min-w-[200px]">
-            <Link href="#experience" onClick={() => setIsMenuOpen(false)} className="text-accent">Experience</Link>
-            <Link href="/fun" onClick={() => setIsMenuOpen(false)} className="text-foreground hover:text-accent">Fun</Link>
-            <Link href="/about" onClick={() => setIsMenuOpen(false)} className="text-foreground hover:text-accent">About</Link>
+            <Link href="#experience" onClick={() => setIsMenuOpen(false)} className={experienceClass}>Experience</Link>
+            <Link href="/fun" onClick={() => setIsMenuOpen(false)} className={navClass("/fun")}>Fun</Link>
+            <Link href="/about" onClick={() => setIsMenuOpen(false)} className={navClass("/about")}>About</Link>
             <a href="/Ahmed_Zafar_Resume.pdf" onClick={() => setIsMenuOpen(false)} className="text-foreground hover:text-accent">Resume</a>
           </nav>
         )}
