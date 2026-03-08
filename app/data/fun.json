@@ -1,0 +1,30 @@
+[
+  {
+    "id": "gpunum",
+    "title": "A GPU-parallelized numerical library built from scratch",
+    "description": "Personal Project • In Progress",
+    "link": "",
+    "video": "/thumbnails/main/gpunum_thumbnail.mp4"
+  },
+  {
+    "id": "hsr",
+    "title": "A real-time transit tracking application built for the Hamilton Street Railway",
+    "description": "Personal Project • In Progress",
+    "link": "",
+    "image": "/thumbnails/fun/hsr_placeholder.webp"
+  },
+  {
+    "id": "pepscore",
+    "title": "A physics-informed peptide screening framework",
+    "description": "Personal Project • In Progress",
+    "link": "",
+    "video": "/thumbnails/main/pepscore_thumbnail.mp4"
+  },
+  {
+    "id": "portfolio",
+    "title": "Building this custom editorial, high-performance static site",
+    "description": "Personal Project • In Progress",
+    "link": "",
+    "image": "/thumbnails/fun/portfolio_placeholder.webp"
+  }
+]
