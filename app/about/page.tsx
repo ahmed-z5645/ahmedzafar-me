@@ -1,12 +1,31 @@
+import { Redis } from "@upstash/redis";
 import Footer from "../components/footer/footer";
 import Header from "../components/header/header";
 import ProjectCard from "../components/cards/card";
 import Image from "next/image";
+import LyricCard from "../components/lyric-card";
 import photos from "../data/about.json";
 import checklist from "../data/checklist.json";
-import testimonials from "../data/testimonials.json";
+import defaultLyrics from "../data/lyrics.json";
 
-export default function About() {
+export const dynamic = "force-dynamic";
+
+async function getLyrics() {
+  try {
+    const redis = new Redis({
+      url: process.env.UPSTASH_REDIS_REST_URL!,
+      token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+    });
+    const stored = await redis.get<typeof defaultLyrics>("lyrics");
+    return stored && stored.length > 0 ? stored : defaultLyrics;
+  } catch {
+    return defaultLyrics;
+  }
+}
+
+export default async function About() {
+  const lyrics = await getLyrics();
+
   return (
     <div className="min-h-screen">
       <main className="max-w-[1600px] mx-auto">
@@ -77,21 +96,22 @@ export default function About() {
         </section>
 
         {/* =========================================
-            TESTIMONIALS — iMessage bubble images
+            LYRIC CARDS — Apple Music style
             ========================================= */}
         <section className="px-8 py-12 lg:px-24 lg:py-16 border-t border-foreground/[0.08]">
           <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-10 tracking-wide">
-            [From the group chat]
+            [On repeat]
           </h2>
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
-            {testimonials.map((t) => (
-              <div key={t.id} className="break-inside-avoid mb-6">
-                {t.image ? (
-                  <Image src={t.image} alt="testimonial" width={600} height={400} className="w-full h-auto" />
-                ) : (
-                  <div className="w-full h-40 rounded-xl bg-foreground/[0.04]" />
-                )}
-              </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {lyrics.map((item) => (
+              <LyricCard
+                key={item.id}
+                lyric={item.lyric}
+                song={item.song}
+                artist={item.artist}
+                album={item.album}
+                artwork={item.artwork}
+              />
             ))}
           </div>
         </section>
