@@ -1,0 +1,22 @@
+[
+  { "id": "cl-1",  "text": "Learn to play guitar",                        "checked": true,  "note": "" },
+  { "id": "cl-2",  "text": "Read 50 books",                               "checked": false, "note": "" },
+  { "id": "cl-3",  "text": "Build something people actually use",          "checked": true,  "note": "" },
+  { "id": "cl-4",  "text": "Live abroad for at least a month",             "checked": false, "note": "" },
+  { "id": "cl-5",  "text": "Shoot a roll of film",                        "checked": true,  "note": "" },
+  { "id": "cl-6",  "text": "Run a half marathon",                         "checked": false, "note": "" },
+  { "id": "cl-7",  "text": "Publish original music",                      "checked": false, "note": "" },
+  { "id": "cl-8",  "text": "See the northern lights",                     "checked": true,  "note": "" },
+  { "id": "cl-9",  "text": "Write something worth keeping",               "checked": false, "note": "" },
+  { "id": "cl-10", "text": "Learn to cook one dish really well",          "checked": true,  "note": "" },
+  { "id": "cl-11", "text": "Go completely off-grid for a week",           "checked": false, "note": "" },
+  { "id": "cl-12", "text": "Learn a second language",                     "checked": false, "note": "" },
+  { "id": "cl-13", "text": "Watch a sunrise from a mountain",             "checked": false, "note": "" },
+  { "id": "cl-14", "text": "Record a full album",                        "checked": false, "note": "" },
+  { "id": "cl-15", "text": "Drive across a country",                     "checked": false, "note": "" },
+  { "id": "cl-16", "text": "Contribute to open source",                  "checked": true,  "note": "" },
+  { "id": "cl-17", "text": "Own a film camera",                          "checked": true,  "note": "" },
+  { "id": "cl-18", "text": "Read Infinite Jest",                         "checked": false, "note": "" },
+  { "id": "cl-19", "text": "Build a mechanical keyboard from scratch",    "checked": false, "note": "" },
+  { "id": "cl-20", "text": "Make a stranger's day noticeably better",    "checked": false, "note": "" }
+]

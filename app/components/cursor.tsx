@@ -6,7 +6,7 @@ import { motion, useMotionValue } from "framer-motion";
 export default function Cursor() {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  
+
   // Track raw mouse position directly
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
@@ -15,7 +15,7 @@ export default function Cursor() {
     const moveCursor = (e: MouseEvent) => {
       // 1. If the mouse moves, it's definitely not a phone touch scroll
       if (!isVisible) setIsVisible(true);
-      
+
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
 
@@ -53,7 +53,7 @@ export default function Cursor() {
         // It stays at 0 opacity until the first mousemove
         opacity: isVisible ? (isHovered ? 0.3 : 1) : 0,
       }}
-      transition={{ 
+      transition={{
         scale: { type: "spring", stiffness: 300, damping: 25 },
         opacity: { duration: 0.1 }
       }}
