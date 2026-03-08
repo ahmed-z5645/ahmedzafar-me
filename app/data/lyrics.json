@@ -9,14 +9,38 @@
   },
   {
     "id": "lyr-2",
-    "lyric": "Who's gonna save my soul now?",
-    "song": "Save My Soul",
-    "artist": "Placeholder Artist",
-    "album": "Placeholder Album",
+    "lyric": "Placeholder lyric goes here",
+    "song": "Song Title",
+    "artist": "Artist Name",
+    "album": "Album Name",
     "artwork": ""
   },
   {
     "id": "lyr-3",
+    "lyric": "Placeholder lyric goes here",
+    "song": "Song Title",
+    "artist": "Artist Name",
+    "album": "Album Name",
+    "artwork": ""
+  },
+  {
+    "id": "lyr-4",
+    "lyric": "Placeholder lyric goes here",
+    "song": "Song Title",
+    "artist": "Artist Name",
+    "album": "Album Name",
+    "artwork": ""
+  },
+  {
+    "id": "lyr-5",
+    "lyric": "Placeholder lyric goes here",
+    "song": "Song Title",
+    "artist": "Artist Name",
+    "album": "Album Name",
+    "artwork": ""
+  },
+  {
+    "id": "lyr-6",
     "lyric": "Placeholder lyric goes here",
     "song": "Song Title",
     "artist": "Artist Name",
