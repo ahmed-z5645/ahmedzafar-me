@@ -24,7 +24,7 @@ export default function Home() {
               and <span className="italic wipe-word wipe-2">biomedical</span> engineer.
             </h1>
             <div className="font-[family-name:var(--font-geist-sans)] note-annotation text-body mt-4 italic text-accent">
-              Software AND biomedical, not software with biomedical, not biomedical with software. <br /> I’ve worked too hard in this dual degree taking ALL the software courses, and ALL the BME courses.
+              Software AND biomedical, not software with biomedical, not biomedical with software. <br /> I’ve worked too hard in this dual degree taking ALL the software courses, and ALL the BME courses to be seen as less qualified than a normal software engineer or biomedical engineer.
             </div>
 
           </div>
