@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 
 interface LyricCardProps {
@@ -8,30 +11,60 @@ interface LyricCardProps {
   artwork: string;
 }
 
+const FALLBACK_COLORS: [string, string, string] = ["#1a1a2e", "#16213e", "#0f3460"];
+
+function extractColors(src: string): Promise<[string, string, string]> {
+  return new Promise((resolve) => {
+    const img = new window.Image();
+    img.crossOrigin = "anonymous";
+    img.onload = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        canvas.width = 30;
+        canvas.height = 30;
+        const ctx = canvas.getContext("2d")!;
+        ctx.drawImage(img, 0, 0, 30, 30);
+
+        const sample = (x: number, y: number): string => {
+          const d = ctx.getImageData(x, y, 1, 1).data;
+          // Boost towards a more saturated version for visual punch
+          return `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
+        };
+
+        resolve([sample(4, 4), sample(25, 4), sample(15, 25)]);
+      } catch {
+        resolve(FALLBACK_COLORS);
+      }
+    };
+    img.onerror = () => resolve(FALLBACK_COLORS);
+    img.src = src;
+  });
+}
+
 export default function LyricCard({ lyric, song, artist, album, artwork }: LyricCardProps) {
+  const [colors, setColors] = useState<[string, string, string]>(FALLBACK_COLORS);
   const lines = lyric.split("\n");
 
+  useEffect(() => {
+    if (!artwork) return;
+    extractColors(artwork).then(setColors);
+  }, [artwork]);
+
   return (
-    <div className="relative aspect-square rounded-2xl overflow-hidden bg-[#111] flex flex-col">
-      {/* Subtle radial gradient for depth */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_left,_#2a2a2a,_#0a0a0a)] pointer-events-none" />
+    <div className="relative aspect-video rounded-2xl overflow-hidden bg-[#0a0a0a] flex flex-col">
 
-      {/* Album art as background on small screens */}
-      {artwork && (
-        <Image
-          src={artwork}
-          alt={album}
-          fill
-          className="object-cover opacity-30 lg:hidden"
-        />
-      )}
+      {/* ── Ambient lava-lamp background ── */}
+      <div className="absolute inset-0">
+        <div className="lyric-blob lyric-blob-1" style={{ background: colors[0] }} />
+        <div className="lyric-blob lyric-blob-2" style={{ background: colors[1] }} />
+        <div className="lyric-blob lyric-blob-3" style={{ background: colors[2] }} />
+      </div>
 
-      {/* Gradient overlay for readability on small screens */}
-      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent lg:hidden pointer-events-none" />
+      {/* Dark vignette so text stays readable */}
+      <div className="absolute inset-0 bg-black/40 pointer-events-none" />
 
       {/* ── LARGE: full lyric card ── */}
       <div className="relative hidden lg:flex flex-col justify-between h-full p-6">
-        {/* Lyric */}
         <div className="flex-1 flex items-center">
           <p className="font-[family-name:var(--font-newsreader)] text-[22px] leading-[1.35] tracking-tight text-white">
             {lines.map((line, i) => (
@@ -43,16 +76,9 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
           </p>
         </div>
 
-        {/* Footer */}
         <div className="flex items-center gap-3 mt-6">
           {artwork ? (
-            <Image
-              src={artwork}
-              alt={album}
-              width={40}
-              height={40}
-              className="rounded-md shrink-0"
-            />
+            <Image src={artwork} alt={album} width={40} height={40} className="rounded-md shrink-0" />
           ) : (
             <div className="w-10 h-10 rounded-md bg-white/10 shrink-0" />
           )}
@@ -64,9 +90,6 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
               {artist} · {album}
             </p>
           </div>
-          <svg className="ml-auto shrink-0 opacity-40" width="20" height="20" viewBox="0 0 24 24" fill="white">
-            <path d="M23.994 6.124a9.23 9.23 0 0 0-.24-2.19c-.317-1.31-1.062-2.31-2.18-3.043a5.022 5.022 0 0 0-1.764-.76c-.584-.13-1.182-.19-1.773-.22-.8-.04-1.055-.05-3.093-.05H9.057c-2.038 0-2.274.01-3.093.05-.59.03-1.19.09-1.773.22a5.022 5.022 0 0 0-1.764.76C1.315 1.624.57 2.624.253 3.934a9.23 9.23 0 0 0-.24 2.19C-.002 6.954-.01 7.2-.01 9.257v5.486c0 2.057.008 2.303.044 3.123a9.23 9.23 0 0 0 .24 2.19c.317 1.31 1.062 2.31 2.18 3.043.585.374 1.155.62 1.764.76.584.13 1.182.19 1.773.22.8.04 1.055.05 3.093.05h5.886c2.038 0 2.274-.01 3.093-.05.59-.03 1.19-.09 1.773-.22a5.022 5.022 0 0 0 1.764-.76c1.118-.733 1.863-1.733 2.18-3.043a9.23 9.23 0 0 0 .24-2.19c.036-.82.044-1.066.044-3.123V9.257c0-2.057-.008-2.303-.044-3.133zM12 18.915a6.915 6.915 0 1 1 0-13.83 6.915 6.915 0 0 1 0 13.83zm0-11.366a4.451 4.451 0 1 0 0 8.902 4.451 4.451 0 0 0 0-8.902zm7.192-2.415a1.615 1.615 0 1 1 0 3.23 1.615 1.615 0 0 1 0-3.23z"/>
-          </svg>
         </div>
       </div>
 

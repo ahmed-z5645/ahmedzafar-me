@@ -158,6 +158,41 @@ a, button, [role="button"], .group {
 }
 
 /* =========================================
+   LYRIC CARD AMBIENT BLOBS
+   ========================================= */
+
+@keyframes drift-1 {
+  0%   { transform: translate(0%, 0%) scale(1); }
+  50%  { transform: translate(15%, -20%) scale(1.15); }
+  100% { transform: translate(-10%, 10%) scale(0.9); }
+}
+@keyframes drift-2 {
+  0%   { transform: translate(0%, 0%) scale(1.1); }
+  50%  { transform: translate(-20%, 15%) scale(0.9); }
+  100% { transform: translate(10%, -10%) scale(1.2); }
+}
+@keyframes drift-3 {
+  0%   { transform: translate(0%, 0%) scale(0.95); }
+  50%  { transform: translate(10%, 20%) scale(1.1); }
+  100% { transform: translate(-15%, -15%) scale(1); }
+}
+
+.lyric-blob {
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  filter: blur(48px);
+  opacity: 0.75;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.lyric-blob-1 { animation-name: drift-1; animation-duration: 9s;  top: -10%;  left: -10%; }
+.lyric-blob-2 { animation-name: drift-2; animation-duration: 11s; top: 10%;   right: -20%; animation-delay: -3s; }
+.lyric-blob-3 { animation-name: drift-3; animation-duration: 13s; bottom: -20%; left: 20%; animation-delay: -6s; }
+
+/* =========================================
    BLOG PROSE STYLES
    ========================================= */
 
