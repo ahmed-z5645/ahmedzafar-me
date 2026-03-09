@@ -3,14 +3,14 @@
     "id": "stoat",
     "title": "Bridging the final mile in artificial intelligence deployment",
     "description": "Devtool • On Hiatus",
-    "link": "https://stoated.dev",
+    "link": "/blog/stoat",
     "image": "/thumbnails/main/stoat_thumbnail.webp"
   },
   {
     "id": "2p03",
     "title": "Mathematically modelling a genetic circuit to detect cancer",
     "description": "Personal Project • Completed April 2025",
-    "link": "",
+    "link": "/blog/2p03",
     "video": "/thumbnails/main/2p03_thumbnail.mp4",
     "note": "Designed a cancer detection system using a synthetic gene circuit, all in the form of a breathalizer. Took years off my life."
   },
@@ -18,7 +18,7 @@
     "id": "bmett",
     "title": "Leading full-stack, machine learning, and firmware development",
     "description": "Extracurricular • In Progress",
-    "link": "",
+    "link": "/blog/bmett",
     "image": "/thumbnails/main/bmett_thumbnail.webp",
     "note": "Competing against 10 universities across Canada on March 14th. Wish us luck :)."
   },
@@ -26,14 +26,14 @@
     "id": "dashtab",
     "title": "Fuelling productivity with 29 000+ monthly database reads",
     "description": "Personal Project • October 2024",
-    "link": "",
+    "link": "/blog/dashtab",
     "image": "/thumbnails/main/dashtab_thumbnail.webp"
   },
   {
     "id": "askjulian",
     "title": "Predicting music ratings",
     "description": "Personal Project • March 2025",
-    "link": "",
+    "link": "/blog/askjulian",
     "video": "/thumbnails/main/askjulian_thumbnail.mp4",
     "note": "Born out of spite, but taught me to practically apply and deploy machine learning models."
   },
@@ -41,14 +41,14 @@
     "id": "corkboard",
     "title": "Breaking into the cities live music scene",
     "description": "Extracurricular • In Progress",
-    "link": "",
+    "link": "/blog/corkboard",
     "image": "/thumbnails/main/corkboard_thumbnail.webp"
   },
   {
     "id": "oec",
     "title": "Predicting COVID-19 and wildfire outcomes with machine learning",
     "description": "Ontario Engineering Competition • January 2025",
-    "link": "",
+    "link": "/blog/oec",
     "video": "/thumbnails/main/oec_thumbnail.mp4",
     "note": "An incredible experience to compete in after winning 1st place at the McMaster Engineering Competition!"
   },
@@ -56,9 +56,8 @@
     "id": "rehabilimate",
     "title": "Reinforcing mind-muscle connection with real time rehabiliation support",
     "description": "Design Project • April 2024",
-    "link": "",
+    "link": "/blog/rehabilimate",
     "image": "/thumbnails/main/rehabilimate_thumbnail.webp",
     "note": "Presented at the 2024 iBiomed Showcase. Still proud of our team of first years for taking on an ambitious project and executing it so well."
   }
-
 ]
