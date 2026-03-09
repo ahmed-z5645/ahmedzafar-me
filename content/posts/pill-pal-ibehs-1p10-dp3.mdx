@@ -2,32 +2,32 @@
 title: "💊 Pill Pal (IBEHS 1P10, DP3)"
 date: "2024-03-02"
 tags: []
-excerpt: "> ### [](https://ahmedz.willow.camp/posts/json#skills-developed)Skills Developed:"
-description: "> ### [](https://ahmedz.willow.camp/posts/json#skills-developed)Skills Developed:"
+excerpt: "> ### Skills Developed:"
+description: "> ### Skills Developed:"
 published: true
 ogImage: ""
 ---
-> ### [](https://ahmedz.willow.camp/posts/json#skills-developed)Skills Developed:
+> ### Skills Developed:
 > 
 > -   📟 _Raspberry Pi: Sensor and Output Device Skills_
 > -   📱 _UI/UX Design_
 > -   ✅ _Software Requirements Development_
 
-# [](https://ahmedz.willow.camp/posts/json#overview)Overview:
+# Overview:
 
 DP-3 was our first taste of independence in the Integrated Biomedical Engineering and Health Sciences program. Our job was quite simple: identify an accessibility problem within a chosen demographic, and create a device that detects sensor input and produces a mechanical output.
 
 ![image.png](/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MTk5LCJwdXIiOiJibG9iX2lkIn19--dc95ebfeef690e2e50a95e65959ff6c83662dbb0/image.png) _Final functional medium-fidelity prototype of PillPal_
 
-### [](https://ahmedz.willow.camp/posts/json#our-solution)Our Solution:
+### Our Solution:
 
 Meet PillPal, an automatic pill dispenser. PillPal uses a Time-Of-Flight VL530X distance sensor and a Servo motor to detect and eject pills. Our goal with PillPal is to aid individuals who work in health care, optimize hospitals, and help individuals with memory loss or fine motor skills.
 
-# [](https://ahmedz.willow.camp/posts/json#design-process)Design Process:
+# Design Process:
 
 Like all projects, when given a problem, your initial step is to diverge, creating a set of possible solutions, and then converge on the most viable or effective solution for the defined problem.
 
-## [](https://ahmedz.willow.camp/posts/json#preliminary-idea-generation)Preliminary Idea Generation
+## Preliminary Idea Generation
 
 This project was a little bit different, though. Rather than being given a problem, our job was to choose a certain demographic and then _identify and select_ a challenge they might face.
 
@@ -35,21 +35,21 @@ We had considered many demographics: the elderly, the young, the visually impair
 
 After using a [Pugh Matrix](https://leanscape.io/an-overview-of-the-pugh-matrix-what-is-it-and-how-does-it-work/), and taking into consideration the limitations of the project in terms of time and resources, we concluded that the pill dispenser was the most viable and reasonable solution.
 
-## [](https://ahmedz.willow.camp/posts/json#input-and-output-devices)Input and Output Devices:
+## Input and Output Devices:
 
-> ### [](https://ahmedz.willow.camp/posts/json#%EF%B8%8F-time-of-flight-vl530x-distance-sensor-input)✈️ [**Time of Flight VL530X Distance Sensor (INPUT):**](https://www.adafruit.com/product/3317?srsltid=AfmBOoq6jcDRjIe1-v2LC700g1j3xpTr15vevfr75LmpryERUqAZtvcS)
+> ### ✈️ [**Time of Flight VL530X Distance Sensor (INPUT):**](https://www.adafruit.com/product/3317?srsltid=AfmBOoq6jcDRjIe1-v2LC700g1j3xpTr15vevfr75LmpryERUqAZtvcS)
 > 
 > This sensor uses a laser source and a sensor to detect and calculate the “time of flight” of the laser as it reflects off the sensor. This laser is invisible, very small, and only travels in a linear direction. This means, unlike sonar-based time of flight sensors, it is restricted to only finding narrow distances directly in front of it (field of view of 25º). The device accurately measures distances up to two metres. It is assumed that the sensor would include photosensitive semiconductors such as lead sulfide, cadmium sulfide, and cadmium selenide. Common applications of these sensors include vehicle distance monitoring, people counting, object detection, and robot navigation. These adaptive distance detection applications make it perfect for PillPal.
 
-> ### [](https://ahmedz.willow.camp/posts/json#-sg90-servo-motor-output)🛠 [**SG90 Servo Motor (OUTPUT):**](https://www.adafruit.com/category/232?srsltid=AfmBOooByslVqKvIC_yQsAJa_bhBxYOgKxYDwZX76zXJSIbFSgqRFn5E)
+> ### 🛠 [**SG90 Servo Motor (OUTPUT):**](https://www.adafruit.com/category/232?srsltid=AfmBOooByslVqKvIC_yQsAJa_bhBxYOgKxYDwZX76zXJSIbFSgqRFn5E)
 > 
 > The mechanical output of PillPal uses an SG90 servo motor. This motor can provide feedback on current position and rotate to a specific position, but has a limited rotational range of motion of 180º. It has a torque of 2.0 kg/cm, a speed of 0.09s/60º, and a mass of 10.5 grams.
 
-> ### [](https://ahmedz.willow.camp/posts/json#-light-emitting-diode-output)💡 **Light Emitting Diode (OUTPUT):**
+> ### 💡 **Light Emitting Diode (OUTPUT):**
 > 
 > LEDs are the second output of the device. They produce light when a current is provided. This is caused by forcing an electron flow through a semiconductor; as the electrons recombine with electron holes, they release energy. This energy is released in the form of a photon, producing light that is desired. PillPal uses a 5mm LED with 3 Volts of potential energy. This size and level of voltage is ideal for indication, rather than illumination. The most common application of LEDs with similar specs is within control center boards to indicate if something is activated or inform users about the status of some feature. This common application is why it fits well within PillPal’s design.
 
-## [](https://ahmedz.willow.camp/posts/json#python-and-prototyping)Python and Prototyping:
+## Python and Prototyping:
 
 Now that the loose design has been constructed, it is time to start building our solution! I was on the computing sub-team, so our job was to create the code to operate Pill Pal The code was pretty straightforward: Our objectives were to collect data from the sensor, check if it had reached a certain threshold, and then move the motor to eject the pill, and constantly refresh and output the status of our input/output devices. Signals were processed using a rolling average filter.
 
@@ -67,7 +67,7 @@ Curr_dist: 41   rol_avg 41.0    Dispensing: False    LED ON? True
 
 Kind of… boring? Isn’t it?
 
-## [](https://ahmedz.willow.camp/posts/json#graphical-user-interface)Graphical User Interface:
+## Graphical User Interface:
 
 After our code was completed and working, we almost felt underwhelmed. The output was working perfectly as intended, and the pills were dispensing, but from a visual perspective it felt like an eyesore. We remembered our end users were not coders, or repair personnel who need to see this constant updating, but rather people who wanted easy, efficient use.
 
@@ -75,15 +75,15 @@ After our code was completed and working, we almost felt underwhelmed. The outpu
 
 I stepped out of my comfort zone and decided to learn to build a Graphical User Interface (This is is shortened to GUI, which to my great dismay, I learned was sometimes pronounced “Goo-ey”)
 
-# [](https://ahmedz.willow.camp/posts/json#project-reflection)Project Reflection:
+# Project Reflection:
 
 I gained two main takeaways from my time working on PillPal:
 
-> ### [](https://ahmedz.willow.camp/posts/json#-dont-be-afraid-to-try-new-things)💊 Don’t be afraid to try new things!!
+> ### 💊 Don’t be afraid to try new things!!
 > 
 > I think my biggest achievement in this project was learning to code front-end. The entire GUI I had made was the first ever visual output I had produced, and we were on a time crunch when I started. It is one of the things I am most proud of about this project. This made me come to the realization that anything is possible if you are willing to put the time and effort into completing it. In the age of information, there are tutorials for almost everything on the internet; it’s just a matter of being willing to learn new things. In the future, I plan on taking on much more ambitious tasks to gather new skills and bring more of my ideas to life.
 
-> ### [](https://ahmedz.willow.camp/posts/json#-communication-is-key)💊 Communication is key:
+> ### 💊 Communication is key:
 > 
 > In this project, we split into two sub-teams: computing and modelling. As the project progressed, our sub-teams began to drift apart and work on our own respective parts of the project. This is completely normal, but I believe we should have converged once again as the project began to wrap up. Much of the time was wasted as they either waited for us to give them information, or we waited for them. In the future, I hope to create a more cohesive team environment and have more opportunities to update each other on progress, dimensions, etc.
 
