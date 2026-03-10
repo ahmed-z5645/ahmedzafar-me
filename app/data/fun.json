@@ -1,30 +1,65 @@
 [
   {
-    "id": "gpunum",
-    "title": "A GPU-parallelized numerical library built from scratch",
-    "description": "Personal Project • In Progress",
-    "link": "",
-    "video": "/thumbnails/main/gpunum_thumbnail.mp4"
-  },
-  {
-    "id": "hsr",
-    "title": "A real-time transit tracking application built for the Hamilton Street Railway",
-    "description": "Personal Project • In Progress",
-    "link": "",
-    "image": "/thumbnails/fun/hsr_placeholder.webp"
-  },
-  {
-    "id": "pepscore",
-    "title": "A physics-informed peptide screening framework",
-    "description": "Personal Project • In Progress",
-    "link": "",
-    "video": "/thumbnails/main/pepscore_thumbnail.mp4"
-  },
-  {
     "id": "portfolio",
-    "title": "Building this custom editorial, high-performance static site",
-    "description": "Personal Project • In Progress",
+    "title": "Seeing how far my design skills have grown",
+    "description": "Personal Project • Completed March 2026",
+    "link": "https://ahmedzafar.me",
+    "image": "/thumbnails/fun/new-portfolio-thumbnail.webp",
+    "note": "This link just takes you back to experience..."
+  },
+  {
+    "id": "blackjack",
+    "title": "Fighting memory managment, constructing GUIs, and counting cards",
+    "description": "Design Project • Completed December 2024",
+    "link": "https://github.com/ahmed-z5645/BlackJack-in-C",
+    "image": "/thumbnails/fun/blackjack-thumbnail.webp"
+  },
+  {
+    "id": "mec-2024",
+    "title": "Automating cyber security attacks for start-ups",
+    "description": "FIRST PLACE @ McMaster Engineering Competiton 2024",
+    "link": "https://github.com/shadielfares/Bravo",
+    "image": "/thumbnails/fun/mec-2024-thumbnail.webp",
+    "note": "Qualified us for the Ontario Engineering Competition, as second years!"
+  },
+  {
+    "id": "mec-2025",
+    "title": "Translating SMS to HTTPS for areas affected by natural disasters",
+    "description": "McMaster Engineering Competiton • Completed November 2025",
+    "link": "https://github.com/ahmed-z5645/Phoenix",
+    "video": "/thumbnails/fun/mec-2025-thumbnail.mp4"
+  },
+  {
+    "id": "mlrad",
+    "title": "Using Computer Vision to idenitfy risks for the visually impaired",
+    "description": "3rd Place Winner @ U of T x McMaster MedSprint 2024",
+    "link": "https://www.linkedin.com/feed/update/urn:li:activity:7180580905365774336/",
+    "video": "/thumbnails/fun/mlrad-thumbnail.mp4",
+    "note": "This project showed me that you can start doing cool projects without knowing where to begin."
+  },
+  {
+    "id": "old-portfolio",
+    "title": "My first website !",
+    "description": "Personal Project • Completed December 2024",
     "link": "",
-    "image": "/thumbnails/fun/portfolio_placeholder.webp"
+    "image": "/thumbnails/fun/old-portfolio-thumbnail.webp",
+    "note": "Definitely immature, but so full of personality!"
+
+  },
+  {
+    "id": "p2pfile",
+    "title": "Using TCP sockets for a Peer-To-Peer file sharing system",
+    "description": "Personal Project • Completed February 2026",
+    "link": "https://github.com/ahmed-z5645/Peer-To-Peer-File-Synchronizer",
+    "video": "/thumbnails/fun/p2pfile_thumbnail.mp4",
+    "note": "adapting this project to leverage the shortcuts application on my phone to make windows to ios airdrop soon..."
+  },
+  {
+    "id": "pavement",
+    "title": "Measuring responsibility within my community",
+    "description": "Personal Project • Completed July 2025",
+    "link": "",
+    "image": "/thumbnails/fun/pavement-thumbnail.webp",
+    "note": "We still talk about you pavement..."
   }
 ]
