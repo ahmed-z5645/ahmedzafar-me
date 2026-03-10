@@ -2,11 +2,11 @@ import { Redis } from "@upstash/redis";
 import Footer from "../components/footer/footer";
 import Header from "../components/header/header";
 import ProjectCard from "../components/cards/card";
-import Image from "next/image";
 import LyricCard from "../components/lyric-card";
 import photos from "../data/about.json";
 import checklist from "../data/checklist.json";
 import testimonials from "../data/testimonials.json";
+import TestimonialsBoard from "../components/testimonials-grid";
 import Links from "../components/links/links";
 import defaultLyrics from "../data/lyrics.json";
 
@@ -100,27 +100,15 @@ export default async function About() {
             ========================================= */}
         <section className="px-8 py-12 lg:px-24 lg:py-16 border-t border-foreground/[0.08]">
           <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-10 tracking-wide">
-            [From the group chat]
-          </h2>
-          {testimonials.filter(t => t.image).length > 0 ? (
-            <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
-              {testimonials.filter(t => t.image).map((t) => (
-                <div key={t.id} className="break-inside-avoid mb-6">
-                  <Image
-                    src={t.image}
-                    alt="group chat screenshot"
-                    width={600}
-                    height={400}
-                    className="w-full h-auto rounded-xl"
-                  />
-                </div>
-              ))}
+            [Through the grapevine]
+            <div className="font-[family-name:var(--font-geist-sans)] note-annotation text-body mb-0 mt-0 italic text-accent">
+              These are the things people have said that I try to live up to.
+              <br />
+              Drag and drop, by the way.
             </div>
-          ) : (
-            <p className="font-[family-name:var(--font-geist-mono)] text-[11px] uppercase tracking-widest text-foreground/[0.25]">
-              Drop PNGs in public/about/groupchat/ and add paths to app/data/testimonials.json
-            </p>
-          )}
+          </h2>
+          
+          <TestimonialsBoard items={testimonials.filter(t => t.image) as { id: string; image: string }[]} />
         </section>
 
         <hr className="border-t border-foreground/[0.08] mx-8 lg:mx-24" />

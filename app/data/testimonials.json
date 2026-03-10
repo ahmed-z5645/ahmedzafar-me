@@ -1,8 +1,5 @@
 [
-  { "id": "t-1", "image": "" },
-  { "id": "t-2", "image": "" },
-  { "id": "t-3", "image": "" },
-  { "id": "t-4", "image": "" },
-  { "id": "t-5", "image": "" },
-  { "id": "t-6", "image": "" }
+  { "id": "t-1", "image": "/about/testimonials/test1.webp" },
+  { "id": "t-2", "image": "/about/testimonials/test2.webp" },
+  { "id": "t-3", "image": "/about/testimonials/test3.webp" }
 ]
