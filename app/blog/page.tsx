@@ -27,16 +27,19 @@ export default function BlogIndex() {
         <div className="flex flex-col lg:flex-row">
 
           {/* LEFT */}
-          <div className="lg:w-[40%] flex flex-col p-8 pb-0 lg:pt-9 lg:pb-12 lg:pl-24 lg:pr-12">
+          <div className="lg:w-[40%] lg:h-screen lg:sticky lg:top-0 flex flex-col p-8 pb-0 lg:pt-9 lg:pb-12 lg:pl-24 lg:pr-12">
             <p className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58]">
-              ISSUE 03 | BLOG
+              ISSUE 02 | SPRING 2026
             </p>
             <div className="mt-8 lg:mt-18">
               <h1 className="hero-title-group font-[family-name:var(--font-newsreader)] text-hero leading-[1.1] tracking-tight text-foreground mb-2">
-                Things worth <span className="italic wipe-word wipe-1">writing.</span>
+                Thought Repository. <br /> <span className="italic wipe-word wipe-1">System Overflow. </span><br /> Digital Dump. {/*<span className="italic wipe-word wipe-1">writing.</span>*/}
               </h1>
               <p className="text-body text-foreground/[0.58]">
-                Occasional writing on engineering, music, food, and whatever else is on my mind.
+                At twenty years old, and I’m trying to juggle as many roles as possible in pursuit of a full and thoroughly lived life. This is my little corner of the internet I use to write about what I love again. 
+                <br />
+                <br />
+                You’ll find verbal slop in a variety of areas (Engineering, Social Commentary, Critical Review of Media, Not-So-Critical Review of Media, etc.) in this blog.
               </p>
             </div>
 
@@ -73,10 +76,10 @@ export default function BlogIndex() {
                   <li key={post.slug} className="group py-6 first:pt-0">
                     <Link href={`/blog/${post.slug}`} className="block">
                       <div className="flex items-baseline justify-between gap-4 mb-1">
-                        <h2 className="font-[family-name:var(--font-newsreader)] text-card text-foreground group-hover:text-accent transition-colors leading-snug">
+                        <h2 className="font-[family-name:var(--font-newsreader)] text-card font-semibold text-foreground group-hover:text-accent transition-colors leading-snug">
                           {post.title}
                         </h2>
-                        <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-foreground/[0.40] shrink-0">
+                        <span className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.40] shrink-0">
                           {new Date(post.date).toLocaleDateString("en-US", {
                             year: "numeric",
                             month: "short",
@@ -91,12 +94,12 @@ export default function BlogIndex() {
                       )}
                       {post.tags.length > 0 && (
                         <div className="flex gap-2 flex-wrap">
-                          {post.tags.map((tag) => (
-                            <span
-                              key={tag}
-                              className="font-[family-name:var(--font-geist-mono)] text-[11px] uppercase tracking-wide text-accent"
-                            >
-                              {tag}
+                          {post.tags.map((tag, i) => (
+                            <span key={tag} className="flex items-center gap-2">
+                              {i > 0 && <span className="font-[family-name:var(--font-geist-mono)] text-[11px] text-foreground/[0.30]">|</span>}
+                              <span className="font-[family-name:var(--font-geist-mono)] text-[11px] uppercase tracking-wide text-accent">
+                                {tag}
+                              </span>
                             </span>
                           ))}
                         </div>

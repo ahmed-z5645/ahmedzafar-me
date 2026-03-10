@@ -85,7 +85,23 @@ html.show-notes .note-annotation {
   filter: blur(0);
   pointer-events: auto;
   /* Restore the top margin (matches Tailwind's mt-1.5 to mt-2) */
-  margin-top: 0.5rem !important; 
+  margin-top: 0.5rem !important;
+}
+
+/* Inline note divs inside list items — no paragraph gap, just a new line */
+html.show-notes li div.note-annotation {
+  margin-top: 0 !important;
+}
+
+/* Full <li> note items — use display toggle, not the height/overflow trick */
+.note-li {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+html.show-notes .note-li {
+  display: list-item;
+  opacity: 1;
 }
 
 /* Custom Sequential Left-to-Right Wipe */
@@ -158,53 +174,117 @@ a, button, [role="button"], .group {
 }
 
 /* =========================================
+   LYRIC CARD AMBIENT BLOBS
+   ========================================= */
+
+@keyframes drift-1 {
+  0%   { transform: translate(0%, 0%) scale(1); }
+  50%  { transform: translate(15%, -20%) scale(1.15); }
+  100% { transform: translate(-10%, 10%) scale(0.9); }
+}
+@keyframes drift-2 {
+  0%   { transform: translate(0%, 0%) scale(1.1); }
+  50%  { transform: translate(-20%, 15%) scale(0.9); }
+  100% { transform: translate(10%, -10%) scale(1.2); }
+}
+@keyframes drift-3 {
+  0%   { transform: translate(0%, 0%) scale(0.95); }
+  50%  { transform: translate(10%, 20%) scale(1.1); }
+  100% { transform: translate(-15%, -15%) scale(1); }
+}
+
+.lyric-blob {
+  position: absolute;
+  width: 70%;
+  height: 70%;
+  border-radius: 50%;
+  filter: blur(48px);
+  opacity: 0.75;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.lyric-blob-1 { animation-name: drift-1; animation-duration: 9s;  top: -10%;  left: -10%; }
+.lyric-blob-2 { animation-name: drift-2; animation-duration: 11s; top: 10%;   right: -20%; animation-delay: -3s; }
+.lyric-blob-3 { animation-name: drift-3; animation-duration: 13s; bottom: -20%; left: 20%; animation-delay: -6s; }
+
+/* =========================================
    BLOG PROSE STYLES
    ========================================= */
 
 .prose {
   color: var(--foreground);
-  font-family: var(--font-newsreader);
-  font-size: 19px;
-  line-height: 1.75;
+  font-family: var(--font-geist-sans);
+  font-size: 17px;
+  line-height: 1.8;
 }
 
 .prose p {
-  margin-top: 1.5em;
+  margin-top: 1.4em;
   margin-bottom: 0;
 }
 .prose p:first-child { margin-top: 0; }
 
-.prose h2 {
+/* # */
+.prose h1 {
   font-family: var(--font-newsreader);
-  font-size: 32px;
+  font-size: 2.66667em;
   font-weight: 400;
-  line-height: 1.2;
+  line-height: 1.1;
   letter-spacing: -0.02em;
-  color: var(--foreground);
-  margin-top: 2.5em;
-  margin-bottom: 0.5em;
-}
-
-.prose h3 {
-  font-family: var(--font-newsreader);
-  font-size: 22px;
-  font-weight: 400;
-  line-height: 1.3;
   color: var(--foreground);
   margin-top: 2em;
   margin-bottom: 0.4em;
 }
 
+/* ## */
+.prose h2 {
+  font-family: var(--font-geist-mono);
+  font-size: 1.66667em;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+  margin-top: 2em;
+  margin-bottom: 0.4em;
+}
+
+/* ### */
+.prose h3 {
+  font-family: var(--font-geist-mono);
+  font-size: 1.33333em;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--foreground);
+  margin-top: 1.75em;
+  margin-bottom: 0.4em;
+}
+
+/* #### */
 .prose h4 {
   font-family: var(--font-geist-mono);
-  font-size: 13px;
+  font-size: 1em;
   font-weight: 500;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   color: var(--foreground);
-  opacity: 0.6;
-  margin-top: 2em;
-  margin-bottom: 0.5em;
+  opacity: 0.65;
+  margin-top: 1.5em;
+  margin-bottom: 0.4em;
+}
+
+/* ##### / ###### */
+.prose h5,
+.prose h6 {
+  font-family: var(--font-geist-mono);
+  font-size: 0.85em;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--foreground);
+  opacity: 0.45;
+  margin-top: 1.25em;
+  margin-bottom: 0.4em;
 }
 
 .prose a {
@@ -256,7 +336,18 @@ a, button, [role="button"], .group {
   width: 100%;
   height: auto;
   border-radius: 8px;
-  margin: 2em 0;
+  margin: 2em 0 0.5em;
+}
+
+.prose .caption {
+  display: block;
+  font-family: var(--font-geist-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: color-mix(in srgb, var(--foreground) 40%, transparent);
+  margin-top: 0.6em;
+  margin-bottom: 2em;
 }
 
 /* Inline code */
