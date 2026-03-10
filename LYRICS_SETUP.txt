@@ -32,16 +32,15 @@ Create a new Shortcut with these actions in order:
   3.  [Photos]     Resize Image → [Artwork] → 300×300
   4.  [Scripting]  Base64 Encode → [Resized Image] → encode only (no line breaks)
   5.  [Scripting]  Ask for Input → "Lyric to feature?" (Text)
-  6.  [Dictionary] Make Dictionary:
-                     lyric         → [Provided Input]
-                     song          → [Current Song: Title]
-                     artist        → [Current Song: Artist]
-                     album         → [Current Song: Album]
-                     artworkBase64 → [Base64 Encoded]
-  7.  [Web]        Get Contents of URL:
+  6.  [Web]        Get Contents of URL:
                      URL:     https://ahmedzafar.me/api/lyrics
                      Method:  POST
                      Headers: x-lyrics-token → your LYRICS_UPDATE_TOKEN
                               Content-Type   → application/json
-                     Body:    JSON → [Dictionary]
+                     Body:    JSON → add each field manually:
+                                lyric         → [Provided Input]
+                                song          → [Current Song: Title]
+                                artist        → [Current Song: Artist]
+                                album         → [Current Song: Album]
+                                artworkBase64 → [Base64 Encoded]
   8.  [Scripting]  Show Notification → "Lyrics updated!"
