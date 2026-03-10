@@ -54,7 +54,7 @@ export default function Fun() {
 
               <div className="font-[family-name:var(--font-geist-mono)] text-body leading-relaxed text-foreground/[0.58] space-y-8 mt-4">
                 <div className="hidden lg:block">
-                  <p>Press [N] to see notes</p>
+                  <p>Press [N] to see nes</p>
                   <p>
                     Press [D] to{' '}
                     <span className="dark:hidden">dim the lights</span>
