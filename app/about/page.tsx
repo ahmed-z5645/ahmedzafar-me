@@ -5,6 +5,7 @@ import Image from "next/image";
 import photos from "../data/about.json";
 import checklist from "../data/checklist.json";
 import testimonials from "../data/testimonials.json";
+import Links from "../components/links/links";
 
 export default function About() {
   return (
@@ -23,16 +24,36 @@ export default function About() {
             </p>
             <div className="mt-8 lg:mt-18">
               <h1 className="hero-title-group font-[family-name:var(--font-newsreader)] text-hero leading-[1.1] tracking-tight text-foreground mb-2">
-                Beyond the <span className="italic wipe-word wipe-1">code.</span>
+                Engineer by training.<br />
+                <span className="italic wipe-word wipe-1">Human</span> by design.
               </h1>
               <p className="text-body text-foreground/[0.58]">
-                Outside of engineering, I'm a musician, a reader, and someone who takes too many photos of ordinary things.
-                <br />
-                <br />
-                This page is a small window into who I am when I'm not staring at a terminal.
+                Building doesn't always mean minimizing latency, or maximizing throughput. While I'm definitely obsessing about numerical acceleration or trying to model biological systems, I lead a very full and rich life in the analog world.
+                Outside the terminal you can find me:
               </p>
+              <ul className="list-disc ml-5 mt-1 space-y-0 text-foreground/[0.58] text-body leading-snug">
+                <li>Expanding my music taste <div className="font-[family-name:var(--font-geist-sans)] note-annotation italic text-accent">probably still listening to the Strokes</div></li>
+                <li>Trying or inventing new recipes</li>
+                <li>Buying books I'll get around to reading one day</li>
+                <li>Playing the guitar <div className="font-[family-name:var(--font-geist-sans)] note-annotation italic text-accent">(trying**)</div></li>
+                <li>Playing on our intramural soccer and volleyball teams</li>
+                <li>Watering my plants</li>
+                <li>Blogging</li>
+                <li className="note-li font-[family-name:var(--font-geist-sans)] italic text-accent">At the gym</li>
+                <li className="note-li font-[family-name:var(--font-geist-sans)] italic text-accent">Fighting Ticket Master</li>
+                <li className="note-li font-[family-name:var(--font-geist-sans)] italic text-accent">Chasing the best americano</li>
+              </ul>
+              <p className="text-body text-foreground/[0.58] mt-4">
+                The best engineers understand how to build communities, pursue passions, and live in the intersections of what they love.
+              </p>
+
+              <br />
+              <p className="text-body text-foreground/[0.58]">Always open new opportunities. If you're working on something cool, interesting, or let's chat!</p>
             </div>
 
+            <div className="mt-12 mb-0 lg:mb-0 lg:mt-auto">
+              <Links />
+            </div>
           </div>
 
           {/* RIGHT — nav + photo grid */}

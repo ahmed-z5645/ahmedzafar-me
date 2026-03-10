@@ -85,7 +85,23 @@ html.show-notes .note-annotation {
   filter: blur(0);
   pointer-events: auto;
   /* Restore the top margin (matches Tailwind's mt-1.5 to mt-2) */
-  margin-top: 0.5rem !important; 
+  margin-top: 0.5rem !important;
+}
+
+/* Inline note divs inside list items — no paragraph gap, just a new line */
+html.show-notes li div.note-annotation {
+  margin-top: 0 !important;
+}
+
+/* Full <li> note items — use display toggle, not the height/overflow trick */
+.note-li {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+html.show-notes .note-li {
+  display: list-item;
+  opacity: 1;
 }
 
 /* Custom Sequential Left-to-Right Wipe */
