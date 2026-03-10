@@ -11,6 +11,7 @@
     "test:watch": "vitest"
   },
   "dependencies": {
+    "@upstash/redis": "^1.36.3",
     "framer-motion": "^12.35.0",
     "gray-matter": "^4.0.3",
     "next": "16.1.5",

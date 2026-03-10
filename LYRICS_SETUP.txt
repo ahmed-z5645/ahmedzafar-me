@@ -1,0 +1,47 @@
+LYRICS SETUP GUIDE
+==================
+
+1. CREATE UPSTASH REDIS DATABASE
+---------------------------------
+- Go to https://upstash.com and sign up (free)
+- Create a Redis database, choose the region closest to you
+- Copy UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN from the dashboard
+
+
+2. SET ENV VARS IN VERCEL
+--------------------------
+Vercel dashboard → your project → Settings → Environment Variables
+
+Add the following:
+  UPSTASH_REDIS_REST_URL      → (from Upstash dashboard)
+  UPSTASH_REDIS_REST_TOKEN    → (from Upstash dashboard)
+  LYRICS_UPDATE_TOKEN         → (make a long random string — this is your password)
+
+
+3. FILL IN .env.local (for local dev)
+--------------------------------------
+Open .env.local in the project root and paste the same three values.
+
+
+4. IOS SHORTCUT
+----------------
+Create a new Shortcut with these actions in order:
+
+  1.  [Music]      Get Current Song
+  2.  [Music]      Get Detail of [Current Song] → Artwork
+  3.  [Photos]     Resize Image → [Artwork] → 300×300
+  4.  [Scripting]  Base64 Encode → [Resized Image] → encode only (no line breaks)
+  5.  [Scripting]  Ask for Input → "Lyric to feature?" (Text)
+  6.  [Dictionary] Make Dictionary:
+                     lyric         → [Provided Input]
+                     song          → [Current Song: Title]
+                     artist        → [Current Song: Artist]
+                     album         → [Current Song: Album]
+                     artworkBase64 → [Base64 Encoded]
+  7.  [Web]        Get Contents of URL:
+                     URL:     https://ahmedzafar.me/api/lyrics
+                     Method:  POST
+                     Headers: x-lyrics-token → your LYRICS_UPDATE_TOKEN
+                              Content-Type   → application/json
+                     Body:    JSON → [Dictionary]
+  8.  [Scripting]  Show Notification → "Lyrics updated!"
