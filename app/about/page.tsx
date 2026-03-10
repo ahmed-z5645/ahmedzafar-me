@@ -95,6 +95,34 @@ export default async function About() {
 
         </div>
 
+        {/* =========================================
+            GROUP CHAT — masonry of message screenshots
+            ========================================= */}
+        <section className="px-8 py-12 lg:px-24 lg:py-16 border-t border-foreground/[0.08]">
+          <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-10 tracking-wide">
+            [From the group chat]
+          </h2>
+          {testimonials.filter(t => t.image).length > 0 ? (
+            <div className="columns-1 md:columns-2 lg:columns-3 gap-6">
+              {testimonials.filter(t => t.image).map((t) => (
+                <div key={t.id} className="break-inside-avoid mb-6">
+                  <Image
+                    src={t.image}
+                    alt="group chat screenshot"
+                    width={600}
+                    height={400}
+                    className="w-full h-auto rounded-xl"
+                  />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="font-[family-name:var(--font-geist-mono)] text-[11px] uppercase tracking-widest text-foreground/[0.25]">
+              Drop PNGs in public/about/groupchat/ and add paths to app/data/testimonials.json
+            </p>
+          )}
+        </section>
+
         <hr className="border-t border-foreground/[0.08] mx-8 lg:mx-24" />
 
         {/* =========================================
