@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 import KeyWatcher from "./components/logic/keyWatcher";
 import "./globals.css";
 import Cursor from "../app/components/cursor";
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -38,6 +39,7 @@ export default function RootLayout({
       >
         <Cursor />
         <KeyWatcher />
+        <Analytics />
         {children}
       </body>
     </html>
