@@ -27,7 +27,8 @@ Our client, Heather, has multiple sclerosis (MS). MS patients have a broad list 
 
 ### Our Solution:
 
-![image.png](https://file.notion.so/f/f/23352dda-a389-4483-a3ed-ad417c348c55/78c536e2-c467-43d0-9459-04820cb7d7d2/giphy_(3).gif?table=block&id=14e96f56-4359-80f8-ab82-f037badf14f5&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&expirationTimestamp=1767081600000&signature=3y-9WAwmxAB7hMAeZRi-JR2AoB3Y7yXZ-UuFAvUCL-c)_The finished prototype for “Rehabilimate”_
+![image.png](https://file.notion.so/f/f/23352dda-a389-4483-a3ed-ad417c348c55/78c536e2-c467-43d0-9459-04820cb7d7d2/giphy_(3).gif?table=block&id=14e96f56-4359-80f8-ab82-f037badf14f5&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&expirationTimestamp=1767081600000&signature=3y-9WAwmxAB7hMAeZRi-JR2AoB3Y7yXZ-UuFAvUCL-c)
+<Caption>The finished prototype for “Rehabilimate”</Caption>
 
 We invented and developed “RehabiliMate”. RehabiliMate is an automated physiotherapy device for Heather. Heather expressed that she hated “feeling robotic” or like “she needed help”, so the goal with RehabiliMate was to help her grow so that she could, eventually, stop using the device. By helping Heather stretch her hand, she can reestablish the strength and mind-muscle connection and grasp the future.
 
@@ -37,7 +38,8 @@ After talking to Heather, we identified multiple issues that we could attempt to
 
 The initial dilemma we faced when designing RehabiliMate had to do with the preliminary idea generation. There were many ways to approach the problem. After much consideration was given to brainstorming and sketching, the solution converged into a single sketch
 
-![Initial sketch of device](https://ahmed-zafar.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F23352dda-a389-4483-a3ed-ad417c348c55%2Fdce30295-03e3-4372-a216-8db688350e70%2FUntitled.png?table=block&id=cba62050-a89a-492b-8589-09d13cb472a4&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&width=1460&userId=&cache=v2)_Initial Sketch of Device_
+![Initial sketch of device](https://ahmed-zafar.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F23352dda-a389-4483-a3ed-ad417c348c55%2Fdce30295-03e3-4372-a216-8db688350e70%2FUntitled.png?table=block&id=cba62050-a89a-492b-8589-09d13cb472a4&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&width=1460&userId=&cache=v2)
+<Caption>Initial Sketch of Device</Caption>
 
 The Design Process can be split into 2 different sections, as this was a very multi-faceted project: Mechanical and Software Components.
 
@@ -75,13 +77,13 @@ The implications of this meant that we would to continuosly sample the direction
 
 Solving challenge 3 was a little trickier. Finding a function of position to angle felt like a daunting task. We had no idea whether this would be a linear, quadratic, exponential, etc., etc. function! Instead of guessing and checking, we came up with the idea to collect data experimentally: we ran the linear actuator to open the hand, and then simultaneously manually opened our hand. By doing so, we collected the position as a function of time. Since we knew the speed of the actuator, the total time it ran, and the angle corresponding to each time, we could use Excel to relate the two and find the equation
 
-![image of data collection](https://ahmed-zafar.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F23352dda-a389-4483-a3ed-ad417c348c55%2F4a77e4f8-cc30-40d9-8dd5-15c6a9a06f00%2FScreenshot_2024-04-03_205215.png?table=block&id=b5dfb993-373f-449f-af26-405c22ab715d&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&width=1490&userId=&cache=v2)_The collected data being plotted to determine the ideal function of angles to actuation_
+![image of data collection](https://ahmed-zafar.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F23352dda-a389-4483-a3ed-ad417c348c55%2F4a77e4f8-cc30-40d9-8dd5-15c6a9a06f00%2FScreenshot_2024-04-03_205215.png?table=block&id=b5dfb993-373f-449f-af26-405c22ab715d&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&width=1490&userId=&cache=v2)
+<Caption>The collected data being plotted to determine the ideal function of angles to actuation</Caption>
 
 Using all of this, Reaction-Potential Technology was put together,
 
 ![img1](https://file.notion.so/f/f/23352dda-a389-4483-a3ed-ad417c348c55/37ffb3e6-e3c6-4070-b151-01130de018c3/giphy_(1).gif?table=block&id=d94f4e94-95b2-4e8a-a753-d720346f41a0&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&expirationTimestamp=1767081600000&signature=fOakSLEGQSSpTABxokdFLFM1z5Yz0c3TtHTTUTa1Pro) ![img2](https://file.notion.so/f/f/23352dda-a389-4483-a3ed-ad417c348c55/78c536e2-c467-43d0-9459-04820cb7d7d2/giphy_(3).gif?table=block&id=14e96f56-4359-80f8-ab82-f037badf14f5&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&expirationTimestamp=1767081600000&signature=3y-9WAwmxAB7hMAeZRi-JR2AoB3Y7yXZ-UuFAvUCL-c)
-
-_RehabiliMate closing and opening using Reaction-Potential technology, pausing and starting simultaneously with the user._ and Rehabilimate was almost complete!
+<Caption>RehabiliMate closing and opening using Reaction-Potential technology, pausing and starting simultaneously with the user.</Caption> and Rehabilimate was almost complete!
 
 When creating a device for a client, one thing that is commonly overlooked by engineering students is the ability of the client to operate the device. The device’s use should be intuitive, and the process the device is trying to undergo should be easy to start.
 

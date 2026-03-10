@@ -1,3 +1,4 @@
+import React from "react";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
@@ -91,7 +92,7 @@ export default async function PostPage({
         </div>
 
         {/* POST BODY — centred reading column */}
-        <article className="mx-auto max-w-[68ch] px-6 pb-24">
+        <article className="mx-auto max-w-[680px] px-6 pb-24">
 
           {/* Back link */}
           <Link
@@ -132,6 +133,11 @@ export default async function PostPage({
               source={post.content}
               // @ts-expect-error rehype plugin type mismatch
               options={mdxOptions}
+              components={{
+                Caption: ({ children }: { children: React.ReactNode }) => (
+                  <span className="caption">{children}</span>
+                ),
+              }}
             />
           </div>
         </article>
