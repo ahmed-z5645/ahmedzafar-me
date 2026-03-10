@@ -42,13 +42,15 @@ export default function About() {
                 <li className="note-li font-[family-name:var(--font-geist-sans)] italic text-accent">At the gym</li>
                 <li className="note-li font-[family-name:var(--font-geist-sans)] italic text-accent">Fighting Ticket Master</li>
                 <li className="note-li font-[family-name:var(--font-geist-sans)] italic text-accent">Chasing the best americano</li>
+                <li className="note-li font-[family-name:var(--font-geist-sans)] italic text-accent">Spinning some vinyl</li>
+                <li className="note-li font-[family-name:var(--font-geist-sans)] italic text-accent">Planning my next trip</li>
               </ul>
               <p className="text-body text-foreground/[0.58] mt-4">
                 The best engineers understand how to build communities, pursue passions, and live in the intersections of what they love.
               </p>
 
               <br />
-              <p className="text-body text-foreground/[0.58]">Always open new opportunities. If you're working on something cool, interesting, or let's chat!</p>
+              <p className="text-body text-foreground/[0.58]">Always open new opportunities. If you're working on something cool, interesting, let's chat!</p>
             </div>
 
             <div className="mt-12 mb-0 lg:mb-0 lg:mt-auto">
@@ -63,7 +65,7 @@ export default function About() {
               <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-6 tracking-wide">
                 [Photos]
               </h2>
-              <div className="columns-1 md:columns-3 gap-6 w-full">
+              <div className="columns-2 md:columns-3 gap-6 w-full">
                 {photos.map((photo) => (
                   <ProjectCard key={photo.id} project={photo} square />
                 ))}
@@ -73,28 +75,34 @@ export default function About() {
 
         </div>
 
+        <hr className="border-t border-foreground/[0.08] mx-8 lg:mx-24" />
+
         {/* =========================================
             CHECKLIST — full width, two columns
             ========================================= */}
         <section className="px-8 py-12 lg:px-24 lg:py-16">
           <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-4 tracking-wide">
-            [Life list - {checklist.filter(i => i.checked).length}/{checklist.length}]
+            [Life checklist - {checklist.filter(i => i.checked).length}/{checklist.length}]
           </h2>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-16">
-            {checklist.map((item) => (
-              <li key={item.id} className="group flex items-start gap-2.5 py-1.5 border-foreground/[0.06]">
-                <span className={`font-[family-name:var(--font-geist-mono)] text-[11px] mt-[3px] shrink-0 ${item.checked ? "text-accent" : "text-foreground/[0.25]"}`}>
-                  {item.checked ? "✓" : "○"}
-                </span>
-                <span className={`text-body leading-snug transition-colors duration-150 ${item.checked ? "text-foreground/[0.40] line-through decoration-foreground/[0.25]" : "text-foreground/[0.75]"} group-hover:text-accent`}>
-                  {item.text}
-                </span>
-                <div className="font-[family-name:var(--font-geist-sans)] note-annotation text-body mt-4 italic text-accent">
-                  {item.note}
-                </div>
-              </li>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16">
+            {[checklist.slice(0, 10), checklist.slice(10)].map((col, ci) => (
+              <ul key={ci}>
+                {col.map((item) => (
+                  <li key={item.id} className="group flex items-start gap-2.5 py-1.5 transition-transform duration-150 ease-out hover:translate-x-1.5">
+                    <span className={`font-[family-name:var(--font-geist-mono)] text-[11px] mt-[3px] shrink-0 ${item.checked ? "text-accent" : "text-foreground/[0.25]"}`}>
+                      {item.checked ? "✓" : "○"}
+                    </span>
+                    <span className={`text-body leading-snug transition-colors duration-150 ${item.checked ? "text-foreground/[0.40] line-through decoration-foreground/[0.25]" : "text-foreground/[0.75]"} group-hover:text-accent`}>
+                      {item.text}
+                    </span>
+                    <div className="font-[family-name:var(--font-geist-sans)] note-annotation text-body mt-4 italic text-accent">
+                      {item.note}
+                    </div>
+                  </li>
+                ))}
+              </ul>
             ))}
-          </ul>
+          </div>
         </section>
 
         {/* =========================================
