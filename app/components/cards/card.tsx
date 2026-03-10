@@ -6,21 +6,20 @@ import Image from 'next/image';
  * Displays a project title (Newsreader), description (Geist Mono 15px), 
  * and media (Image or Video) with sharp corners and tight vertical spacing.
  */
-export default function ProjectCard({ project }: { project: Record<string, string | undefined> }) {
+export default function ProjectCard({ project, square }: { project: Record<string, string | undefined>; square?: boolean }) {
   const CardContent = (
     /* Column-break-inside-avoid is essential for the masonry layout in the parent */
     <div className="flex flex-col mb-8 break-inside-avoid group cursor-pointer">
       
       {/* MEDIA CONTAINER */}
-      <div className="relative w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/10">
+      <div className={`relative w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/10${square ? " aspect-square" : ""}`}>
         {project.video ? (
-          <video 
-            autoPlay 
-            loop 
-            muted 
+          <video
+            autoPlay
+            loop
+            muted
             playsInline
-            /* Removed: transition-transform duration-700 group-hover:scale-[1.02] */
-            className="w-full h-auto object-cover"
+            className={square ? "absolute inset-0 w-full h-full object-cover" : "w-full h-auto object-cover"}
           >
             <source src={project.video} type="video/mp4" />
           </video>
@@ -30,8 +29,12 @@ export default function ProjectCard({ project }: { project: Record<string, strin
             alt={project.title ?? ""}
             width={1200}
             height={800}
-            /* Removed: transition-transform duration-700 group-hover:scale-[1.02] */
-            className="w-full h-auto object-cover"
+            quality={90}
+            sizes={square
+              ? "(min-width: 1024px) 20vw, (min-width: 768px) 33vw, 100vw"
+              : "(min-width: 1280px) 40vw, (min-width: 1024px) 50vw, 100vw"
+            }
+            className={square ? "absolute inset-0 w-full h-full object-cover" : "w-full h-auto object-cover"}
           />
         ) : (
           /* Fallback for projects without media */

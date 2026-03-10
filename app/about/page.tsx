@@ -44,7 +44,7 @@ export default function About() {
               </h2>
               <div className="columns-1 md:columns-3 gap-6 w-full">
                 {photos.map((photo) => (
-                  <ProjectCard key={photo.id} project={photo} />
+                  <ProjectCard key={photo.id} project={photo} square />
                 ))}
               </div>
             </section>
