@@ -1,6 +1,6 @@
 ---
 title: "Reinforcing mind-muscle connection with real-time rehabilitation support"
-date: "2026-03-09"
+date: "2024-04-30"
 tags: ["biomedical", "engineering", "hardware"]
 excerpt: "Presented at the 2024 iBiomed Showcase — a first-year team project that turned into something we were genuinely proud of."
 description: "Presented at the 2024 iBiomed Showcase — a first-year team project that turned into something we were genuinely proud of."
@@ -8,4 +8,108 @@ published: true
 ogImage: ""
 ---
 
-Work in progress — full write-up coming soon.
+### 💻 Github Repo: [https://github.com/ahmed-z5645/Rehabilimate](https://github.com/ahmed-z5645/Rehabilimate)
+
+> ### Skills Developed:
+> 
+> -   🔨 _Biomedical Engineering_
+> -   🧪 _Signal Processing_
+> -   📌 _Reverse Kinematics_
+
+**RehabiliMate was selected to be one of 8/45 teams in IBEHS 1P10 to present our solution at the annual iBiomed showcase!!** It was an honour to present to the public alongside my peers on a project I am beyond proud of.
+
+[Check out the rest of the amazing designs (2023/24)](https://www.eng.mcmaster.ca/ibiomed/ibiomed-showcase/)
+
+# Overview:
+
+DP-4 brought us into the real world. DP-1 and [DP-2](https://ahmedz.willow.camp/custom-hip-implant-ibehs-1p10-dp2) were theoretical at best, with us being given specific prompts, and [DP-3](https://ahmedz.willow.camp/pill-pal-ibehs-1p10-dp3) was understood to be: “find a problem, solve a problem,” with little to no product validation or client input. This is what made DP-4 stand out. Our first design studio for DP-4 was the interview with the client; it was up to us to identify the problems the client faced and creatively devise a solution.
+
+Our client, Heather, has multiple sclerosis (MS). MS patients have a broad list of symptoms, but Heather was mostly struggling with mobility issues.
+
+### Our Solution:
+
+![image.png](https://file.notion.so/f/f/23352dda-a389-4483-a3ed-ad417c348c55/78c536e2-c467-43d0-9459-04820cb7d7d2/giphy_(3).gif?table=block&id=14e96f56-4359-80f8-ab82-f037badf14f5&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&expirationTimestamp=1767081600000&signature=3y-9WAwmxAB7hMAeZRi-JR2AoB3Y7yXZ-UuFAvUCL-c)
+<Caption>The finished prototype for “Rehabilimate”</Caption>
+
+We invented and developed “RehabiliMate”. RehabiliMate is an automated physiotherapy device for Heather. Heather expressed that she hated “feeling robotic” or like “she needed help”, so the goal with RehabiliMate was to help her grow so that she could, eventually, stop using the device. By helping Heather stretch her hand, she can reestablish the strength and mind-muscle connection and grasp the future.
+
+# Design Process:
+
+After talking to Heather, we identified multiple issues that we could attempt to solve. There were several solutions to design concerning her drop foot, scooter, and hand. When we inquired further, we found that Heather has only received physiotherapy for her shoulder, legs, hips, and arms, but never for her hands. We decided to try to create a rehabilitation device for her hand that she could use anywhere.
+
+The initial dilemma we faced when designing RehabiliMate had to do with the preliminary idea generation. There were many ways to approach the problem. After much consideration was given to brainstorming and sketching, the solution converged into a single sketch
+
+![Initial sketch of device](https://ahmed-zafar.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F23352dda-a389-4483-a3ed-ad417c348c55%2Fdce30295-03e3-4372-a216-8db688350e70%2FUntitled.png?table=block&id=cba62050-a89a-492b-8589-09d13cb472a4&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&width=1460&userId=&cache=v2)
+<Caption>Initial Sketch of Device</Caption>
+
+The Design Process can be split into 2 different sections, as this was a very multi-faceted project: Mechanical and Software Components.
+
+## Mechanical Components:
+
+This project was completed back when I was 18 years old, and while I’m still proud of all the work we did, I specialized into a SOFTWARE and biomedical engineering career (haven’t looked back since 😄). Therefore, I am assuming if you’ve stumbled upon this page, you’re more into my work in swe, and I won’t bloat this site with the revisions made to the physical design. That being said, if you are interested, you can find the entire mechanical design process, as well as a more detailed breakdown on [my older portfolio](https://ahmed-zafar.notion.site/DP-4-RehabiliMate-12f7dab72f7c4ceabd700a2fffd46389?pvs=97#a838d70969e148db96bcb2a8e6155996) :)! (it’ll be under the “Mechanical Components” header)
+
+## Software Components:
+
+This was my area of expertise during the project!! Although I helped with ideation and design of the mechanical side, the software was definitely where I contributed the most during the project. When we started, the objective was simple: develop the code that would open and close Heather’s hand. The first challenge arose when we learned about the limitations of the linear actuator.
+
+### 🚫 Challenge 1: Since the actuator is ran by a DC motor, there is no command to extend the actuator a specific amount of distance.
+
+Luckily, this challenge had an easy fix: since the speed of the actuator was given, we could use basic reverse kinematics. We effectively calibrated the actuator using experimentally collected values for the correct actuation out to achieve a fully curled hand and used the completely closed actuator as the actuation (0) corresponding to an outstretched, open hand.
+
+We could iterate through these commands to open and close the user’s hands, and we had completed the training routine… However, we had an amazing idea to develop a novel feature of RehabiliMate:
+
+> #### 🪞 Reaction-Potential Technology:
+> 
+> To strengthen Heather’s mind-muscle connection, we developed a technology that would cause her training hand to mirror her healthy hand with live-time feedback. Using an orientation sensor worn on the able-bodied hand, Heather could effectively control her training hand at her own pace. This also increases the safety of the device, as the device could not possibly extend past an unhealthy limit if mirroring.
+
+Now, incorporating live feedback in a device can be challenging. We modeled the Orientation sensor housing and quickly printed it as a ring to be worn on the able-bodied hand. But this brought a few more challenges.
+
+### 🚫 Challenge 2: We didn’t have live feedback on the position of the linear actuator, especially as it moves forward and backward at unknown time intervals to match the healthy hand.
+
+To solve challenge 2, we once again used our knowledge of basic kinematics. Since the actuator traveled at a constant speed, we could utilize a simple equation:
+
+```
+displacement = velocity * (t_forward - t_backwards)
+```
+
+The implications of this meant that we would to continuosly sample the direction of the actuator, and create a total time the actuator moved forward and backwards.
+
+### 🚫 Challenge 3: Even after the linear actuator position was found, comparing this to the orientation sensor was comparing length with angles (mm and degrees); some function had to be found to relate the two.
+
+Solving challenge 3 was a little trickier. Finding a function of position to angle felt like a daunting task. We had no idea whether this would be a linear, quadratic, exponential, etc., etc. function! Instead of guessing and checking, we came up with the idea to collect data experimentally: we ran the linear actuator to open the hand, and then simultaneously manually opened our hand. By doing so, we collected the position as a function of time. Since we knew the speed of the actuator, the total time it ran, and the angle corresponding to each time, we could use Excel to relate the two and find the equation
+
+![image of data collection](https://ahmed-zafar.notion.site/image/https%3A%2F%2Fprod-files-secure.s3.us-west-2.amazonaws.com%2F23352dda-a389-4483-a3ed-ad417c348c55%2F4a77e4f8-cc30-40d9-8dd5-15c6a9a06f00%2FScreenshot_2024-04-03_205215.png?table=block&id=b5dfb993-373f-449f-af26-405c22ab715d&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&width=1490&userId=&cache=v2)
+<Caption>The collected data being plotted to determine the ideal function of angles to actuation</Caption>
+
+Using all of this, Reaction-Potential Technology was put together,
+
+![img1](https://file.notion.so/f/f/23352dda-a389-4483-a3ed-ad417c348c55/37ffb3e6-e3c6-4070-b151-01130de018c3/giphy_(1).gif?table=block&id=d94f4e94-95b2-4e8a-a753-d720346f41a0&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&expirationTimestamp=1767081600000&signature=fOakSLEGQSSpTABxokdFLFM1z5Yz0c3TtHTTUTa1Pro) ![img2](https://file.notion.so/f/f/23352dda-a389-4483-a3ed-ad417c348c55/78c536e2-c467-43d0-9459-04820cb7d7d2/giphy_(3).gif?table=block&id=14e96f56-4359-80f8-ab82-f037badf14f5&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&expirationTimestamp=1767081600000&signature=3y-9WAwmxAB7hMAeZRi-JR2AoB3Y7yXZ-UuFAvUCL-c)
+<Caption>RehabiliMate closing and opening using Reaction-Potential technology, pausing and starting simultaneously with the user.</Caption> and Rehabilimate was almost complete!
+
+When creating a device for a client, one thing that is commonly overlooked by engineering students is the ability of the client to operate the device. The device’s use should be intuitive, and the process the device is trying to undergo should be easy to start.
+
+This is why we decided to create a user interface for Heather to easily use her new rehabilitation device. I used Figma to plan out different static frames of the application, figure out where each object or text box would go, and how the features would be implemented. This Figma draft was NOT the final design of the application, but it was the equivalent of an initial sketch.
+
+![image.png](/rails/active_storage/blobs/redirect/eyJfcmFpbHMiOnsiZGF0YSI6MjAyLCJwdXIiOiJibG9iX2lkIn19--8e808a75ae438b08364e3b8e7ff18266dc599667/image.png)
+
+The RehabiliMate application includes both light-mode and dark-mode compatibility, counts your streak, and has our mascot, “Habby the Rehab Crab”.
+
+Another goal of the application was to gamify Heather’s journey to rehabilitation. Studies show that gamification leads to more motivation and quicker overall growth. Similar to how you might use Duolingo to learn a language, or Quizlet to study for the exam you’ve been dreading, RehabiliMate aims to make training more enjoyable!
+
+## Conclusion Video:
+
+Curious to see an overview of the GUI and the entire project? See [this video](https://file.notion.so/f/f/23352dda-a389-4483-a3ed-ad417c348c55/5dea4726-a28d-4e7a-abed-b3af77c46e56/Team7_DP4_Prototype_1.mp4?table=block&id=26e28ac2-1ffd-4bae-9a2c-b07d4933899d&spaceId=23352dda-a389-4483-a3ed-ad417c348c55&expirationTimestamp=1767067200000&signature=_lBJuSCGHBmi7uyb95G-l3_Zk8Y4uepm9zgUk3TuSK4), which one of our teammates put together!
+
+# Project Reflection:
+
+Looking back, I’ve said this for all of my subsequent design projects for IBEHS 1P10, but this was absolutely my favourite project I have ever worked on. Team 7 had an amazing dynamic, and this wouldn’t have been possible if we hadn’t all put our full effort into this project. It was both elegant and complex. Here are my two main takeaways from this project:
+
+> ### ✋ Remember the end user:
+> 
+> Looking back on DP4, I remember how important solutions may have been to our community partner, Heather. The goal of the project was to create an effective solution, but also one she would find intuitive and easy to use. _We faced several moments in our project when we were able to create a better project to better suit her needs_. One example of this was the use of the GUI. As someone who isn’t tech-savvy, Heather would find it much easier to run an application than maneuver through even the most easy-to-use Python script in the interactive shell. Another example of highlighting the end user’s needs was done during the idea generation stage, _where we interviewed Heather a second time_, and found that she had never done physiotherapy for her hands. These moments made our project infinitely more valuable. When you’re an engineer, and you truly love creating solutions and implementing as much of your knowledge as possible, _it can be easy to lose sight of the reason you’re building this device/product_. Product validation/usefulness to the client is _the most important part of an engineer’s job_ because they are the ones who will be using the device, not you.
+
+> ### ✋ Converge: become great at solving one problem, not mediocre at two:
+> 
+> In retrospect, the finished medium-fidelity prototype that our team developed was already ambitious for the time we were given. That being said, one of the lessons I am taking away from this project is that it’s important to make sure you can do one thing very well before starting something else. Near the start of the project, the initial goal was actually to build a device that would act as a rehabilitation and symptom management device for Heather. After a few design reviews with subject matter experts and teaching assistants, we found that if we tried to focus on both of these things, we would have to lose features from either. Additionally, Heather had expressed more of a need for one than the other, so _it made more sense to devote all the time we had for this short project to one aspect and create a better prototype_. The time we saved by doing this was used into creating more iterations of the RehabiliMate and develop a more efficient and comfortable device. These iterations allowed us to use the device and fix any issues we normally wouldn’t have been able to catch before printing/assembling.
+
+For further reading, please consult the additional documentation included at: [Old Notion Blog](https://ahmed-zafar.notion.site/DP-2-Novel-New-Hip-Implant-6fb075320cad4763a33016501f41b7fc)
