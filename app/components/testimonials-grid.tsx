@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useMemo, useEffect, useState } from "react";
+import { useRef, useMemo, useEffect, useState, type RefObject } from "react";
 import { motion, useMotionValue } from "framer-motion";
 import Image from "next/image";
 
@@ -14,7 +14,7 @@ function TestimonialItem({
   rotate,
 }: {
   t: Testimonial;
-  containerRef: React.RefObject<HTMLDivElement | null>;
+  containerRef: RefObject<HTMLDivElement | null>;
   initialX: number;
   initialY: number;
   rotate: number;
@@ -65,25 +65,27 @@ export default function TestimonialsBoard({ items }: { items: Testimonial[] }) {
       items.map((_, i) => {
         const col = i % 3;
         const row = Math.floor(i / 3);
-        return {
-          xFrac: 0.03 + col * 0.32,
-          yFrac: 0.05 + row * 0.45,
-          rotate: (Math.random() - 0.5) * 10,
-        };
+        return { xFrac: 0.03 + col * 0.32, yFrac: 0.05 + row * 0.45 };
       }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
+  const [rotations, setRotations] = useState<number[]>(() => items.map(() => 0));
+  useEffect(() => {
+    setRotations(items.map(() => (Math.random() - 0.5) * 10));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const [positions, setPositions] = useState(() =>
-    transforms.map((t) => ({ x: t.xFrac * 900, y: t.yFrac * 480, rotate: t.rotate }))
+    transforms.map((t) => ({ x: t.xFrac * 900, y: t.yFrac * 480 }))
   );
 
   useEffect(() => {
     if (!ref.current) return;
     const w = ref.current.offsetWidth;
     const h = ref.current.offsetHeight;
-    setPositions(transforms.map((t) => ({ x: t.xFrac * w, y: t.yFrac * h, rotate: t.rotate })));
+    setPositions(transforms.map((t) => ({ x: t.xFrac * w, y: t.yFrac * h })));
   }, [transforms]);
 
   const dotBg = {
@@ -112,7 +114,7 @@ export default function TestimonialsBoard({ items }: { items: Testimonial[] }) {
             containerRef={ref}
             initialX={positions[i]?.x ?? i * 220}
             initialY={positions[i]?.y ?? 20}
-            rotate={transforms[i].rotate}
+            rotate={rotations[i] ?? 0}
           />
         ))}
       </div>

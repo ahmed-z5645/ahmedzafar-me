@@ -11,7 +11,7 @@ interface LyricCardProps {
   artwork: string;
 }
 
-const FALLBACK_COLORS: [string, string, string] = ["#1a1a2e", "#16213e", "#0f3460"];
+const FALLBACK_COLORS: [string, string, string] = ["hsl(220, 60%, 40%)", "hsl(260, 50%, 45%)", "hsl(200, 55%, 38%)"];
 
 function extractColors(src: string): Promise<[string, string, string]> {
   return new Promise((resolve) => {
@@ -19,19 +19,29 @@ function extractColors(src: string): Promise<[string, string, string]> {
     img.crossOrigin = "anonymous";
     img.onload = () => {
       try {
+        const SIZE = 50;
         const canvas = document.createElement("canvas");
-        canvas.width = 30;
-        canvas.height = 30;
+        canvas.width = SIZE;
+        canvas.height = SIZE;
         const ctx = canvas.getContext("2d")!;
-        ctx.drawImage(img, 0, 0, 30, 30);
+        ctx.drawImage(img, 0, 0, SIZE, SIZE);
+        const { data } = ctx.getImageData(0, 0, SIZE, SIZE);
 
-        const sample = (x: number, y: number): string => {
-          const d = ctx.getImageData(x, y, 1, 1).data;
-          // Boost towards a more saturated version for visual punch
-          return `rgb(${d[0]}, ${d[1]}, ${d[2]})`;
-        };
+        // Quantize each pixel into buckets of 32 to group similar colours
+        const buckets = new Map<string, number>();
+        for (let i = 0; i < data.length; i += 4) {
+          const r = data[i], g = data[i + 1], b = data[i + 2];
+          // Skip near-black and near-white
+          if (r + g + b < 60 || r + g + b > 700) continue;
+          const key = `${Math.round(r / 32) * 32},${Math.round(g / 32) * 32},${Math.round(b / 32) * 32}`;
+          buckets.set(key, (buckets.get(key) ?? 0) + 1);
+        }
 
-        resolve([sample(4, 4), sample(25, 4), sample(15, 25)]);
+        const sorted = [...buckets.entries()].sort((a, b) => b[1] - a[1]);
+        if (sorted.length < 3) return resolve(FALLBACK_COLORS);
+
+        const toRgb = (key: string) => `rgb(${key})`;
+        resolve([toRgb(sorted[0][0]), toRgb(sorted[1][0]), toRgb(sorted[2][0])]);
       } catch {
         resolve(FALLBACK_COLORS);
       }
@@ -51,7 +61,7 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
   }, [artwork]);
 
   return (
-    <div className="relative aspect-video rounded-2xl overflow-hidden bg-[#0a0a0a] flex flex-col">
+    <div className="relative aspect-video rounded-2xl overflow-hidden bg-[#1a1a1a] flex flex-col">
 
       {/* ── Ambient lava-lamp background ── */}
       <div className="absolute inset-0">
@@ -61,12 +71,12 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
       </div>
 
       {/* Dark vignette so text stays readable */}
-      <div className="absolute inset-0 bg-black/40 pointer-events-none" />
+      <div className="absolute inset-0 bg-black/20 pointer-events-none" />
 
       {/* ── LARGE: full lyric card ── */}
       <div className="relative hidden lg:flex flex-col justify-between h-full p-6">
         <div className="flex-1 flex items-center">
-          <p className="font-[family-name:var(--font-newsreader)] text-[22px] leading-[1.35] tracking-tight text-white">
+          <p className="font-[family-name:var(--font-inter)] font-bold text-[22px] leading-[1.35] tracking-tight text-white">
             {lines.map((line, i) => (
               <span key={i}>
                 {line}
@@ -83,10 +93,10 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
             <div className="w-10 h-10 rounded-md bg-white/10 shrink-0" />
           )}
           <div className="min-w-0">
-            <p className="font-[family-name:var(--font-geist-sans)] text-[13px] text-white leading-tight truncate">
+            <p className="font-[family-name:var(--font-inter)] font-bold text-[13px] text-white leading-tight truncate">
               {song}
             </p>
-            <p className="font-[family-name:var(--font-geist-sans)] text-[12px] text-white/50 leading-tight truncate">
+            <p className="font-[family-name:var(--font-inter)] font-bold text-[12px] text-white/50 leading-tight truncate">
               {artist} · {album}
             </p>
           </div>
@@ -95,10 +105,10 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
 
       {/* ── SMALL/MEDIUM: compact — art + title only ── */}
       <div className="relative flex lg:hidden flex-col justify-end h-full p-4">
-        <p className="font-[family-name:var(--font-geist-sans)] text-[13px] font-medium text-white leading-tight truncate">
+        <p className="font-[family-name:var(--font-inter)] font-bold text-[13px] text-white leading-tight truncate">
           {song}
         </p>
-        <p className="font-[family-name:var(--font-geist-sans)] text-[11px] text-white/50 leading-tight truncate mt-0.5">
+        <p className="font-[family-name:var(--font-inter)] font-bold text-[11px] text-white/50 leading-tight truncate mt-0.5">
           {artist}
         </p>
       </div>

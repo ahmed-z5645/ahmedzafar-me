@@ -54,7 +54,7 @@ export default function Header() {
         {/* The Dropdown Menu */}
         {isMenuOpen && (
           <nav className="absolute top-16 right-0 flex flex-col backdrop-blur-xl bg-surface/95 rounded-xl p-6 gap-6 font-[family-name:var(--font-geist-mono)] text-body shadow-lg border border-foreground/10 text-right min-w-[200px]">
-            <Link href="#experience" onClick={() => setIsMenuOpen(false)} className={experienceClass}>Experience</Link>
+            <Link href="#experience" onClick={() => setIsMenuOpen(false)} className={navClass("/")}>Experience</Link>
             <Link href="/fun" onClick={() => setIsMenuOpen(false)} className={navClass("/fun")}>Fun</Link>
             <Link href="/about" onClick={() => setIsMenuOpen(false)} className={navClass("/about")}>About</Link>
             <Link href="/blog" onClick={() => setIsMenuOpen(false)} className={navClass("/blog")}>Blog</Link>
