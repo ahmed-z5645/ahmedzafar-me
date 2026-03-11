@@ -12,13 +12,14 @@ export default function ProjectCard({ project, square }: { project: Record<strin
     <div className="flex flex-col mb-8 break-inside-avoid group cursor-pointer">
       
       {/* MEDIA CONTAINER */}
-      <div className={`relative w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/10${square ? " aspect-square" : ""}`}>
+      <div className={`relative w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/10 [transform:translateZ(0)]${square ? " aspect-square" : ""}`}>
         {project.video ? (
           <video
             autoPlay
             loop
             muted
             playsInline
+            poster={project.poster}
             className={square ? "absolute inset-0 w-full h-full object-cover" : "w-full h-auto object-cover"}
           >
             <source src={project.video} type="video/mp4" />

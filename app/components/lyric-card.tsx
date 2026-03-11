@@ -61,7 +61,7 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
   }, [artwork]);
 
   return (
-    <div className="relative aspect-video rounded-2xl overflow-hidden bg-[#1a1a1a] flex flex-col">
+    <div className="relative aspect-square lg:aspect-video rounded-2xl overflow-hidden bg-[#1a1a1a] flex flex-col">
 
       {/* ── Ambient lava-lamp background ── */}
       <div className="absolute inset-0">
@@ -103,14 +103,21 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
         </div>
       </div>
 
-      {/* ── SMALL/MEDIUM: compact — art + title only ── */}
-      <div className="relative flex lg:hidden flex-col justify-end h-full p-4">
-        <p className="font-[family-name:var(--font-geist-sans)] font-bold text-[13px] text-white leading-tight truncate">
-          {song}
-        </p>
-        <p className="font-[family-name:var(--font-geist-sans)] font-bold text-[11px] text-white/50 leading-tight truncate mt-0.5">
-          {artist}
-        </p>
+      {/* ── SMALL/MEDIUM: square with large artwork ── */}
+      <div className="relative flex lg:hidden flex-col items-center justify-center h-full gap-3 p-5">
+        {artwork ? (
+          <Image src={artwork} alt={album} width={160} height={160} className="rounded-xl shadow-2xl shrink-0" />
+        ) : (
+          <div className="w-40 h-40 rounded-xl bg-white/10 shrink-0" />
+        )}
+        <div className="text-center min-w-0 w-full px-2">
+          <p className="font-[family-name:var(--font-geist-sans)] font-bold text-[13px] text-white leading-tight truncate">
+            {song}
+          </p>
+          <p className="font-[family-name:var(--font-geist-sans)] font-bold text-[11px] text-white/50 leading-tight truncate mt-0.5">
+            {artist}
+          </p>
+        </div>
       </div>
     </div>
   );

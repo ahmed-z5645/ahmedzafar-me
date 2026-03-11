@@ -6,34 +6,40 @@ import { motion, useMotionValue } from "framer-motion";
 export default function Cursor() {
   const [isHovered, setIsHovered] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [isTouch, setIsTouch] = useState(true);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
   useEffect(() => {
+    setIsTouch(window.matchMedia("(pointer: coarse)").matches);
+
     const moveCursor = (e: MouseEvent) => {
       if (!isVisible) setIsVisible(true);
-
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
-
       const target = e.target as HTMLElement;
       setIsHovered(!!target.closest('a, button, .cursor-pointer, [data-cursor]'));
     };
 
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
+    const handleTouch = () => setIsVisible(false);
 
     window.addEventListener("mousemove", moveCursor);
     document.addEventListener("mouseleave", handleMouseLeave);
     document.addEventListener("mouseenter", handleMouseEnter);
+    window.addEventListener("touchstart", handleTouch, { passive: true });
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
       document.removeEventListener("mouseleave", handleMouseLeave);
       document.removeEventListener("mouseenter", handleMouseEnter);
+      window.removeEventListener("touchstart", handleTouch);
     };
   }, [cursorX, cursorY, isVisible]);
+
+  if (isTouch) return null;
 
   return (
     <motion.div

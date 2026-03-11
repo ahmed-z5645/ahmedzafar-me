@@ -12,6 +12,7 @@
     "description": "Personal Project • Completed April 2025",
     "link": "/blog/2p03",
     "video": "/thumbnails/main/2p03_thumbnail.mp4",
+    "poster": "/thumbnails/main/2p03_thumbnail_poster.webp",
     "note": "Designed a cancer detection system using a synthetic gene circuit, all in the form of a breathalizer. Took years off my life."
   },
   {
@@ -35,6 +36,7 @@
     "description": "Personal Project • March 2025",
     "link": "/blog/askjulian",
     "video": "/thumbnails/main/askjulian_thumbnail.mp4",
+    "poster": "/thumbnails/main/askjulian_thumbnail_poster.webp",
     "note": "Born out of spite, but taught me to practically apply and deploy machine learning models."
   },
   {
@@ -50,6 +52,7 @@
     "description": "Ontario Engineering Competition • January 2025",
     "link": "/blog/oec",
     "video": "/thumbnails/main/oec_thumbnail.mp4",
+    "poster": "/thumbnails/main/oec_thumbnail_poster.webp",
     "note": "An incredible experience to compete in after winning 1st place at the McMaster Engineering Competition!"
   },
   {

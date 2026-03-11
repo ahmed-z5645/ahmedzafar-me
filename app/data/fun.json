@@ -27,7 +27,8 @@
     "title": "Translating SMS to HTTPS for areas affected by natural disasters",
     "description": "McMaster Engineering Competiton • Completed November 2025",
     "link": "https://github.com/ahmed-z5645/Phoenix",
-    "video": "/thumbnails/fun/mec-2025-thumbnail.mp4"
+    "video": "/thumbnails/fun/mec-2025-thumbnail.mp4",
+    "poster": "/thumbnails/fun/mec-2025-thumbnail_poster.webp"
   },
   {
     "id": "mlrad",
@@ -35,6 +36,7 @@
     "description": "3rd Place Winner @ U of T x McMaster MedSprint 2024",
     "link": "https://www.linkedin.com/feed/update/urn:li:activity:7180580905365774336/",
     "video": "/thumbnails/fun/mlrad-thumbnail.mp4",
+    "poster": "/thumbnails/fun/mlrad-thumbnail_poster.webp",
     "note": "This project showed me that you can start doing cool projects without knowing where to begin."
   },
   {
@@ -52,6 +54,7 @@
     "description": "Personal Project • Completed February 2026",
     "link": "https://github.com/ahmed-z5645/Peer-To-Peer-File-Synchronizer",
     "video": "/thumbnails/fun/p2pfile_thumbnail.mp4",
+    "poster": "/thumbnails/fun/p2pfile_thumbnail_poster.webp",
     "note": "adapting this project to leverage the shortcuts application on my phone to make windows to ios airdrop soon..."
   },
   {

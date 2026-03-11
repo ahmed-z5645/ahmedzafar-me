@@ -97,9 +97,9 @@ export default function TestimonialsBoard({ items }: { items: Testimonial[] }) {
   return (
     <>
       {/* Mobile: simple stacked grid */}
-      <div className="md:hidden columns-2 gap-4" style={dotBg}>
+      <div className="md:hidden flex flex-col gap-4" style={dotBg}>
         {items.map((t) => (
-          <div key={t.id} className="break-inside-avoid mb-4">
+          <div key={t.id}>
             <Image src={t.image} alt="group chat screenshot" width={600} height={400} className="w-full h-auto rounded-xl" />
           </div>
         ))}
