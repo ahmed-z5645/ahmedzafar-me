@@ -1,11 +1,61 @@
 ---
 title: "Parallelizing statistical methods on the GPU"
-date: "2026-03-09"
-tags: ["engineering", "python", "gpu"]
-excerpt: "Building a Python package that moves statistical computations onto the GPU using CUDA — and why it's harder than it sounds."
-description: "Building a Python package that moves statistical computations onto the GPU using CUDA — and why it's harder than it sounds."
+date: "2026-01-15"
+tags: ["software", "project", "python", "gpu", "c++"]
+excerpt: "Building a Python package that moves statistical computations onto the GPU using openCL — and why."
+description: "Building a Python package that moves statistical computations onto the GPU using openCL — and why."
 published: true
 ogImage: ""
 ---
 
 Work in progress — full write-up coming soon.
+
+> **Project Goal:** To build a high-performance, hardware-agnostic numerical python library using OpenCL, tailored for massive-scale statistical inference, linear modeling, and dimensionality reduction across diverse compute environments.
+
+**Tech Stack:** `C++` | `OpenCL` | `OpenCL C` | `CLBlast` | `Python/Pybind11`
+
+---
+
+### Phase 1: Core Architecture & Descriptive Statistics
+Establishing the OpenCL host environment, device querying, and foundational data visualization metrics.
+
+1. **Contexts & Memory Buffers:** Developing `gpumatrix` and `gpuvector` with RAII-compliant C++ wrappers around OpenCL Contexts, Command Queues, and `cl::Buffer` to handle host-to-device data transfers without memory leaks.
+2. **Descriptive Stat Kernels:** Writing optimized parallel reduction algorithms using OpenCL C to compute means, medians, and variances, utilizing local memory to avoid global bandwidth bottlenecks.
+
+---
+
+### Phase 2: Probability & Sampling Distributions
+Integrating random number generation and utilizing the GPU for heavy-duty simulations that rely on the Central Limit Theorem.
+
+1. **Parallel RNG:** Implementing device-side random number generation algorithms (e.g., Philox or XORWOW) in OpenCL for discrete and continuous probability distributions.
+2. **Monte Carlo Simulations:** Building high-throughput sampling distributions and estimating confidence intervals via parallelized bootstrapping techniques dispatched across varying work-group sizes.
+
+---
+
+### Phase 3: Massively Parallel Hypothesis Testing
+Scaling standard inferential statistics to handle millions of concurrent A/B tests or group comparisons.
+
+1. **Test Statistic Engines:** Developing kernels to calculate z-scores and t-statistics for one-sample and two-sample independent/paired tests.
+2. **ANOVA & Nonparametric Methods:** Expanding the testing suite to include single-factor ANOVA and foundational nonparametric hypothesis tests, utilizing optimized NDRange mapping.
+
+---
+
+### Phase 4: Linear Regression & Prediction Models
+Transitioning from inference to prediction by implementing foundational machine learning algorithms using raw matrix algebra.
+
+1. **Covariance & Correlation:** Computing massive covariance matrices as a precursor to multi-variable relationship mapping.
+2. **Simple & Multiple Linear Regression:** Implementing Ordinary Least Squares (OLS) estimators by computing `β = (Xᵀ X)⁻¹ Xᵀ y` using highly optimized matrix transposition, multiplication, and inversion kernels.
+3. **Logistic Regression:** Building gradient descent solvers for logistic classification and prediction error evaluation.
+
+---
+
+### Phase 5: Dimensionality Reduction & Experimental Design
+Targeting complex Design of Experiments (DOE) workflows by tackling the curse of dimensionality.
+
+1. **Principal Component Analysis (PCA):** Implementing Eigen-decomposition algorithms to extract principal components for clustering and dimensionality reduction.
+2. **Factorial Design Matrices:** Structuring the `gpumatrix` class to efficiently construct and evaluate large-scale response surface methods and randomized blocking designs.
+
+---
+### Conclusion:
+
+This project is meant to be a GPU accelerated alternative libraries like numpy. That being said, the goal of gpunum is very different to that of numpy. Rather than trying to say "we're faster" I plan on finding the exact point (execution time vs. matrix size) where the bottle necks of data transfer between the GPU and CPU is more efficient! This package will be published to pip, and open sourced once phase 5 has been completed.

@@ -1,11 +1,113 @@
 ---
 title: "Combining physics and machine learning to evaluate peptide stability"
-date: "2026-03-09"
+date: "2026-02-23"
 tags: ["engineering", "machine-learning", "biomedical"]
-excerpt: "A physics-informed framework for screening peptide candidates — my most interdisciplinary project to date."
-description: "A physics-informed framework for screening peptide candidates — my most interdisciplinary project to date."
+excerpt: "A physics-informed framework for screening peptide candidates - my most interdisciplinary project to date."
+description: "A physics-informed framework for screening peptide candidates - my most interdisciplinary project to date."
 published: true
 ogImage: ""
 ---
 
-Work in progress — full write-up coming soon.
+Work in progress - full write-up coming soon. This is more of a tentative development plan.
+
+> **Project Goal:** PepScore is an open-source computational pipeline that screens peptide candidates against protein targets using a hybrid of machine learning and biophysical reasoning. Given a protein structure, it generates a candidate library, extracts interpretable interaction features, and produces a ranked shortlist of promising binders (all visualized through a live web dashboard that a non-technical bench scientist can use without writing code). The goal is to make the first pass of peptide screening accessible to any lab with a laptop and a PDB ID.
+
+## Introduction
+
+Modern drug discovery increasingly relies on computational tools to explore vast molecular design spaces before committing to expensive experimental validation. Peptide therapeutics (short amino-acid sequences engineered to bind specific proteins) are one of the most promising fronts of this work.
+
+The core bottleneck is screening. Given a protein target, how do you efficiently evaluate thousands of candidate peptides to find the ones most likely to bind? All on a computer? Full molecular dynamics simulations are too slow. Purely data-driven models are fast but pretty opaque, and they struggle with generalization when training data is sparse (and naturally, most novel targets have sparse training data)
+
+PepScore is a lightweight, reproducible pipeline that explores a middle path: combining simple machine learning models with interpretable biophysical features to rank candidate peptides against a protein target. The goal is not yet to produce clinical candidates, but to investigate how modular hybrid scoring systems behave and where they break down. After all, as much as I wish I could, I don't have the resourcs to cure cancer from my laptop in my bed room :(.
+
+## What PepScore Is (and Isn't)
+
+It's worth being explicit about scope. PepScore is a pedagogical and exploratory tool. It is designed to:
+
+- Demonstrate how to build a modular peptide screening pipeline from scratch
+- Investigate whether simple models over mixed feature types can produce meaningful rankings
+- Provide a codebase that's easy to read, modify, and extend
+
+If you're looking for a production screening platform, this isn't it quite yet. If you're interested in how the pieces of such a platform fit together, AND how I plan on making these platforms accessible to non technical scientists, read on!
+
+## Conceptual Workflow
+
+The pipeline follows five stages:
+
+**Target preparation.** A protein structure is retrieved from the RCSB Protein Data Bank and parsed to identify surface-exposed residues, pocket geometries, and local electrostatic character. The output is a structured representation of the binding environment.
+
+**Peptide library generation.** A set of candidate peptide sequences is constructed. In the initial version, this uses constrained random sampling: sequences of a fixed length (e.g., 8–15 residues) are generated subject to basic compositional filters: amino acid frequency bounds, net charge limits, and a bunch of other fun physics! This is intentionally simple. More sophisticated library design (e.g., motif grafting, evolutionary sampling) is left for future work.
+
+**Feature extraction.** Each peptide–target pair is characterized by a feature vector spanning three categories:
+
+- *Sequence features:* amino acid composition statistics and, optionally, embeddings from protein language models like ESM-2.
+- *Physicochemical features:* charge complementarity between the peptide and target surface, hydrophobic moment matching, and hydrogen bonding potential estimated from donor/acceptor counts.
+- *Structural context features:* surface accessibility of the target binding region and coarse distance-based contact potential.
+
+The feature set is intionally disjoint. Part of the project's purpose is to measure how much each category contributes to ranking quality. This helps us later test the model, as we will see!
+
+**Scoring model.** A lightweight supervised model (initially logistic regression or gradient-boosted trees, but open to more complex models later down the line.) is trained to predict interaction quality from the feature vectors. The training signal comes from curated peptide-protein interaction databases (such as PepBDB or propedia). This is a noisy supervision setup, and the project treats it as such: the emphasis is on relative ranking rather than calibrated probability.
+
+**Analysis.** Top-ranked candidates are examined through feature importance plots, ablation studies (dropping feature categories and measuring ranking degradation), and sensitivity analysis over peptide length and composition. The goal is to understand *what the model learned* rather than simply trust its output. When it comes to computational biology, it's always okay be skeptical of your black box models!
+
+## Development Roadmap
+
+The project is structured in five phases, each producing a testable, self-contained increment.
+
+### Phase 1 - Structural Data Pipeline
+
+Build the protein target ingestion layer: fetch structures from PDB, parse them with BioPython, compute solvent-accessible surface areas, and identify candidate binding regions using simple geometric heuristics (e.g., concavity-based pocket detection). Deliverable: given a PDB ID, produce a structured target profile as a JSON or dataclass.
+
+### Phase 2 - Peptide Library Generation
+
+Implement the constrained random sampler for peptide sequences. Define configuration schemas for length ranges, residue frequency bounds, and exclusion rules. Build a small CLI for generating and serializing peptide libraries. Deliverable: a reproducible library generation step that can produce datasets of configurable size.
+
+Begin to develop web dashboard to view target and candidate peptides.
+
+### Phase 3 - Feature Engineering
+
+Implement the three feature extraction modules (sequence, physicochemical, structural context). Each module takes a peptide–target pair and returns a named feature dictionary. Features are assembled into a single dataframe for downstream modeling. Deliverable: a feature matrix over a peptide library, with unit tests validating individual feature computations.
+
+### Phase 4 - Hybrid Scoring Model
+
+Train and evaluate scoring models using the feature matrix. Start with logistic regression as a baseline, then compare against gradient-boosted trees. Evaluate using ranking metrics (AUROC, enrichment factor at 1% and 5%) rather than classification accuracy, since the task is fundamentally about prioritization. Deliverable: a trained model with logged hyperparameters and evaluation metrics.
+
+### Phase 5 - Interpretation and Reporting
+
+Run feature importance analysis. Perform ablation studies by retraining with feature categories removed. Generate visualizations of top-ranked candidates, feature contribution breakdowns, and failure case analysis. Deliverable: an analysis notebook with publication-quality figures.
+
+### Phase 6 - Scientist Facing dashboard
+
+Although this is more of a research project, the software engineer in me can't help but see the benefit of packaging this into an application for scientists to use. Development of this dashboard should be done iteratviely at every step, but will be a big focus at the end of the project when the analysis notebook is also complete :)
+
+## Technical Stack
+
+The initial implementation targets:
+
+- Python 3.10+
+- BioPython for structural parsing
+- scikit-learn for modeling
+- pandas / NumPy (maybe [gpunum](https://ahmedzafar-me.vercel.app/blog/gpunum) too ;)) for data manipulation
+- matplotlib / seaborn for visualization
+- Optional: ESM-2 (via HuggingFace) for sequence embeddings
+
+The codebase will be organized as an installable Python package with CLI entry points for each pipeline stage.
+
+## Future Directions
+
+If the initial pipeline produces interesting results, natural extensions include:
+
+- Molecular docking integration (e.g., AutoDock Vina) for physics-based rescoring of top candidates
+- Graph neural network representations of peptide–target interfaces
+- Active learning loops that use model uncertainty to guide library expansion
+- Integration with AlphaFold for targets without experimental structures
+- Benchmarking against established tools like Rosetta FlexPepDock
+
+DISCLAIMER: this section (Future Direction) was entirely generated using an LLM. I usually like to figure out next steps by identifying short comings during development.
+
+## Closing Thoughts
+
+PepScore is an exercise in building computational biology tools that are transparent about their assumptions and honest about their limitations. The peptide screening problem is genuinely hard, and no simple pipeline will solve it. But by constructing the pipeline carefully - with modular components, explicit training signals, and built-in interpretability - we can learn something about which aspects of the problem yield to simple methods and which demand more sophisticated approaches.
+
+After phase 3 is completed, and the web based dashboard is running, it will be released iteratively.
+The code will be open source. Contributions, criticism, and suggestions are welcome.
