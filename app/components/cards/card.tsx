@@ -29,7 +29,7 @@ export default function ProjectCard({ project, square }: { project: Record<strin
             alt={project.title ?? ""}
             width={1200}
             height={800}
-            quality={90}
+            quality={75}
             sizes={square
               ? "(min-width: 1024px) 20vw, (min-width: 768px) 33vw, 100vw"
               : "(min-width: 1280px) 40vw, (min-width: 1024px) 50vw, 100vw"

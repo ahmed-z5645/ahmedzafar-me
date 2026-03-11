@@ -76,7 +76,7 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
       {/* ── LARGE: full lyric card ── */}
       <div className="relative hidden lg:flex flex-col justify-between h-full p-6">
         <div className="flex-1 flex items-center">
-          <p className="font-[family-name:var(--font-inter)] font-bold text-[22px] leading-[1.35] tracking-tight text-white">
+          <p className="font-[family-name:var(--font-geist-sans)] font-bold text-[22px] leading-[1.35] tracking-tight text-white">
             {lines.map((line, i) => (
               <span key={i}>
                 {line}
@@ -93,10 +93,10 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
             <div className="w-10 h-10 rounded-md bg-white/10 shrink-0" />
           )}
           <div className="min-w-0">
-            <p className="font-[family-name:var(--font-inter)] font-bold text-[13px] text-white leading-tight truncate">
+            <p className="font-[family-name:var(--font-geist-sans)] font-bold text-[13px] text-white leading-tight truncate">
               {song}
             </p>
-            <p className="font-[family-name:var(--font-inter)] font-bold text-[12px] text-white/50 leading-tight truncate">
+            <p className="font-[family-name:var(--font-geist-sans)] font-bold text-[12px] text-white/50 leading-tight truncate">
               {artist} · {album}
             </p>
           </div>
@@ -105,10 +105,10 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
 
       {/* ── SMALL/MEDIUM: compact — art + title only ── */}
       <div className="relative flex lg:hidden flex-col justify-end h-full p-4">
-        <p className="font-[family-name:var(--font-inter)] font-bold text-[13px] text-white leading-tight truncate">
+        <p className="font-[family-name:var(--font-geist-sans)] font-bold text-[13px] text-white leading-tight truncate">
           {song}
         </p>
-        <p className="font-[family-name:var(--font-inter)] font-bold text-[11px] text-white/50 leading-tight truncate mt-0.5">
+        <p className="font-[family-name:var(--font-geist-sans)] font-bold text-[11px] text-white/50 leading-tight truncate mt-0.5">
           {artist}
         </p>
       </div>

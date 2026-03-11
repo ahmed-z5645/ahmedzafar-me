@@ -1,5 +1,5 @@
 [
-  { "id": "t-1", "image": "/about/testimonials/test1.webp" },
-  { "id": "t-2", "image": "/about/testimonials/test2.webp" },
-  { "id": "t-3", "image": "/about/testimonials/test3.webp" }
+  { "id": "t-1", "image": "/about/testimonials/test1.png" },
+  { "id": "t-2", "image": "/about/testimonials/test2.png" },
+  { "id": "t-3", "image": "/about/testimonials/test4.png" }
 ]
