@@ -76,7 +76,7 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
       {/* ── LARGE: full lyric card ── */}
       <div className="relative hidden lg:flex flex-col justify-between h-full p-6">
         <div className="flex-1 flex items-center">
-          <p className="font-[family-name:var(--font-geist-sans)] font-bold text-[22px] leading-[1.35] tracking-tight text-white">
+          <p className="font-[family-name:var(--font-geist-sans)] font-bold text-[22px] leading-[1.35] tracking-normal text-white">
             {lines.map((line, i) => (
               <span key={i}>
                 {line}
@@ -106,9 +106,9 @@ export default function LyricCard({ lyric, song, artist, album, artwork }: Lyric
       {/* ── SMALL/MEDIUM: square with large artwork ── */}
       <div className="relative flex lg:hidden flex-col items-center justify-center h-full gap-3 p-5">
         {artwork ? (
-          <Image src={artwork} alt={album} width={160} height={160} className="rounded-xl shadow-2xl shrink-0" />
+          <Image src={artwork} alt={album} width={160} height={160} className="w-3/5 h-auto rounded-xl shadow-2xl shrink-0" />
         ) : (
-          <div className="w-40 h-40 rounded-xl bg-white/10 shrink-0" />
+          <div className="w-3/5 aspect-square rounded-xl bg-white/10 shrink-0" />
         )}
         <div className="text-center min-w-0 w-full px-2">
           <p className="font-[family-name:var(--font-geist-sans)] font-bold text-[13px] text-white leading-tight truncate">

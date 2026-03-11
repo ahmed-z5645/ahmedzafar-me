@@ -5,7 +5,7 @@ export default function Info() {
     <div className="space-y-8 font-sans">
       <h1 className="lg:hidden font-[family-name:var(--font-geist-mono)] text-[20px]">Work Experience:</h1>
       {jobs.map((job) => (
-        <div key={job.id} className="grid grid-cols-1 lg:grid-cols-[100px_220px_1fr] gap-4 md:gap-6 items-start">
+        <div key={job.id} className="grid grid-cols-[auto_1fr] lg:grid-cols-[100px_220px_1fr] gap-x-3 gap-y-0.5 lg:gap-4 lg:gap-y-0 items-start">
 
           {/* Column 1: Date */}
           <div className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58]">
@@ -19,8 +19,8 @@ export default function Info() {
             </a>
           </div>
 
-          {/* Column 3: Role & Description */}
-          <div>
+          {/* Column 3: Role & Description — spans both cols on mobile */}
+          <div className="col-span-2 lg:col-span-1 mt-0.5 lg:mt-0">
             <h4 className="text-body text-foreground/[0.58]">
               {job.role}
             </h4>
