@@ -3,7 +3,7 @@
     "id": "portfolio",
     "title": "Seeing how far my design skills have grown",
     "description": "Personal Project • Completed March 2026",
-    "link": "https://ahmedzafar.me",
+    "link": "https://ahmedzafar-me.vercel.app",
     "image": "/thumbnails/fun/new-portfolio-thumbnail.webp",
     "note": "This link just takes you back to experience..."
   },
@@ -43,7 +43,7 @@
     "id": "old-portfolio",
     "title": "My first website !",
     "description": "Personal Project • Completed December 2024",
-    "link": "",
+    "link": "/old-portfolio",
     "image": "/thumbnails/fun/old-portfolio-thumbnail.webp",
     "note": "Definitely immature, but so full of personality!"
 

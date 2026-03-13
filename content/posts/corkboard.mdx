@@ -1,48 +1,45 @@
 ---
 title: "Breaking into the city's live music scene"
 date: "2026-03-09"
-tags: ["music", "personal"]
-excerpt: "Corkboard is an attempt to break into Hamilton's live music scene — part project, part personal mission."
-description: "Corkboard is an attempt to break into Hamilton's live music scene — part project, part personal mission."
+tags: ["software", "project", "open-source", "Engineering", "music"]
+excerpt: "Developing Corkboard with GDSC McMaster to scrape, aggregate, and discover local concerts across Hamilton."
+description: "An inside look at building Corkboard, a mobile-first open-source app for live music discovery."
 published: true
 ogImage: ""
 ---
 
-Work in progress — full and better write-up coming soon.
+> **Project Goal:** Develop a mobile-first application that scrapes and aggregates event data from local venues, creating a centralized hub to discover live concerts and gigs across Hamilton.
 
+**Tech Stack**: `Expo`, `React Native`,`Express`, `TypeScript`, `Node.js`, `Supabase`
 
-# Project Showcase: Corkboard
+<GithubLink href="https://github.com/DSC-McMaster-U/corkboard" /> 
 
-> **Status:** MVP in Development  
-> **Target:** Hamilton, Ontario Live Music Scene  
-
-Breaking into a city’s live music scene shouldn't feel like uncovering a well-kept secret. Whether it’s a packed indie gig at a local pub or an underground house show, these performances are the heartbeat of a community. 
-
-**Corkboard** is a mobile-first platform designed to bridge the gap between local artists and the community by aggregating fragmented show data into one clean, actionable feed.
+#### this project is currently in development!
 
 ---
 
-## The Vision
+## Introduction 
 
-The goal is simple: **Make local music discoverable.** Current show info is scattered across Instagram flyers, obscure Facebook events, and physical posters. Corkboard curates this content from community sources and venue calendars, presenting it through a map-based and timeline-based interface.
+Living in Hamilton, there is a fantastic local music scene. The problem? Actually finding out who is playing and where. You usually have to dig through five different venue Instagram pages, scattered flyers, or obscure websites just to figure out what gigs are happening this weekend. 
 
-## The Tech Stack
+As part of the Google Developer Student Club (GDSC) at McMaster University, a team of us decided to actually solve this. We wanted to build a platform that automatically aggregates these local events into one clean interface—all while contributing to a production-grade codebase. 
 
-To ensure a smooth, cross-platform experience with real-time updates, Corkboard leverages a modern, scalable architecture:
+That’s how **Corkboard** was born.
 
-| Layer | Technology |
-| :--- | :--- |
-| **Frontend** | React Native, TailwindCSS |
-| **Backend** | Firebase (Auth, Firestore, Cloud Functions) |
-| **Mapping** | Google Maps SDK |
-| **Search / ML** | OpenAI Embeddings, Pinecone / ChromaDB |
-| **Storage** | Firebase Storage / Cloudinary |
-| **APIs** | Spotify Web API, Eventbrite, IG Scraping |
+## Under the Hood: The Architecture
 
----
+**The Mobile Front-End (Expo):** We designed Corkboard to be a mobile-first experience. By building the client with **Expo** (React Native), we can maintain a single, clean codebase that compiles to both iOS and Android natively. It makes the barrier to entry for new GDSC contributors much lower while still delivering a highly responsive, app-store-ready mobile experience.
 
-## Why Hamilton?
+**The Back-End & Data Aggregation:** To keep the server scalable, we implemented a strict **Three-Tier Architecture** (Presentation → Application → Database):
+* **The API & Services:** We built a RESTful Node.js backend. By decoupling our API routes from the core business logic (services), the code remains modular and much easier for new club members to test and contribute to.
+* **The Database:** We rely on **Supabase** (PostgreSQL) to handle our relational data—tying users, venues, events, and bookmarks together smoothly.
+* **The Scraper Engine:** The entire point of the app is aggregation. Instead of relying on manual data entry, the backend is designed to scrape data from local Hamilton venue sites and ingest it directly into our database.
 
-Hamilton has a legendary music history, but much of its current magic happens in smaller, non-traditional spaces. Corkboard is built to ensure that no matter how small the stage, the right audience can find it. 
+## Looking Ahead: Future Enhancements
 
----
+Because we invested heavily in a modular structure early on, Corkboard is primed for some major post-MVP upgrades. We structured the backend specifically so we can scale these features without a massive refactor:
+
+* **Advanced Web Scraping:** Expanding our scraping pipelines to cover more underground venues and automate the entire event lifecycle.
+* **Geographic Features:** Leveraging Expo's native location services and our Supabase backend to implement location-based sorting, so students can find the gigs closest to them right now.
+* **Payments Processing:** By processing payments directly through the Corkboard application, it will become a seamless end-to-end experience.
+Working on a collaborative mobile project like this has given me a completely new perspective on clean directory structures, API design, and team-based development. 

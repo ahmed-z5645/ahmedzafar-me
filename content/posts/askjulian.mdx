@@ -1,13 +1,59 @@
 ---
 title: "Predicting music ratings"
 date: "2025-03-27"
-tags: ["machine-learning", "music", "personal"]
+tags: ["software", "project", "engineering", "machine-learning", "music", "personal"]
 excerpt: "Born out of spite, AskJulian taught me to practically apply and deploy machine learning models in the real world."
 description: "Born out of spite, AskJulian taught me to practically apply and deploy machine learning models in the real world."
 published: true
 ogImage: ""
 ---
 
-Full write-up coming soon.
+> **Project Goal:** Develop and train a machine learning model on a publicly available dataset to predict how one might rate music. This model is to be hosted on the web and accessible by anyone with internet access.
 
-AskJulian started as a joke.
+<GithubLink href="https://github.com/ahmed-z5645/askJulian" /> 
+
+#### View live site: [askjulian.xyz](https://askjulian.xyz)
+
+**Tech Stack**: `FastAPI`, `TensorFlow`, `Keras`, `Hugging Face`, `Docker`, `Vite`
+
+---
+
+## Introduction 
+
+Music has become a pretty big part of my life. I own a ton of my favourite albums on vinyl, and I often grow very attached to a body of work and keep returning to it. So, when my roommates (Julian) and I got into a funny argument, and he called my music taste “basic”, I wasn’t going to let that fly.
+
+Like all normal people would do, rather than a simple comeback, I built a machine learning model. This neural network was trained on a popular YouTuber’s album ratings (Anthony Fantano), and a few inserted entries of my roommates' own opinions (less than 4% of entries). Ideally, the goal was to show him the website and tell him I had actually only trained it on his listening activity. This way, when he complimented its accuracy, I could reveal that this actually wasn't his opinion, and HE was basic!
+
+However, I folded and told him about the training data before he was finished checking potential albums. To be honest, he’s too nice to have said anything if the model was wildly incorrect anyway.
+
+That’s how [askJulian](https://askjulian.xyz) was born. It’s a fun, AI-powered web app designed to do one thing: prove it has better music taste than you.
+
+> What’s the highest score you can get it to give your favorite album?
+
+## Under the Hood: The Architecture
+
+Building this required bringing together a few different technologies to make the experience smooth, responsive, and accurate.
+
+**The Front-End:** I wanted the interface to be clean and intuitive. I built the client side using **React** and **Vite**, utilizing **Axios** to handle API requests and standard CSS for the styling.
+
+**The Back-End & Machine Learning:** The brain of the application runs on **FastAPI** and **Python**. The actual rating prediction engine is a **TensorFlow Keras** model, which I trained using **scikit-learn** on a dataset of album ratings and tags.
+
+**The APIs:** To make sure the AI knows exactly what it's talking about, I integrated both the **Last.fm API** and the **Discogs API**. These endpoints fetch the album information, release years, tags, and cover images on the fly, and were used to expand the Anthony Fantano dataset used for training with more features.
+
+## **Engineering Hurdles: The Hugging Face Deployment**
+
+Building the model for askJulian was only half the battle; deploying it was where the real education began. I decided to host the backend on Hugging Face Spaces, which is an incredible platform, but it didn't come without its battle scars. I ran headfirst into a few classic machine learning deployment headaches:
+
+* **The Dependency Weight Class:** Machine learning libraries are heavy. Squeezing TensorFlow, FastAPI, Uvicorn, and scikit-learn into a single environment without blowing memory limits or causing sluggish container builds was a massive balancing act. Every dependency had to be carefully managed to keep the image size reasonable.
+
+* **The Custom Docker Problems:** Hugging Face natively loves Gradio and Streamlit, but since I built a custom FastAPI backend, I couldn't just use their standard Python templates. I had to write a custom `Dockerfile` from scratch, configure the environment to explicitly expose port `7860` (which the Hugging Face health checker requires), and ensure all the internal API routing played nicely with their proxy infrastructure.
+
+* **The Cold Start Curse:** Because the backend runs on a free-tier Space, the container goes to sleep after a period of inactivity. When a user tries to check their music taste after the app has been resting, they get hit with a terribly long loading animation. The server has to wake up, spin up the Docker container, and load a hefty TensorFlow model into memory before the FastAPI endpoints become responsive. It's a harsh lesson in the realities of cloud computing and why optimizing model load times is so crucial for a snappy user experience.
+
+Ultimately, these pains were the best part of the project. Figuring out how to containerize an ML pipeline and serve it reliably through a custom web framework gave me a completely new perspective on the infrastructure side of software engineering, and was the inspiration for [stoat](https://stoated.dev)\!
+
+## Try It Out\!
+
+If you're ready to have your music taste judged by an AI, you can try it out live at [**askjulian.xyz**](https://askjulian.xyz). Let me know if you manage to score a perfect rating\!
+
+You can also check out the source code, the model integration, and the full repository on my [GitHub](https://github.com/ahmed-z5645/askJulian).
