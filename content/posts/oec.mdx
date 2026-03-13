@@ -1,11 +1,49 @@
 ---
 title: "Predicting COVID-19 and wildfire outcomes with machine learning"
-date: "2026-03-09"
-tags: ["machine-learning", "engineering", "competition"]
+date: "2025-01-26"
+tags: ["machine-learning", "engineering", "competition", "software", "project"]
 excerpt: "Competing at the Ontario Engineering Competition after winning 1st at McMaster — predicting pandemic and wildfire outcomes with ML."
 description: "Competing at the Ontario Engineering Competition — predicting pandemic and wildfire outcomes with ML."
 published: true
 ogImage: ""
 ---
 
-Work in progress — full write-up coming soon.
+> **Project Goal:** Develop a crisis communication platform that empowers users to report real-time incidents, leveraging a custom predictive AI suite to analyze geographic data for future emergency planning.
+
+<GithubLink href="https://github.com/shadielfares/OEC-2025" /> 
+
+**Tech Stack**: `PyTorch`, `Next.js`, `Tailwind CSS`, `Mapbox`
+
+---
+
+## Introduction 
+
+Hackathons are a completely different breed of software engineering, but the Ontario Engineering Competition (OEC) was its own beast. We didn't have a full weekend; we had exactly 8 hours to ideate, architect, and deploy a solution. Our team decided to tackle emergency response.
+
+We built **AlertMe**, a crisis communication platform designed to track and visualize ongoing emergencies across Canada. While my teammates sprinted to get the Next.js frontend and Mapbox integrations functional, I was tasked with the brain of the operation: building a suite of predictive generative AI models from scratch before the buzzer.
+
+## Under the Hood: The ML Architecture
+
+The standout feature of AlertMe is the custom predictive engine, built using **PyTorch**. 
+
+The overarching goal was to process historical incident data and generate actionable insights for emergency management teams. To do this, I engineered a modular ML architecture capable of handling multiple distinct crisis types simultaneously. 
+
+While our flagship model was trained on historical Ontario COVID-19 data (analyzing spatial and temporal metrics to predict disease transmission hotspots)the system went much further. We also successfully integrated different predictive models specifically tuned for natural disasters, allowing the platform to forecast both earthquakes and forest fires based on localized geographic and environmental triggers. 
+
+## Engineering Hurdles: The 8-Hour Sprint
+
+Building a full-stack geographic tracking tool is hard enough. Building and training a multi-model machine learning pipeline inside an 8-hour window requires a completely ruthless approach to engineering:
+
+* **Ruthless Scope Reduction:** You can't build flawless, multi-variable neural networks for a global pandemic *and* natural disasters in a few hours. I had to immediately strip the architecture and the datasets down to the absolute bare minimum dimensions required to prove the concepts worked. It was all about finding the "good enough" architecture that would actually compile for all three hazard types.
+* **The 12.5% Training Tax:** The core training took about an hour. In a normal environment, that's lightning-fast. In an 8-hour competition, that is an eternity. Hitting "run" and just having to stare at the epoch progress bar, knowing you are burning over 10% of your total competition time and praying the loss actually converges so you don't have to restart, is a terrifying experience.
+* **The Hour-7 Integration:** A predictive model is useless if the user can't see it. The final, most stressful hurdle was ensuring my PyTorch outputs perfectly mapped to the exact JSON structures and coordinates my teammate needed for the Mapbox frontend, right as the clock was running out.
+
+## The Proof of Concept
+
+Because AlertMe was strictly a competition entry, it isn't in active development today. However, it served as a massive proof-of-concept. 
+
+Integrating a suite of predictive machine learning models with geographic information systems (GIS) under a brutal time limit taught me a lot about rapid model deployment, API handoffs, and trusting your code. More importantly, it solidified exactly where my engineering interests lie: deep in the machine learning design and architecture.
+
+## Check It Out
+
+If you want to look at the codebase we scrambled to put together, you can check out the full repository on our [GitHub](https://github.com/shadielfares/OEC-2025).
