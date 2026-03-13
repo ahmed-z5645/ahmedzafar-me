@@ -1,0 +1,27 @@
+{
+  "files": {
+    "main.css": "/old-portfolio/static/css/main.0a910f65.css",
+    "main.js": "/old-portfolio/static/js/main.78f2acd7.js",
+    "static/js/453.3118253a.chunk.js": "/old-portfolio/static/js/453.3118253a.chunk.js",
+    "static/media/headshot_portfolio.png": "/old-portfolio/static/media/headshot_portfolio.2978da7e4738f7b296fb.png",
+    "static/media/back.png": "/old-portfolio/static/media/back.4a9d225206276a339b54.png",
+    "static/media/IMG_0190.jpg": "/old-portfolio/static/media/IMG_0190.553f5e6afae263b00cc0.jpg",
+    "static/media/trees2.png": "/old-portfolio/static/media/trees2.2ae80cf7f57118520f9f.png",
+    "static/media/contact.svg": "/old-portfolio/static/media/contact.ace1c1a34002cf3d1b55d906e4084930.svg",
+    "static/media/desk.svg": "/old-portfolio/static/media/desk.a2588fd48525fb5bdfc7bb3975815697.svg",
+    "static/media/trees1.png": "/old-portfolio/static/media/trees1.0e8872ce55e11b587c05.png",
+    "static/media/clouds.png": "/old-portfolio/static/media/clouds.6a2fa7e25fffdb397fd4.png",
+    "static/media/mountain1.png": "/old-portfolio/static/media/mountain1.751ccc0085695830f444.png",
+    "static/media/mountain2.png": "/old-portfolio/static/media/mountain2.2bce60005daee3f1a32c.png",
+    "static/media/mountain3.png": "/old-portfolio/static/media/mountain3.81954ed678e273447d22.png",
+    "static/media/Play bar.svg": "/old-portfolio/static/media/Play bar.a7c087fe742710dd2768dc9cea4adc39.svg",
+    "index.html": "/old-portfolio/index.html",
+    "main.0a910f65.css.map": "/old-portfolio/static/css/main.0a910f65.css.map",
+    "main.78f2acd7.js.map": "/old-portfolio/static/js/main.78f2acd7.js.map",
+    "453.3118253a.chunk.js.map": "/old-portfolio/static/js/453.3118253a.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0a910f65.css",
+    "static/js/main.78f2acd7.js"
+  ]
+}

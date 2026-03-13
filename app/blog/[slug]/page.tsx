@@ -3,7 +3,11 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import remarkMath from "remark-math";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeKatex from "rehype-katex";
+import "katex/dist/katex.min.css";
+import GithubLink from "../../components/mdx/github-link";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 import { getAllPosts, getPostBySlug } from "../../lib/blog";
@@ -45,8 +49,9 @@ export async function generateMetadata({
 
 const mdxOptions = {
   mdxOptions: {
-    remarkPlugins: [remarkGfm],
+    remarkPlugins: [remarkGfm, remarkMath],
     rehypePlugins: [
+      rehypeKatex,
       [
         rehypePrettyCode,
         {
@@ -137,6 +142,7 @@ export default async function PostPage({
                 Caption: ({ children }: { children: React.ReactNode }) => (
                   <span className="caption">{children}</span>
                 ),
+                GithubLink,
               }}
             />
           </div>

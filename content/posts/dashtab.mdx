@@ -1,11 +1,51 @@
 ---
 title: "Fuelling productivity with 29,000+ monthly database reads"
-date: "2026-03-09"
-tags: ["engineering", "personal"]
-excerpt: "DashTab grew to 29,000+ monthly database reads. Here's how it was built and what I learned scaling a browser extension."
-description: "DashTab grew to 29,000+ monthly database reads. Here's how it was built and what I learned scaling a browser extension."
+date: "2024-10-10"
+tags: ["software", "project", "react", "firebase", "browser-extension", "engineering"]
+excerpt: "DashTab grew to 29,000+ monthly database reads before I had to shut the servers down. Here is what I learned scaling a browser extension."
+description: "DashTab grew to 29,000+ monthly database reads. Here's how it was built, why it was deprecated, and what I learned scaling a browser extension."
 published: true
 ogImage: ""
 ---
 
-Work in progress — full write-up coming soon.
+> **Project Goal:** Build a highly responsive, productivity-focused browser extension that replaces the default new tab screen, syncing user data seamlessly across devices while scaling efficiently. *(Note: This project is now deprecated).*
+
+<GithubLink href="https://github.com/ahmed-z5645/Dash-Tab" /> 
+
+**Tech Stack**: `React`, `Firebase`, `Chrome Extension APIs`, `CSS`
+
+---
+
+## Introduction 
+
+Building a web app is one thing, but building something a user interacts with every single time they open a new tab causes you to be mindful of a  different level of performance. You can't have long loading spinners or a sluggish UI when someone is just trying to search the web or check their daily tasks.
+
+I built **DashTab** to completely hijack your browser's default new tab screen and turn it into the ultimate productivity dashboard. Instead of being greeted by distracting recommended articles or a blank search bar every time you hit `Cmd+T`, the extension overrode the default page with a clean, centralized hub designed to actually help you get things done.
+
+What started as a personal tool quickly grew. As adoption picked up, the extension hit a massive milestone: **29,000+ monthly database reads**. Hitting that kind of scale forced me to completely rethink how I was handling data fetching and state management.
+
+## Under the Hood: The Architecture
+
+A browser extension is essentially a web app running inside a restricted sandbox. To make DashTab fast and maintainable while overriding native browser behavior, I relied on a modern frontend stack paired with a real-time backend.
+
+**The Front-End (React):** I used **React** to build the UI components of the new tab dashboard. Because a new tab page needs to be instantly interactive, React’s virtual DOM was perfect for handling quick state changes without requiring full page repaints.
+
+**The Back-End & Sync (Firebase):** To ensure users had the exact same dashboard experience whether they were on their laptop or their desktop, I integrated **Firebase**. It handled user authentication and stored their preferences, tasks, and layouts in Firestore, keeping everything synced in real-time across different browsers.
+
+## Engineering Hurdles: Scaling to 29k Reads
+
+Getting the extension to work locally was easy. Getting it to scale to 29,000+ database reads without bankrupting my Firebase free tier was where the real engineering happened.
+
+* **The Firebase Quota Trap:** When you open 50 tabs a day, making a fresh database read to Firebase on every single new tab is a recipe for disaster. I had to aggressively implement local caching using the browser's native `chrome.storage` API. DashTab was optimized to only fetch from Firebase when a change was explicitly made or a sync was forced, drastically cutting down redundant reads.
+* **The Background Worker Disconnect:** Browser extensions have a unique architecture where the UI (the new tab page) is completely decoupled from the background service workers. Passing state back and forth between React and the background scripts without causing memory leaks or race conditions required a very strict message-passing architecture.
+* **Optimizing for "Instant":** Every millisecond counts when you replace a core browser function. I had to audit the React bundle size and strip out heavy dependencies to ensure the time-to-interactive (TTI) was practically zero.
+
+## The Reality of Scale: Sunsetting DashTab
+
+As much as I loved building and optimizing DashTab, hitting scale on a free-tier cloud database eventually forces your hand. Maintaining the real-time sync infrastructure for a growing user base became too resource-intensive for a side project, and I ultimately made the tough decision to **deprecate the extension and shut down the Firebase servers.**
+
+DashTab taught me that scaling isn't always about handling massive server loads; sometimes, it's about optimizing the client to be as ruthlessly efficient as possible. Managing 29,000+ monthly reads effectively was an incredible crash course in caching, state persistence, and knowing when to gracefully sunset a piece of software.
+
+## Check It Out
+
+While the live servers are powered down and the extension is no longer active, the code lives on. If you want to poke around the architecture or see how the Firebase caching was implemented, you can check out the full repository on my [GitHub](https://github.com/ahmed-z5645/Dash-Tab).
