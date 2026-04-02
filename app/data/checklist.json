@@ -1,11 +1,11 @@
 [
-  { "id": "1",  "text": "Learn to play guitar",                        "checked": true,  "note": "" },
+  { "id": "1",  "text": "Learn to play an instrument",                        "checked": true,  "note": "" },
   { "id": "2",  "text": "See a solar eclipse",                               "checked": true, "note": "" },
   { "id": "3",  "text": "Win a hackathon",                               "checked": true, "note": "" },
   { "id": "4",  "text": "Give a speech",          "checked": true,  "note": "" },
   { "id": "5",  "text": "Climb a mountain",             "checked": true, "note": "" },
   { "id": "6",  "text": "Work in a research lab",                        "checked": true,  "note": "" },
-  { "id": "7",  "text": "Run a half marathon",                         "checked": false, "note": "" },
+  { "id": "7",  "text": "Perform with the guitar",                         "checked": true, "note": "" },
   { "id": "8",  "text": "Make an album",                      "checked": false, "note": "" },
   { "id": "9",  "text": "See the northern lights",                     "checked": false,  "note": "" },
   { "id": "10", "text": "Get my first publication",               "checked": false, "note": "" },
@@ -15,7 +15,7 @@
   { "id": "14", "text": "Complete a thru-hike",             "checked": false, "note": "" },
   { "id": "15", "text": "Bench 225",                        "checked": false, "note": "" },
   { "id": "16", "text": "Drive across a country",                     "checked": false, "note": "" },
-  { "id": "17", "text": "Perform with the guitar",                  "checked": false,  "note": "" },
+  { "id": "17", "text": "Run a half marathon",                  "checked": false,  "note": "" },
   { "id": "18", "text": "Write a book",                         "checked": false, "note": "" },
   { "id": "19", "text": "Complete university",    "checked": false, "note": "" },
   { "id": "20", "text": "Visit every continent",    "checked": false, "note": "" }

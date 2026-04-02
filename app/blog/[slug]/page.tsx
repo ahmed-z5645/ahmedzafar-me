@@ -8,6 +8,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeKatex from "rehype-katex";
 import "katex/dist/katex.min.css";
 import GithubLink from "../../components/mdx/github-link";
+import SiteLink from "../../components/mdx/site-link";
 import Header from "../../components/header/header";
 import Footer from "../../components/footer/footer";
 import { getAllPosts, getPostBySlug } from "../../lib/blog";
@@ -143,6 +144,7 @@ export default async function PostPage({
                   <span className="caption">{children}</span>
                 ),
                 GithubLink,
+                SiteLink,
               }}
             />
           </div>

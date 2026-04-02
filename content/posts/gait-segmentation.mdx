@@ -1,0 +1,149 @@
+---
+title: "Reaching 98% accuracy using machine learning to classify biomechanical gait segments"
+date: "2026-03-18"
+tags: ["engineering", "software", "biomedical", "extracurricullar", "machine-learning", "project"]
+excerpt: "Using temporal convolutional networks to segment gait cycles and extract clinically meaningful recovery metrics from wearable sensor data."
+description: "Using temporal convolutional networks to segment gait cycles and extract clinically meaningful recovery metrics from wearable sensor data."
+published: true
+ogImage: ""
+---
+
+> **Project Goal:** To develop a machine learning pipeline capable of segmenting gait cycles into six biomechanical phases and extracting clinical recovery metrics from wearable sensor data to monitor post-surgical knee rehabilitation.
+
+**Tech Stack:** `Python`, `PyTorch`, `ONNX`, `NumPy`, `SciPy`
+
+<GithubLink href="https://github.com/McMaster-BMETT/gait-segmentation-classifier" /> 
+
+---
+
+## Project Overview
+
+Recovering from knee surgery is a slow and uncertain process. Clinicians rely on periodic in-office assessments to judge how a patient's gait is progressing, but those snapshots can miss the full picture. What if a small wearable device could continuously track gait quality and flag when rehabilitation is stalling, or when a patient is ready to return to sport?
+
+That question drove this sub-project. We set out to build a machine learning pipeline that takes raw sensor data from a wearable device strapped to the knee: an ESP32 board equipped with a BNO08x IMU, a TLx493D magnetometer, and two EMG channels. The system produces two primary outputs:
+
+1. **Per-timestep gait phase labels**, segmenting each stride into its six biomechanical phases: initial contact, loading response, mid stance, terminal stance, initial swing, and terminal swing.
+2. **Clinical recovery metrics**, extracted from the predicted phases: quadriceps inhibition index (QII), hamstring-to-quadriceps ratio (H:Q), phase-gated range of motion (ROM), and limb symmetry index (LSI).
+
+The end-to-end system spans data generation, model training, evaluation, and an interactive dashboard for visualizing results across four healing stages, ranging from acute injury through full recovery.
+
+---
+
+## The Data: Synthetic by Necessity
+
+While real patient data is the gold standard, it is scarce and ethically constrained. Because our project timeline did not allow for the collection of real patient data, we built a synthetic data generator grounded in published biomechanical norms and clinical rehabilitation literature. Using synthetic data was not a desired feature of the project, but rather a necessary workaround to ensure the pipeline could be developed and validated in the absence of a real-world dataset.
+
+Each synthetic gait cycle produces eight sensor channels sampled at 50 Hz:
+
+| Channel | Source | Signal Characteristic |
+| :--- | :--- | :--- |
+| `imu_roll` | BNO08x IMU | Compensatory lateral trunk sway |
+| `imu_pitch` | BNO08x IMU | Forward lean oscillation |
+| `imu_yaw` | BNO08x IMU | **Knee flexion/extension angle** |
+| `mag_x/y/z` | TLx493D Magnetometer | Phase-locked perturbations + drift |
+| `emg_quad` | ADC Channel 1 | Quadriceps activation envelope |
+| `emg_ham` | ADC Channel 2 | Hamstring activation envelope |
+
+The generator models four healing stages, each with distinct biomechanical signatures:
+
+* **Stage 1: Injured.** Slow cadence (1.8s cycles), limited swing flexion (35 degrees), high compensatory roll (8 degrees), severe quad inhibition (40%), and elevated kinematic noise.
+* **Stage 2: Early Rehab.** Moderate improvements across the board. Cycle duration drops to 1.5s, swing flexion reaches 45 degrees, and quad inhibition eases to 25%.
+* **Stage 3: Late Rehab.** Approaching normal gait. Swing flexion hits 55 degrees, compensatory movements are minimal, and quad activation is strong.
+* **Stage 4: Healthy.** Normal gait. Brisk 1.05s cycles, 60 degrees of swing flexion, negligible compensation, and near-full quad recruitment.
+
+The EMG channels are generated using Gaussian envelope models centered on known activation timing: quadriceps fire during loading response and terminal swing, while hamstrings fire during initial contact and late swing. The inhibition parameter directly scales down quad activation in injured stages, mimicking the muscle inhibition seen after surgery.
+
+---
+
+## The Model: A Bidirectional Temporal Convolutional Network
+
+### Why a TCN?
+
+Gait phase segmentation is a sequence labeling problem. While recurrent architectures are traditional, temporal convolutional networks (TCNs) offer several practical advantages:
+
+* **Parallelizable training:** No sequential dependency between timesteps during the forward pass.
+* **Stable gradients:** No vanishing or exploding gradient problems over long sequences.
+* **Tunable receptive field:** Dilated convolutions let you control exactly how much temporal context the model sees.
+* **Small footprint:** Critical for eventual deployment on an ESP32 microcontroller.
+
+### Architecture
+
+The model, `GaitTCN`, is a stack of four residual TCN blocks followed by a linear output projection.
+
+```text
+Input: (B, 8, T)         8 sensor channels, T timesteps
+  |
+  v
+Conv1d(8 -> 64)          Input projection
+  |
+  v
+TCNBlock(64, dilation=1)
+TCNBlock(64, dilation=2)
+TCNBlock(64, dilation=4)
+TCNBlock(64, dilation=8)
+  |
+  v
+Conv1d(64 -> 6)          Per-timestep classification head
+  |
+  v
+Output: (B, 6, T)        Logits for 6 gait phases
+```
+
+Each `TCNBlock` is a pre-activation residual unit. The dilation pattern [1, 2, 4, 8] with kernel size 3 gives an effective receptive field of approximately 31 timesteps (about 0.6 seconds at 50 Hz). This is enough to capture the context of a full gait phase without seeing the entire cycle. The model uses **non-causal (symmetric) padding**, meaning it looks both forward and backward in time.
+
+The total parameter count is **100,806**, which is small enough to fit comfortably on a microcontroller after quantization.
+
+### Training Configuration
+
+| Setting | Value |
+| :--- | :--- |
+| Optimizer | AdamW (lr=1e-3, weight_decay=1e-4) |
+| Scheduler | Cosine annealing over 100 epochs |
+| Loss | Weighted cross-entropy with label smoothing (0.05) |
+| Batch size | 64 |
+| Early stopping | Patience of 15 epochs on validation loss |
+
+---
+
+## Results
+
+### Phase Segmentation Accuracy
+
+The trained model achieved **98.3% overall test accuracy** on held-out sessions across all four healing stages. The model handles variable-length sequences and correctly segments all six phases, including the brief initial contact phase.
+
+### Clinical Metric Progression
+
+The real test of a gait segmenter is whether the predicted phase boundaries are precise enough to extract valid clinical metrics.
+
+| Metric | Stage 1 (Injured) | Stage 2 (Early Rehab) | Stage 3 (Late Rehab) | Stage 4 (Healthy) |
+| :--- | :---: | :---: | :---: | :---: |
+| **QII** | 0.378 | 0.224 | 0.205 | 0.168 |
+| **H:Q Functional** | 0.144 | 0.130 | 0.113 | 0.112 |
+| **Swing Peak Flexion** | 43.9 deg | 49.5 deg | 57.1 deg | 61.3 deg |
+| **LSI Temporal** | 84.2% | 84.7% | 84.7% | 84.1% |
+
+**Quadriceps Inhibition Index (QII):** Drops from 0.378 (38% inhibition) to 0.168 (17%), approaching the return-to-sport threshold. The monotonic decrease across stages confirms the model accurately isolates loading response activation.
+
+**Swing Peak Flexion:** Progresses from 43.9 degrees to 61.3 degrees, a 17.4-degree improvement that tracks the healing profiles exactly. This metric depends on identifying the initial swing phase boundary with high precision.
+
+---
+
+## Reflection
+
+### What Went Well
+
+The synthetic data approach, while used because we did not have enough time to collect real data, provided an excellent foundation. Building a parameterized generator forced us to formalize our assumptions about how gait changes during recovery. Every parameter maps to a measurable clinical quantity, making the system interpretable from the start.
+
+The TCN architecture was the right choice. At roughly 100K parameters, the model is small and efficient. Tying phase segmentation to clinical metrics created a natural validation loop: we could ask if the QII trend made clinical sense, grounding the machine learning work in the actual clinical question.
+
+### Limitations and Honest Caveats
+
+Synthetic data is not real data. The generator produces clean healing stages, but real patient data is messier due to asymmetric patterns and sensor noise. The 98.3% accuracy will likely drop on real recordings. The synthetic pipeline is a development scaffold, not a substitute for clinical validation.
+
+Furthermore, the non-causal architecture limits real-time use. The current model looks both forward and backward, which is fine for analyzing recorded sessions but unusable for live feedback during a therapy session. Finally, our clinical metric thresholds need validation against gold-standard lab equipment to ensure sensor-derived metrics correlate with medical benchmarks.
+
+The immediate next steps involve collecting real gait data and exploring quantization for the ESP32. The pipeline described here is the first step toward a closed-loop rehabilitation tool.
+
+---
+
+*This project was developed as part of the McMaster Biomedical Engineering Technical Team (BMETT) program, 2025-26.*

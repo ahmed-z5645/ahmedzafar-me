@@ -1,6 +1,6 @@
 ---
 title: "Leading full-stack, machine learning, and firmware development"
-date: "2026-03-09"
+date: "2026-03-08"
 tags: ["engineering", "software", "biomedical", "extracurricullar", "machine-learning", "firmware"]
 excerpt: "Leading a team competing against 10 universities across Canada — building full-stack systems, ML pipelines, and firmware all at once."
 description: "Leading a team competing against 10 universities across Canada — building full-stack systems, ML pipelines, and firmware all at once."
@@ -8,8 +8,38 @@ published: true
 ogImage: ""
 ---
 
-> The McMaster Biomedical Engineering Technical Team is currently in overdrive mode. On March 14th, 2026, we'll be competing at a national level!
+In October 2025, I started my position as the Software Lead of the McMaster Biomedical Engineering Technical Team. Although I had project manager experience and was active in the software and biomedical intersection, taking on a project at this scale, with an organization of over 50 people, and beginning our project two months after every other team was certainly a daunting task. Additionally, the idea of being the **only** software lead (unlike other technical sub-team structures) only added to this stress.
 
-More details about this years incredible projects, and future research and development will be released after the true north biomedical enginnering competition (including my post-competition-36-hour-nap).
+## Project Outline:
 
-After all, the software lead of the club leaking all the secrets a few days before the competition really wouldn't be a great look on me...
+### **The Problem**
+
+ACL injuries affect hundreds of thousands of individuals annually, yet a reliance on **subjective measurements**, such as patient-reported pain scales, often hinders post-surgical recovery. Existing wearable technologies typically measure either joint mobility or muscle activation in isolation, failing to provide a comprehensive view of how movement is generated at the muscular level during natural activities like walking.
+
+We were tasked with simplifying knee rehabilitation using a wearable device to make measurable, communicative steps toward a return to a healthy, active life.
+
+### **The Solution: TrACL**
+
+TrACL addresses these gaps by synchronizing kinematic data with neuromuscular activation within a single, user-friendly platform.
+
+* **Mechanical Design:** The system features a **two-piece semi-rigid cuff architecture** positioned on the thigh and shank. Constructed from thermoformed plastic with padded backing, these cuffs ensure **repeatable sensor placement** across sessions while allowing for unrestricted natural knee motion.  
+* **Electrical Sensing:** The hardware incorporates synchronized **Inertial Measurement Units (IMUs)** and magnetometers to capture joint angles and range of motion (ROM). Simultaneously, **surface electromyography (EMG)** sensors placed over the quadriceps and hamstrings record muscle activation timing and amplitude.  
+* **Software & Data Integration:** Data is transmitted wirelessly via **Bluetooth** to a mobile application. This application collects data with the intention of streamlining the patient and physiotherapist connection. Using gamification, habit tracking, and live sensor readings (among other features), it takes the guesswork out of rehabilitation programs. Additionally, the data can be fed into **a gait segmentation machine learning model** to divide movement into stance and swing phases, allowing for phase-specific analysis. Finally, after every exercise session, a risk factor model is used to estimate re-injury risk.
+
+As the software lead, I wanted to continue to be as technical as possible. Although I designed the entire architecture, ran meetings, and planned sprints, I found time to own entire verticals of the project. It was important to me that I supported my team throughout the process as if I were also a general member. Nonetheless, I am incredibly proud of this team and all of the challenges we overcame in the 6 months we pursued the project. Research and development on trACL will continue throughout the 2026-2027 academic term, but under different supervision (as I will be Software Lead on the next competitions project!).
+
+My main contributions were made in the application development and gait segmentation development. Please see the attached GitHub repos and articles for more information.
+
+### Gait Segmentation Model: 
+<SiteLink href="/blog/gait-segmentation" />
+<GithubLink href="https://github.com/McMaster-BMETT/gait-segmentation-classifier" />
+
+### Physiotherapist X Patient Application:
+<SiteLink href="/blog/bmett-app" />
+<GithubLink href ="https://github.com/McMaster-BMETT/knee-rehab-app" />
+
+### Competition: 
+
+<img src="/blog/bmett/team.jpg" alt="team photo!" />
+
+Our team placed 7th nationally at the competition. Thank you to the True North Biomedical Engineering Competition for an amazing inaugural year\!

@@ -1,0 +1,108 @@
+---
+title: "Strengthing the connection between patients and physiotherapists using a mobile application"
+date: "2026-03-18"
+tags: ["engineering", "software", "biomedical", "extracurricullar", "mobile-development"]
+excerpt: "A McMaster Biomedical Engineering Technical Team (BMETT) project focused on building full-stack systems, ML pipelines, and firmware to enhance musculoskeletal rehabilitation."
+description: "A McMaster Biomedical Engineering Technical Team (BMETT) project focused on building full-stack systems, ML pipelines, and firmware to enhance musculoskeletal rehabilitation."
+published: true
+ogImage: ""
+---
+
+> **Project Goal:** To bridge the gap between clinical visits by providing real-time biofeedback, injury risk assessment, and clinician oversight through a mobile application paired with wearable sensors.
+
+**Tech Stack:** `React Native`, `Expo`, `TypeScript`, `Bluetooth`
+<GithubLink href ="https://github.com/McMaster-BMETT/knee-rehab-app" />
+---
+
+## Project Overview
+
+Knee injuries are among the most common musculoskeletal issues, and rehabilitation is often a long, tedious process. Patients struggle with adherence, physiotherapists lack real-time insight into at-home sessions, and the gap between clinical visits leaves room for improper form and re-injury. **TRACL** was built to bridge that gap.
+
+TRACL is a mobile application developed as part of the McMaster BMETT (Biomedical Engineering Technical Team) 2025–26 capstone project. The app pairs with a custom ESP32-based wearable sensor sleeve that streams real-time IMU (Inertial Measurement Unit), magnetometer, and EMG (electromyography) data over Bluetooth Low Energy (BLE). The data feeds into a live session interface that tracks range of motion, muscle activation, and form quality, and at the end of each session, a machine learning model assesses injury risk based on the collected biomechanical data.
+
+The core goals of TRACL are:
+
+* **Real-time biofeedback:** Patients see their knee angle, muscle activation heat maps, and form warnings as they exercise.
+* **Injury risk assessment:** A TensorFlow model analyzes session data and outputs a risk classification.
+* **Gamification:** Streaks, weekly challenges, and progress tracking keep patients engaged.
+* **Dual-role interface:** Both patients and physiotherapists use the same app with role-specific views.
+* **Clinician oversight:** Physiotherapists can prescribe exercise plans, review session history, and flag concerning trends.
+
+The team consisted of five contributors working across hardware, firmware, software, and machine learning. My role was the software lead: I owned the app architecture, built the core screens and services, integrated the BLE pipeline and ML model, and managed the codebase through PR reviews and merges.
+
+---
+
+## Bluetooth Low Energy Pipeline
+
+This was the most technically challenging part of the project. The ESP32 wearable streams multi-line text blocks over the Nordic UART Service (NUS). The BLE hook handles the full connection lifecycle, including permission handling for Android API 31+, adapter polling, and device scanning for "ESP32_SENSORS". It subscribes to the TX characteristic and accumulates base64-decoded chunks in a buffer, using regex-based parsing to split complete blocks into structured `SensorFrame` objects.
+
+
+
+### Signal Processing
+
+Raw sensor data goes through several processing stages before reaching the UI:
+
+**EMG Smoothing:** The app applies an exponential moving average (alpha = 0.4) to smooth the raw 12-bit ADC signal sent by the firmware.
+
+**MVC Normalization:** During calibration, we capture the patient's Maximum Voluntary Contraction (MVC). All subsequent EMG readings are normalized as a percentage:
+
+$$normalized = \frac{raw - restBaseline}{mvcPeak - restBaseline} \times 100$$
+
+**Tilt-Compensated Heading:** The magnetometer heading is projected onto the horizontal plane using a 2D rotation matrix derived from the IMU's pitch and roll. This isolates true leg rotation from knee flexion artifacts.
+
+---
+
+## Live Session Experience
+
+The `live-session.tsx` screen implements a robust state machine: `Calibration (rest -> mvc -> done) -> Active -> Finished`.
+
+**Active tracking features include:**
+* Real-time knee angle display.
+* Muscle heat map bars for quad and hamstring activation.
+* Fatigue warnings when quad effort exceeds 85% MVC.
+* Rotation warnings when leg rotation exceeds 20 degrees from calibration.
+
+Sensor sample collection uses `useRef` instead of `useState` to avoid stale closures in the BLE event handler callbacks and to prevent unnecessary re-renders. Only real BLE data enters the sample buffer to keep the ML input clean.
+
+---
+
+## Machine Learning & Backend Integration
+
+The ML pipeline spans two systems:
+
+1.  **Backend:** A FastAPI server hosting a TensorFlow SavedModel on Railway. It takes biomechanical features, such as age, gender, knee angle, and velocity, and outputs an injury risk classification (Low, Medium, or High).
+2.  **Client:** A clean HTTP client that POSTs session data to the Railway endpoint.
+
+On session completion, the app aggregates collected sensor samples with the user's health profile and sends it to the model. The result is displayed as a color-coded risk badge with probability bars.
+
+---
+
+## Dual-Role UI and Gamification
+
+To ensure patient adherence, the gamification service tracks streaks, weekly progress, and total sessions. All stats persist locally via `AsyncStorage`.
+
+The app serves two user types from a single codebase:
+* **Patients:** See read-only dashboards, exercise plans, and progress metrics.
+* **Physiotherapists:** Use management interfaces to prescribe exercises, review patient sessions, and view adherence scores.
+
+---
+
+## Personal Reflection
+
+### What I Learned
+
+**Strategic Architectural Scaffolding:** I learned that senior level engineering is less about writing code and more about managing future complexity. Placing the `BLEProvider` at the root layout level was a calculated decision to minimize architectural debt. By centralizing the state, we avoided "prop drilling" and ensured that the connection persisted across the entire application lifecycle, significantly reducing refactoring costs as the project scaled.
+
+**Decoupling Logic from Framework Concerns:** A major takeaway was the importance of keeping business logic and signal processing isolated from the UI framework. By extracting our math and data processing into pure, framework-agnostic functions, we achieved two things: high testability and future portability. This separation ensures that our mission-critical algorithms (like MVC normalization) are not held hostage by React Native's render cycle or platform-specific dependencies.
+
+**Engineering for Environmental Entropy:** Integrating software with physical hardware is a lesson in non-determinism. In a senior role, you learn to expect sensor drift, packet loss, and physical variability. I shifted my focus from "ideal-path" coding to building defensive data pipelines that could handle the messy reality of IoT devices, ensuring the app remained resilient even when the physical environment was unpredictable.
+
+**Technical Governance and Team Velocity:** As the software lead, I discovered that team coordination is a balancing act between developer autonomy and systemic coherence. Managing PRs was not just about catching bugs: it was about enforcing a unified "code vision" and ensuring that individual contributions didn't compromise the overall system stability. Maintaining high velocity while upholding strict architectural standards is a core responsibility of engineering leadership.
+
+### Looking Forward
+
+TRACL is a working prototype. While the bones are solid, the next steps include integrating real authentication, expanding the ML training data with real clinical sessions, and improving BLE robustness across more device types. The architecture successfully supports persistent connections, real-time processing, and cloud inference.
+
+---
+
+*This project was developed as part of the McMaster Biomedical Engineering Technical Team (BMETT) program, 2025-26.*
