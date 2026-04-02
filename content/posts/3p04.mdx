@@ -1,0 +1,68 @@
+---
+title: "IV Site Detection System: Automated Vein Recognition for Safer IV Insertion"
+date: "2026-04-01"
+tags: ["engineering", "software", "computer-vision", "biomedical", "machine-learning"]
+excerpt: "An end-to-end computer vision system designed to identify optimal IV sites and physically mark them using a coordinated software-hardware pipeline."
+description: "An end-to-end computer vision system designed to identify optimal IV sites and physically mark them using a coordinated software-hardware pipeline."
+published: true
+ogImage: ""
+---
+
+> **Project Goal:** To design and build an end-to-end computer vision system that detects optimal IV insertion sites on the forearm, communicates coordinates to an ESP32-controlled laser pointer, and verifies accuracy through a pixel-to-millimetre calibration workflow.
+
+**Tech Stack:** `Python`, `FastAPI`, `React`, `OpenCV`, `TensorFlow`
+<GithubLink href ="https://github.com/ahmed-z5645/IV-insertion-site-detector" />
+
+---
+
+## Project Overview
+
+Intravenous (IV) insertion is one of the most common clinical procedures, yet it remains highly dependent on practitioner experience. Failed attempts lead to patient discomfort, bruising, and clinical inefficiency. This project aimed to reduce that variability by building an automated system that identifies optimal insertion sites and provides physical guidance via laser marking.
+
+The system operates across three distinct layers:
+* **Machine Learning Pipeline:** A Python-based engine that handles vein segmentation, feature extraction, and Gradient Boosting classification to rank insertion sites.
+* **FastAPI Backend:** A robust REST API that wraps the ML pipeline and manages low-latency communication with the microcontroller.
+* **React Frontend:** A clinician-facing interface for image uploads, real-time annotated overlays, and triggering the physical marking workflow.
+
+As the lead for the front-end, back-end, and machine learning stacks, I owned the end-to-end digital pipeline: from the initial pixel processing and model architecture to the development of the API and the user interface. While the project included a physical prototype and firmware for laser marking, those components were managed separately and ultimately highlighted the significant challenges of hardware-software integration.
+
+---
+
+## The Computer Vision Pipeline
+
+Detecting veins in varied lighting conditions is a significant challenge. The pipeline supports both **near-infrared (NIR) imaging** (which offers high hemoglobin contrast) and standard **visible-light photography**, making the tool accessible in diverse clinical environments.
+
+### Feature Extraction and Classification
+Instead of relying on black-box deep learning, we extracted 13 biomechanically relevant features per candidate site, including:
+* **Frangi Vesselness Response:** To quantify the "tubular" likelihood of a structure.
+* **Geometric Stability:** Measuring diameter, straightness, and curvature.
+* **Anatomic Context:** Calculating junction distance and edge proximity.
+
+The system uses an interior masking strategy (via Otsu thresholding and morphological operations) to ignore veins near the wrist or the edge of the arm, which are clinically difficult to access. A Gradient Boosting classifier then ranks these candidates, returning the top-K sites for clinician approval.
+
+---
+
+## Verification and Testing Strategy
+
+In medical software, functional code is insufficient: verification must be exhaustive. I implemented a two-tiered testing architecture to ensure the software remained robust despite the inconsistencies of the physical hardware:
+
+1.  **Unit and Integration Tests (pytest):** We utilized synthetic image generation (grayscale NIR and color visible-light) to ensure deterministic testing without requiring a massive dataset. This caught critical regressions in mode detection and resizing behavior before they reached production.
+2.  **Inference Speed Benchmarking:** The frontend includes a structured protocol that measures latency across multiple trials. In a clinical setting, an accurate model that takes 60 seconds to run is a failure; this dashboard ensured we maintained a 90% pass rate for sub-second inference.
+
+---
+
+## Personal Reflection
+
+### What I Learned
+
+**Strategic Architectural Scaffolding:** I learned that senior-level engineering is about creating clear boundaries between high-reliability software and unpredictable external dependencies. By placing the ML and image processing logic behind a clean FastAPI REST boundary, I protected the core intelligence of the system from the instabilities of the firmware and physical prototype. This decoupling allowed the software stack to maintain high performance and testability even when the hardware components struggled.
+
+**Defensive Full-Stack Engineering:** Managing the front-end, back-end, and ML segments taught me that a system is only as strong as its weakest integration point. I shifted my focus toward building defensive data pipelines that could handle inconsistent inputs. This included implementing aggressive preprocessing for visible-light images and building a confidence-warning system in the React UI to alert clinicians when the image quality was insufficient for a reliable prediction.
+
+**The Reality of Hardware-Software Friction:** A profound takeaway from this project was the "garbage in, garbage out" principle regarding physical sensors and actuators. While the software reached a high level of mathematical precision, the physical prototype and firmware limitations introduced errors that software could not entirely compensate for. In a senior role, you learn to account for these "physical-layer" failures by building in calibration routines and error-logging systems that expose exactly where the precision is lost.
+
+**Decoupling for Portability:** By extracting our signal processing and feature extraction into pure, framework-agnostic Python functions, I ensured the ML core was not held hostage by the specific web or hardware environment. This separation allowed us to run fast, reliable unit tests on the math itself, which was essential for debugging the complex coordinate transformations required for the laser marking.
+
+### Looking Forward
+
+This system serves as a functional proof-of-concept for automated clinical assistance. Future iterations would require a complete overhaul of the physical marking system to match the precision of the CV pipeline. The project successfully demonstrates how a rigorous software architecture and a layered testing strategy can maintain system integrity even when working with experimental or underperforming hardware components.
