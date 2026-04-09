@@ -41,11 +41,13 @@ When doing a simple comparison of the two, you get the following table:
 | Photo Quality | Better | Worse |
 | Reproducibility | Worse | Better |
 
+Alternative 1 was chosen.
+
 ### System diagram
 
 <figure>
   <img src="/blog/3p04/system-diagram.png" alt="Sequence diagram of the system" />
-  <figcaption>Figure 1: the sequence diagram of the system outlining all major functions..</figcaption>
+  <figcaption>Figure 1: the sequence diagram of the system outlining all major functions.</figcaption>
 </figure>
 
 ### Machine learning architecture
@@ -53,10 +55,10 @@ When doing a simple comparison of the two, you get the following table:
 Before I get into any iterations, I want to explain the general image workflow when something is uploaded to the system using layman's terms.
 
 > Step 1 \- Figure out what kind of image it is:  
-> Is this a near-infrared (NIR) or a regular visible light image? This is done by checking if the image is in greyscale
+> Is this a near-infrared (NIR) or a regular visible light image? This is done by checking if the image is in greyscale.
 
 > Step 2 \- Enhance the image:  
-> The image must get cleaned before any detection happens. If this is an NIR image, the system applies CLAHE (a contrast enhancement algorithm) and then a bilateral filter to smooth out noise. If this is a normal image, the system finds the best colour channel and masks anything that doesn’t look like skin tone. Then CLAHE is applied twice then the brightness is normalized to deal with uneven lighting.
+> The image must get cleaned before any detection happens. If this is an NIR image, the system applies CLAHE (a contrast enhancement algorithm) and then a bilateral filter to smooth out noise. If this is a normal image, the system finds the best colour channel and masks anything that doesn’t look like skin tone. Then CLAHE is applied twice before the brightness is normalized to deal with uneven lighting.
 
 > Step 3 \- Find the Safe Zone:  
 > Before the veins are found, the system draws an acceptance boundary where veins are treated as valid. This is a fix of two big false positives that are discussed below.
@@ -76,7 +78,7 @@ Before I get into any iterations, I want to explain the general image workflow w
 > Step 8 \- Render the output  
 > A green semi-transparent overlay highlights detected vein regions. Red crosshairs levelled with its rank and confidence score are placed at each of the top 5 sites.
 
-#### Continuted iterations:
+#### Continued iterations:
 
 After the base model architecture was laid out, qualitative visual testing was conducted to spot any major bugs. Two major changes needed to be made to the model
 
@@ -84,7 +86,7 @@ After the base model architecture was laid out, qualitative visual testing was c
 
 <figure>
   <img src="/blog/3p04/edges.png" alt="a faulty classification where the edges of the hand are highlighted " />
-  <figcaption>Figure 2: the output of the model before any interations.</figcaption>
+  <figcaption>Figure 2: the output of the model before any iterations.</figcaption>
 </figure>
 
 To fix this, more preprocessing had to be done before candidate site comparisons:
@@ -129,7 +131,13 @@ After I was satisfied with the results of the machine learning model, and I cons
   <figcaption>Figure 5: A still of the new improved front end design.</figcaption>
 </figure>
 
-Additionally, rather than set a manual timer for our inference speed test, I created the /`demo` subpage. This subpage accepts ten photos and automates our speed test for us\!
+Additionally, rather than set a manual timer for our inference speed test, I created the `/demo` subpage. This subpage accepts ten photos and automates our speed test for us\!
+
+<br />
+<figure>
+  <video src="/blog/3p04/quick.mp4" autoPlay muted playsInline loop controls alt="A short partial video of the verifiication demo" />
+  <figcaption>Figure 5: A short partial video of the verifiication demo.</figcaption>
+</figure>
 
 #### Conclusion
 
