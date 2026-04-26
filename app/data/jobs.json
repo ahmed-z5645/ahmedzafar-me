@@ -1,26 +1,34 @@
 [
   {
-    "id": "stoat",
-    "company": "Stoat",
-    "role": "Co-Founder and CTO",
-    "date": "NOW",
-    "description": ["Machine learning infra and deployment.", "Instantly  deploy  and  serve  your models!"],
+    "id": "swift",
+    "company": "Swiftware Labs",
+    "role": "Undergraduate Researcher",
+    "date": "[NOW]",
+    "description": ["Leading a research project on sparsification and compression of deep learning genomics models to increase accuracy of distal variant effect prediction."],
     "link": "https://stoated.dev"
   },
   {
     "id": "teaching",
     "company": "McMaster University",
     "role": "Lead Teaching Assistant",
-    "date": "NOW",
+    "date": "[NOW]",
     "description": ["Teaching incredibly talented students to design, code, build, and think ambitiously :)."],
     "note": "To my old and new students, you all continue to amaze me with your achievements.",
     "link": "https://www.eng.mcmaster.ca/ibiomed/"
   },
   {
+    "id": "stoat",
+    "company": "Stoat",
+    "role": "Co-Founder and CTO",
+    "date": "[2025]",
+    "description": ["Machine learning infra and deployment.", "Instantly  deploy  and  serve  your models!"],
+    "link": "https://stoated.dev"
+  },
+  {
     "id": "arche",
     "company": "Arche Biotechnologies",
     "role": "Software Engineering Intern",
-    "date": "2024",
+    "date": "[2024]",
     "description": ["Designed platform architecture and shipped full stack for a leading health tech start up."],
     "link": "https://www.archebiotech.ca/"
   },
@@ -28,7 +36,7 @@
     "id": "research",
     "company": "Biomedic.ai Labs",
     "role": "AI/ML Researcher Intern",
-    "date": "2024",
+    "date": "[2024]",
     "description": ["Shipped models to predict surgical intention.", "Built an application to assess the use of machine learning in research."],
     "note": "Such a fast and rewarding first co-op experience!",
     "link": "https://biomedic.ai/"

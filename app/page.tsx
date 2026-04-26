@@ -43,7 +43,7 @@ export default function Home() {
           <Header />
             
           {/* Section: Experience */}
-          <section className="mb-12 mt-0" id="experience">
+          <section className="mb-12 mt-0 lg:mt-1" id="experience">
             <Info />
           </section>
 

@@ -407,3 +407,54 @@ a, button, [role="button"], .group {
   margin-top: 3em;
   padding-top: 1.5em;
 }
+
+/* =========================================
+   BULLETPROOF ACCORDION (CHECKBOX HACK)
+   ========================================= */
+
+/* Hide the actual checkbox */
+.accordion-toggle {
+  display: none;
+}
+
+/* 1. Animate height using grid rows (0fr to 1fr) */
+.accordion-wrapper {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.accordion-toggle:checked ~ .accordion-wrapper {
+  grid-template-rows: 1fr;
+}
+
+/* Inner container MUST have overflow hidden to clip the content during the grid transition */
+.accordion-content {
+  overflow: hidden;
+}
+
+/* 2. The actual text getting the blur/transform treatment */
+.accordion-inner {
+  opacity: 0;
+  transform: translateY(-8px);
+  filter: blur(4px);
+  transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  margin-top: 0; /* Prevents height jumping during animation start */
+}
+
+.accordion-toggle:checked ~ .accordion-wrapper .accordion-inner {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  margin-top: 0.5rem; /* Restores the mt-2 equivalent */
+}
+
+/* 3. Smooth Chevron Rotation */
+.chevron {
+  transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* We now target the sibling .accordion-header instead of .accordion-label */
+.accordion-toggle:checked ~ .accordion-header .chevron {
+  transform: rotate(180deg);
+}

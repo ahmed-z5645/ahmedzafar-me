@@ -1,39 +1,72 @@
 import jobs from "../../data/jobs.json";
 
 export default function Info() {
-  return(
-    <div className="space-y-8 font-sans">
-      <h1 className="lg:hidden font-[family-name:var(--font-geist-mono)] text-[20px]">Work Experience:</h1>
+  return (
+    <div className="space-y-2 font-sans">
+      <h1 className="lg:hidden font-[family-name:var(--font-geist-mono)] text-[20px]">
+        Work Experience:
+      </h1>
       {jobs.map((job) => (
-        <div key={job.id} className="grid grid-cols-[auto_1fr] lg:grid-cols-[100px_220px_1fr] gap-x-3 gap-y-0.5 lg:gap-4 lg:gap-y-0 items-start">
+        <div
+          key={job.id}
+          className="relative grid grid-cols-[auto_1fr] lg:grid-cols-[1fr_2fr_3fr] gap-x-3 gap-y-0.5 lg:gap-4 lg:gap-y-0 items-start group"
+        >
+          {/* 1. Hidden Checkbox */}
+          <input
+            type="checkbox"
+            id={`toggle-${job.id}`}
+            className="accordion-toggle absolute opacity-0 pointer-events-none"
+          />
+
+          {/* 2. Absolute Label: Covers the entire grid to make the row clickable */}
+          <label
+            htmlFor={`toggle-${job.id}`}
+            className="absolute inset-0 z-0 cursor-pointer"
+            aria-label={`View details for ${job.role}`}
+          />
 
           {/* Column 1: Date */}
-          <div className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58]">
+          {/* Added group-hover:text-accent and transition-colors here */}
+          <div className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] group-hover:text-accent transition-colors pointer-events-none relative z-0">
             {job.date}
           </div>
 
           {/* Column 2: Company */}
-          <div>
-            <a href={job.link} className="cursor-pointer text-body text-foreground hover:text-accent transition-colors">
+          <div className="relative z-10 w-fit">
+            <a
+              href={job.link}
+              className="cursor-pointer text-body text-foreground hover:text-accent transition-colors"
+            >
               {job.company}
             </a>
           </div>
 
-          {/* Column 3: Role & Description — spans both cols on mobile */}
-          <div className="col-span-2 lg:col-span-1 mt-0.5 lg:mt-0">
-            <h4 className="text-body text-foreground/[0.58]">
-              {job.role}
-            </h4>
-            <ul className="list-disc ml-5 mt-1 space-y-0 text-foreground/[0.58] text-body leading-snug">
-              {job.description.map((bulletPoint, index) => (
-                <li key={index} className="pl-1">{bulletPoint}</li>
-              ))}
-              {job.note && <li className="font-[family-name:var(--font-geist-sans)] note-annotation text-body mt-1 italic text-accent pl-1">{job.note}</li>}
-            </ul>
+          {/* Column 3: Role & Chevron */}
+          <div className="col-span-2 lg:col-span-1 mt-0.5 lg:mt-0 relative z-0 pointer-events-none flex justify-between items-center w-full lg:w-[90%] text-body text-foreground/[0.58] group-hover:text-accent transition-colors accordion-header">
+            <h4>{job.role}</h4>
+            <span className="chevron text-xs">▼</span>
+          </div>
+
+          {/* Dropdown Container: Starts at Column 3 (Position Name) */}
+          <div className="col-span-2 lg:col-start-3 lg:col-span-1 accordion-wrapper relative z-10 pointer-events-auto">
+            <div className="accordion-content">
+              <ul className="accordion-inner list-disc ml-4 space-y-0 text-foreground/[0.58] text-body leading-snug">
+                {job.description.map((bulletPoint, index) => (
+                  <li key={index} className="pl-1">
+                    {bulletPoint}
+                  </li>
+                ))}
+                {job.note && (
+                  <li className="font-[family-name:var(--font-geist-sans)] note-annotation text-body mt-1 italic text-accent pl-1">
+                    {job.note}
+                  </li>
+                )}
+              </ul>
+            </div>
           </div>
 
         </div>
       ))}
     </div>
-  )
+  );
 }
