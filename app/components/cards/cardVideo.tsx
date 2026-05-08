@@ -52,7 +52,6 @@ export default function CardVideo({
       muted
       playsInline
       preload="auto"
-      // @ts-expect-error — non-standard but respected by iOS Safari
       webkit-playsinline="true"
       disableRemotePlayback
       className="absolute inset-0 w-full h-full object-cover"
