@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import CardVideo from './cardVideo';
 
 /**
  * ProjectCard Component
@@ -14,16 +15,11 @@ export default function ProjectCard({ project, square }: { project: Record<strin
       {/* MEDIA CONTAINER */}
       <div className={`relative w-full rounded-xl overflow-hidden bg-black/5 dark:bg-white/10 [transform:translateZ(0)]${square ? " aspect-square" : ""}`}>
         {project.video ? (
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
+          <CardVideo
+            src={project.video}
             poster={project.poster}
-            className={square ? "absolute inset-0 w-full h-full object-cover" : "w-full h-auto object-cover"}
-          >
-            <source src={project.video} type="video/mp4" />
-          </video>
+            square={square}
+          />
         ) : project.image ? (
           <Image
             src={project.image!}
