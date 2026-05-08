@@ -14,27 +14,48 @@ export default function Cursor() {
   useEffect(() => {
     setIsTouch(window.matchMedia("(pointer: coarse)").matches);
 
+    const EDGE = 2;
     const moveCursor = (e: MouseEvent) => {
+      const { clientX: x, clientY: y } = e;
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      const atEdge =
+        x <= EDGE || y <= EDGE || x >= w - EDGE || y >= h - EDGE;
+
+      if (atEdge) {
+        setIsVisible(false);
+        return;
+      }
+
       if (!isVisible) setIsVisible(true);
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
+      cursorX.set(x);
+      cursorY.set(y);
       const target = e.target as HTMLElement;
       setIsHovered(!!target.closest('a, button, .cursor-pointer, [data-cursor]'));
     };
 
-    const handleMouseLeave = () => setIsVisible(false);
-    const handleMouseEnter = () => setIsVisible(true);
+    const handleDocLeave = () => setIsVisible(false);
+    const handleDocEnter = () => setIsVisible(true);
+    const handleBlur = () => setIsVisible(false);
     const handleTouch = () => setIsVisible(false);
 
+    const html = document.documentElement;
+
     window.addEventListener("mousemove", moveCursor);
-    document.addEventListener("mouseleave", handleMouseLeave);
-    document.addEventListener("mouseenter", handleMouseEnter);
+    html.addEventListener("mouseleave", handleDocLeave);
+    html.addEventListener("mouseenter", handleDocEnter);
+    html.addEventListener("pointerleave", handleDocLeave);
+    html.addEventListener("pointerenter", handleDocEnter);
+    window.addEventListener("blur", handleBlur);
     window.addEventListener("touchstart", handleTouch, { passive: true });
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-      document.removeEventListener("mouseenter", handleMouseEnter);
+      html.removeEventListener("mouseleave", handleDocLeave);
+      html.removeEventListener("mouseenter", handleDocEnter);
+      html.removeEventListener("pointerleave", handleDocLeave);
+      html.removeEventListener("pointerenter", handleDocEnter);
+      window.removeEventListener("blur", handleBlur);
       window.removeEventListener("touchstart", handleTouch);
     };
   }, [cursorX, cursorY, isVisible]);
