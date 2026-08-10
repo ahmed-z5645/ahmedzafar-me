@@ -12,7 +12,7 @@
     "company": "Swiftware Labs",
     "role": "Undergraduate Researcher",
     "date": "[2026]",
-    "description": ["Leading a research project on sparsification and compression of deep learning genomics models to increase accuracy of distal variant effect prediction."],
+    "description": ["Led a research project on sparsification and compression of deep learning genomics models to increase accuracy of distal variant effect prediction."],
     "link": "https://swiftware-lab.github.io/research.html"
   },
   {
@@ -23,14 +23,6 @@
     "description": ["Teaching incredibly talented students to design, code, build, and think ambitiously :)."],
     "note": "To my old and new students, you all continue to amaze me with your achievements.",
     "link": "https://www.eng.mcmaster.ca/ibiomed/"
-  },
-  {
-    "id": "stoat",
-    "company": "Stoat",
-    "role": "Co-Founder and CTO",
-    "date": "[2025]",
-    "description": ["Machine learning infra and deployment.", "Instantly  deploy  and  serve  your models!"],
-    "link": "https://stoated.dev"
   },
   {
     "id": "arche",
