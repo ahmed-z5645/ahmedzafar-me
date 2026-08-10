@@ -1,9 +1,17 @@
 [
   {
+    "id": "shop",
+    "company": "Shopify",
+    "role": "Machine Learning Engineer Intern",
+    "date": "[NOW]",
+    "description": ["Building and optimizing search and search relevance."],
+    "link": "https://shopify.com"
+  },
+  {
     "id": "swift",
     "company": "Swiftware Labs",
     "role": "Undergraduate Researcher",
-    "date": "[NOW]",
+    "date": "[2026]",
     "description": ["Leading a research project on sparsification and compression of deep learning genomics models to increase accuracy of distal variant effect prediction."],
     "link": "https://swiftware-lab.github.io/research.html"
   },
@@ -11,7 +19,7 @@
     "id": "teaching",
     "company": "McMaster University",
     "role": "Lead Teaching Assistant",
-    "date": "[NOW]",
+    "date": "[2024-26]",
     "description": ["Teaching incredibly talented students to design, code, build, and think ambitiously :)."],
     "note": "To my old and new students, you all continue to amaze me with your achievements.",
     "link": "https://www.eng.mcmaster.ca/ibiomed/"
