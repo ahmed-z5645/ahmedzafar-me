@@ -1,16 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+import type { CampingSearchResult } from "../../../lib/camping";
 
 export const dynamic = "force-dynamic";
-
-/** A song from the iTunes catalogue, before anyone has claimed it. */
-export type CampingSearchResult = {
-  id: string;
-  song: string;
-  artist: string;
-  album: string;
-  artwork: string;
-  appleUrl: string;
-};
 
 type ITunesTrack = {
   trackId?: number;

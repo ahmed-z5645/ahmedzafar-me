@@ -1,6 +1,11 @@
 import { Redis } from "@upstash/redis";
 import { NextRequest, NextResponse } from "next/server";
-import type { CampingSearchResult } from "./search/route";
+import {
+  manualId,
+  normalizeKey,
+  type CampingSearchResult,
+  type CampingTrack,
+} from "../../lib/camping";
 
 export const dynamic = "force-dynamic";
 
@@ -15,11 +20,7 @@ const redis = new Redis({
 const KEY = "camping:playlist";
 const MAX_TRACKS = 200;
 const MAX_NAME_LENGTH = 24;
-
-export type CampingTrack = CampingSearchResult & {
-  addedBy: string;
-  addedAt: number;
-};
+const MAX_FIELD_LENGTH = 200;
 
 async function readPlaylist(): Promise<CampingTrack[]> {
   const all = await redis.hgetall<Record<string, CampingTrack>>(KEY);
@@ -37,25 +38,48 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => null);
   const track = body?.track as Partial<CampingSearchResult> | undefined;
+  const manual = Boolean(body?.manual);
   const addedBy = String(body?.addedBy ?? "").trim().slice(0, MAX_NAME_LENGTH);
 
-  if (!track?.id || !track.song || !track.artist || !addedBy) {
+  const song = String(track?.song ?? "").trim().slice(0, MAX_FIELD_LENGTH);
+  const artist = String(track?.artist ?? "").trim().slice(0, MAX_FIELD_LENGTH);
+
+  if (!song || !artist || !addedBy) {
     return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
   }
+
+  const nkey = normalizeKey(song, artist);
+  // Catalogue picks are keyed by their Apple track id; typed-in songs get a
+  // deterministic id from the normalised name, so two people typing the same
+  // thing still collide on HSETNX.
+  const id = manual || !track?.id ? manualId(nkey) : String(track.id);
 
   if ((await redis.hlen(KEY)) >= MAX_TRACKS) {
     return NextResponse.json({ error: "Playlist is full" }, { status: 400 });
   }
 
+  // Cross-source duplicate check: catches "typed in by hand" vs "picked from
+  // the catalogue" for the same song, which have different ids. Best-effort —
+  // HSETNX below is what actually guarantees no exact-id double-write.
+  const existingByName = (await readPlaylist()).find((t) => t.nkey === nkey);
+  if (existingByName) {
+    return NextResponse.json(
+      { error: "Already in the playlist", addedBy: existingByName.addedBy },
+      { status: 409 }
+    );
+  }
+
   const entry: CampingTrack = {
-    id: String(track.id),
-    song: track.song,
-    artist: track.artist,
-    album: track.album ?? "",
-    artwork: track.artwork ?? "",
-    appleUrl: track.appleUrl ?? "",
+    id,
+    song,
+    artist,
+    album: manual ? "" : track?.album ?? "",
+    artwork: manual ? "" : track?.artwork ?? "",
+    appleUrl: manual ? "" : track?.appleUrl ?? "",
+    nkey,
     addedBy,
     addedAt: Date.now(),
+    manual,
   };
 
   const added = await redis.hsetnx(KEY, entry.id, entry);

@@ -2,17 +2,11 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-
-type Track = {
-  id: string;
-  song: string;
-  artist: string;
-  album: string;
-  artwork: string;
-  appleUrl: string;
-};
-
-type PlaylistTrack = Track & { addedBy: string; addedAt: number };
+import {
+  normalizeKey,
+  type CampingSearchResult as Track,
+  type CampingTrack as PlaylistTrack,
+} from "../lib/camping";
 
 const NAME_KEY = "campingName";
 const MAX_NAME_LENGTH = 24;
@@ -48,6 +42,10 @@ export default function CampingPlaylist() {
   const [searching, setSearching] = useState(false);
   const [pendingId, setPendingId] = useState<string | null>(null);
   const [message, setMessage] = useState("");
+
+  const [manualOpen, setManualOpen] = useState(false);
+  const [manualSong, setManualSong] = useState("");
+  const [manualArtist, setManualArtist] = useState("");
 
   // Ignore responses from searches the user has already typed past
   const searchSeq = useRef(0);
@@ -104,20 +102,27 @@ export default function CampingPlaylist() {
     setName(trimmed);
   }
 
-  async function addTrack(track: Track) {
-    if (!name || pendingId) return;
-    setPendingId(track.id);
+  async function addTrack(track: Track, manual = false) {
+    if (!name || pendingId !== null) return;
+    // Manual entries have no id yet — the server derives one from the name.
+    setPendingId(track.id || "manual");
     setMessage("");
 
     // Optimistic — reconciled with whatever the server sends back
-    const optimistic: PlaylistTrack = { ...track, addedBy: name, addedAt: Date.now() };
+    const optimistic: PlaylistTrack = {
+      ...track,
+      nkey: normalizeKey(track.song, track.artist),
+      addedBy: name,
+      addedAt: Date.now(),
+      manual,
+    };
     setPlaylist((prev) => [...prev, optimistic]);
 
     try {
       const res = await fetch("/api/camping", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ track, addedBy: name }),
+        body: JSON.stringify({ track, addedBy: name, manual }),
       });
       const data = await res.json().catch(() => ({}));
 
@@ -141,7 +146,24 @@ export default function CampingPlaylist() {
     }
   }
 
-  const addedBy = new Map(playlist.map((t) => [t.id, t.addedBy]));
+  // Keyed on the normalised name, not the id, so a song someone typed in by
+  // hand still shows as "already added" when the next person finds it in search.
+  const addedBy = new Map(playlist.map((t) => [t.nkey, t.addedBy]));
+
+  async function addManual(e: React.FormEvent) {
+    e.preventDefault();
+    const song = manualSong.trim();
+    const artist = manualArtist.trim();
+    if (!song || !artist) return;
+
+    await addTrack(
+      { id: "", song, artist, album: "", artwork: "", appleUrl: "" },
+      true
+    );
+    setManualSong("");
+    setManualArtist("");
+    setManualOpen(false);
+  }
 
   /* =========================================
      NAME GATE
@@ -214,7 +236,7 @@ export default function CampingPlaylist() {
       {!searching && results.length > 0 && (
         <ul className="mt-4 divide-y divide-foreground/10 border-y border-foreground/10">
           {results.map((track) => {
-            const owner = addedBy.get(track.id);
+            const owner = addedBy.get(normalizeKey(track.song, track.artist));
             return (
               <li key={track.id} className="flex items-center gap-4 py-3">
                 <Artwork src={track.artwork} alt={`${track.song} cover art`} />
@@ -243,6 +265,51 @@ export default function CampingPlaylist() {
           })}
         </ul>
       )}
+
+      {/* Escape hatch — Apple's search index doesn't have everything, and
+          the export resolves songs by name anyway, so typed-in entries work. */}
+      <div className="mt-4">
+        {manualOpen ? (
+          <form onSubmit={addManual} className="flex flex-col sm:flex-row gap-3">
+            <input
+              autoFocus
+              value={manualSong}
+              onChange={(e) => setManualSong(e.target.value)}
+              placeholder="song title"
+              className={`${mono} text-body flex-1 bg-glass/40 backdrop-blur-md rounded-xl border border-foreground/10 px-5 py-3 text-foreground placeholder:text-foreground/[0.40] outline-none focus:border-accent/40 transition-colors`}
+            />
+            <input
+              value={manualArtist}
+              onChange={(e) => setManualArtist(e.target.value)}
+              placeholder="artist"
+              className={`${mono} text-body flex-1 bg-glass/40 backdrop-blur-md rounded-xl border border-foreground/10 px-5 py-3 text-foreground placeholder:text-foreground/[0.40] outline-none focus:border-accent/40 transition-colors`}
+            />
+            <div className="flex gap-3 shrink-0">
+              <button
+                type="submit"
+                disabled={pendingId !== null || !manualSong.trim() || !manualArtist.trim()}
+                className={`${mono} text-body cursor-pointer px-2 py-3 text-foreground/[0.58] hover:text-accent disabled:opacity-40 disabled:cursor-default transition-colors`}
+              >
+                [add it]
+              </button>
+              <button
+                type="button"
+                onClick={() => setManualOpen(false)}
+                className={`${mono} text-body cursor-pointer px-2 py-3 text-foreground/[0.40] hover:text-accent transition-colors`}
+              >
+                [cancel]
+              </button>
+            </div>
+          </form>
+        ) : (
+          <button
+            onClick={() => setManualOpen(true)}
+            className={`${mono} text-body cursor-pointer text-foreground/[0.40] hover:text-accent transition-colors`}
+          >
+            Can&apos;t find it? Type it in →
+          </button>
+        )}
+      </div>
 
       {message && (
         <p className={`${mono} text-body text-accent mt-4`} role="status">
@@ -273,6 +340,9 @@ export default function CampingPlaylist() {
                 <p className={`${serif} text-card text-foreground truncate`}>{track.song}</p>
                 <p className={`${mono} text-body text-foreground/[0.58] truncate`}>
                   {track.artist}
+                  {track.manual && (
+                    <span className="text-foreground/[0.40]"> · typed in</span>
+                  )}
                 </p>
               </div>
               <span className={`${mono} text-body text-foreground/[0.40] shrink-0 hidden sm:block`}>
