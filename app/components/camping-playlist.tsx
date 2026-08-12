@@ -179,9 +179,9 @@ export default function CampingPlaylist() {
   if (!name) {
     return (
       <div className="bg-[var(--camp-cream)] rounded-[28px] p-8 sm:p-10 shadow-[0_2px_0_rgba(27,67,50,0.15)] border-2 border-foreground/10 text-center">
-        <h2 className={`${puff} text-[26px] mb-2`}>Hey, who&apos;s this?</h2>
+        <h2 className={`${puff} text-[26px] mb-2`}>who ARE you 😭😭</h2>
         <p className="text-[16px] text-foreground/70 mb-6">
-          So everyone knows whose fault each song is.
+          For song editing purposes etc.
         </p>
         <form onSubmit={saveName} className="flex flex-col sm:flex-row gap-3 max-w-[440px] mx-auto">
           <input
