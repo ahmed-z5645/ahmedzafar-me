@@ -487,3 +487,73 @@ a, button, [role="button"], .group {
 .accordion-toggle:checked ~ .accordion-header .chevron {
   transform: rotate(180deg);
 }
+/* =========================================
+   CAMPING PAGE THEME
+   A deliberate break from the editorial palette — beige + forest green,
+   scoped to /camping only. Redefines the same variables the shared
+   tokens read from, so <Header /> and <Footer /> come along for free.
+   ========================================= */
+.camping-theme,
+.dark .camping-theme {
+  /* NB: the --color-* tokens are what the Tailwind utilities actually read.
+     @theme resolves them against :root, so overriding --background alone here
+     would do nothing — both halves have to be set. */
+  --background: #F2E7D3;      /* warm beige */
+  --foreground: #1B4332;      /* deep forest green ink */
+  --text-main: #1B4332;
+  --accent: #2D6A4F;          /* mid green — links, hovers */
+  --glass-bg: #FBF4E4;        /* cream card surfaces */
+  --glass-surface: #FBF4E4;
+  --notes-bg: #FBF4E4;
+
+  --color-background: #F2E7D3;
+  --color-foreground: #1B4332;
+  --color-accent: #2D6A4F;
+  --color-glass: #FBF4E4;
+  --color-surface: #FBF4E4;
+
+  --camp-cream: #FBF4E4;
+  --camp-deep: #14352A;       /* button fill */
+  --camp-sun: #C97B29;        /* one warm highlight, used sparingly */
+}
+
+/* Puffy headline treatment */
+.camp-title {
+  font-family: var(--font-dynapuff), system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+/* Chunky pill button */
+.camp-button {
+  background: var(--camp-deep);
+  color: var(--camp-cream);
+  border-radius: 9999px;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.18s ease;
+}
+.camp-button:hover:not(:disabled) {
+  background: var(--accent);
+  transform: translateY(-2px) rotate(-1.5deg);
+}
+.camp-button:active:not(:disabled) {
+  transform: translateY(0) rotate(0deg);
+}
+.camp-button:disabled {
+  opacity: 0.35;
+}
+
+/* Cards lean a touch, like pinned photos */
+.camp-tilt {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.camp-tilt:hover {
+  transform: rotate(-0.6deg) translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .camp-button:hover:not(:disabled),
+  .camp-tilt:hover {
+    transform: none;
+  }
+}

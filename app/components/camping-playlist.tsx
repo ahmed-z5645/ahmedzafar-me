@@ -11,22 +11,28 @@ import {
 const NAME_KEY = "campingName";
 const MAX_NAME_LENGTH = 24;
 
-const mono = "font-[family-name:var(--font-geist-mono)]";
-const serif = "font-[family-name:var(--font-newsreader)]";
+const puff = "font-[family-name:var(--font-dynapuff)]";
 
-/** Small square cover art, or a grey box when the catalogue has none. */
+const inputClass =
+  "w-full bg-[var(--camp-cream)] rounded-full border-2 border-foreground/15 px-6 py-3.5 text-[16px] text-foreground placeholder:text-foreground/35 outline-none focus:border-accent transition-colors";
+
+/** Cover art, or a friendly placeholder when there isn't any. */
 function Artwork({ src, alt }: { src: string; alt: string }) {
   if (!src) {
-    return <div className="w-12 h-12 shrink-0 rounded-md bg-foreground/10" />;
+    return (
+      <div className="w-14 h-14 shrink-0 rounded-2xl bg-foreground/10 flex items-center justify-center text-[20px]">
+        🎵
+      </div>
+    );
   }
   return (
     <Image
       src={src}
       alt={alt}
-      width={48}
-      height={48}
+      width={56}
+      height={56}
       unoptimized
-      className="w-12 h-12 shrink-0 rounded-md object-cover"
+      className="w-14 h-14 shrink-0 rounded-2xl object-cover"
     />
   );
 }
@@ -60,7 +66,7 @@ export default function CampingPlaylist() {
       const res = await fetch("/api/camping", { cache: "no-store" });
       if (res.ok) setPlaylist(await res.json());
     } catch {
-      setMessage("Couldn't load the playlist. Try refreshing.");
+      setMessage("Couldn't load the playlist. Try refreshing!");
     }
   }, []);
 
@@ -128,12 +134,12 @@ export default function CampingPlaylist() {
 
       if (res.ok) {
         setPlaylist(data.playlist);
-        setMessage(`Added "${track.song}".`);
+        setMessage(`“${track.song}” is in! 🔥`);
       } else {
         setPlaylist((prev) => prev.filter((t) => t !== optimistic));
         setMessage(
           res.status === 409
-            ? `"${track.song}" is already in there — ${data.addedBy} beat you to it.`
+            ? `“${track.song}” is already in there — ${data.addedBy} beat you to it!`
             : data.error ?? "Couldn't add that one."
         );
         if (res.status === 409) loadPlaylist();
@@ -172,29 +178,27 @@ export default function CampingPlaylist() {
 
   if (!name) {
     return (
-      <div className="max-w-[640px]">
-        <h2 className={`${mono} text-body text-foreground/[0.58] mb-4 tracking-wide`}>
-          [Who&apos;s There]
-        </h2>
-        <form onSubmit={saveName} className="flex gap-3 items-center">
+      <div className="bg-[var(--camp-cream)] rounded-[28px] p-8 sm:p-10 shadow-[0_2px_0_rgba(27,67,50,0.15)] border-2 border-foreground/10 text-center">
+        <h2 className={`${puff} text-[26px] mb-2`}>Hey, who&apos;s this?</h2>
+        <p className="text-[16px] text-foreground/70 mb-6">
+          So everyone knows whose fault each song is.
+        </p>
+        <form onSubmit={saveName} className="flex flex-col sm:flex-row gap-3 max-w-[440px] mx-auto">
           <input
             autoFocus
             value={nameDraft}
             onChange={(e) => setNameDraft(e.target.value)}
             maxLength={MAX_NAME_LENGTH}
             placeholder="your name"
-            className={`${mono} text-body flex-1 bg-glass/40 backdrop-blur-md rounded-xl border border-foreground/10 px-5 py-3 text-foreground placeholder:text-foreground/[0.40] outline-none focus:border-accent/40 transition-colors`}
+            className={`${inputClass} bg-background text-center sm:text-left`}
           />
           <button
             type="submit"
-            className={`${mono} text-body cursor-pointer px-4 py-3 text-foreground/[0.58] hover:text-accent transition-colors`}
+            className={`${puff} camp-button cursor-pointer px-7 py-3.5 text-[16px] shrink-0`}
           >
-            [enter]
+            Let&apos;s go
           </button>
         </form>
-        <p className={`${mono} text-body text-foreground/[0.40] mt-3`}>
-          So we know whose fault each song is.
-        </p>
       </div>
     );
   }
@@ -203,149 +207,168 @@ export default function CampingPlaylist() {
      SEARCH + PLAYLIST
      ========================================= */
   return (
-    <div>
-      <h2 className={`${mono} text-body text-foreground/[0.58] mb-4 tracking-wide`}>
-        [Add a Song]
-      </h2>
+    <div className="pb-4">
 
-      <input
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-        placeholder="search a song or artist"
-        className={`${mono} text-body w-full bg-glass/40 backdrop-blur-md rounded-xl border border-foreground/10 px-5 py-3 text-foreground placeholder:text-foreground/[0.40] outline-none focus:border-accent/40 transition-colors`}
-      />
+      {/* ---------- Add a song ---------- */}
+      <div className="bg-[var(--camp-cream)] rounded-[28px] p-6 sm:p-8 shadow-[0_2px_0_rgba(27,67,50,0.15)] border-2 border-foreground/10">
+        <div className="flex items-baseline justify-between gap-4 mb-4 flex-wrap">
+          <h2 className={`${puff} text-[24px]`}>Add a song</h2>
+          <p className="text-[14px] text-foreground/60">
+            you&apos;re {name} ·{" "}
+            <button
+              onClick={() => {
+                localStorage.removeItem(NAME_KEY);
+                setName(null);
+                setNameDraft("");
+              }}
+              className="cursor-pointer underline underline-offset-2 hover:text-accent transition-colors"
+            >
+              not you?
+            </button>
+          </p>
+        </div>
 
-      <p className={`${mono} text-body text-foreground/[0.40] mt-2`}>
-        Adding as {name}.{" "}
-        <button
-          onClick={() => {
-            localStorage.removeItem(NAME_KEY);
-            setName(null);
-            setNameDraft("");
-          }}
-          className="cursor-pointer underline underline-offset-2 hover:text-accent transition-colors"
-        >
-          not you?
-        </button>
-      </p>
+        <input
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="🔍  search a song or artist…"
+          className={`${inputClass} bg-background`}
+        />
 
-      {searching && (
-        <p className={`${mono} text-body text-foreground/[0.40] mt-4`}>searching…</p>
-      )}
+        {searching && (
+          <p className="text-[15px] text-foreground/50 mt-4 px-2">looking…</p>
+        )}
 
-      {!searching && results.length > 0 && (
-        <ul className="mt-4 divide-y divide-foreground/10 border-y border-foreground/10">
-          {results.map((track) => {
-            const owner = addedBy.get(normalizeKey(track.song, track.artist));
-            return (
-              <li key={track.id} className="flex items-center gap-4 py-3">
-                <Artwork src={track.artwork} alt={`${track.song} cover art`} />
-                <div className="min-w-0 flex-1">
-                  <p className={`${serif} text-card text-foreground truncate`}>{track.song}</p>
-                  <p className={`${mono} text-body text-foreground/[0.58] truncate`}>
-                    {track.artist}
-                    {track.album && ` · ${track.album}`}
-                  </p>
-                </div>
-                {owner ? (
-                  <span className={`${mono} text-body text-accent shrink-0`}>
-                    ✓ added by {owner}
-                  </span>
-                ) : (
-                  <button
-                    onClick={() => addTrack(track)}
-                    disabled={pendingId !== null}
-                    className={`${mono} text-body shrink-0 cursor-pointer text-foreground/[0.58] hover:text-accent disabled:opacity-40 disabled:cursor-default transition-colors`}
-                  >
-                    {pendingId === track.id ? "[adding…]" : "[add]"}
-                  </button>
-                )}
-              </li>
-            );
-          })}
-        </ul>
-      )}
+        {!searching && results.length > 0 && (
+          <ul className="mt-4 flex flex-col gap-2">
+            {results.map((track) => {
+              const owner = addedBy.get(normalizeKey(track.song, track.artist));
+              return (
+                <li
+                  key={track.id}
+                  className="flex items-center gap-4 p-2.5 rounded-2xl bg-background/60"
+                >
+                  <Artwork src={track.artwork} alt={`${track.song} cover art`} />
+                  <div className="min-w-0 flex-1">
+                    <p className="text-[16px] font-semibold text-foreground truncate">
+                      {track.song}
+                    </p>
+                    <p className="text-[14px] text-foreground/60 truncate">
+                      {track.artist}
+                      {track.album && ` · ${track.album}`}
+                    </p>
+                  </div>
+                  {owner ? (
+                    <span className="text-[14px] text-accent shrink-0 pr-2 text-right">
+                      ✓ {owner} got it
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => addTrack(track)}
+                      disabled={pendingId !== null}
+                      className={`${puff} camp-button cursor-pointer px-5 py-2.5 text-[15px] shrink-0`}
+                    >
+                      {pendingId === track.id ? "adding…" : "Add"}
+                    </button>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
 
-      {/* Escape hatch — Apple's search index doesn't have everything, and
-          the export resolves songs by name anyway, so typed-in entries work. */}
-      <div className="mt-4">
-        {manualOpen ? (
-          <form onSubmit={addManual} className="flex flex-col sm:flex-row gap-3">
-            <input
-              autoFocus
-              value={manualSong}
-              onChange={(e) => setManualSong(e.target.value)}
-              placeholder="song title"
-              className={`${mono} text-body flex-1 bg-glass/40 backdrop-blur-md rounded-xl border border-foreground/10 px-5 py-3 text-foreground placeholder:text-foreground/[0.40] outline-none focus:border-accent/40 transition-colors`}
-            />
-            <input
-              value={manualArtist}
-              onChange={(e) => setManualArtist(e.target.value)}
-              placeholder="artist"
-              className={`${mono} text-body flex-1 bg-glass/40 backdrop-blur-md rounded-xl border border-foreground/10 px-5 py-3 text-foreground placeholder:text-foreground/[0.40] outline-none focus:border-accent/40 transition-colors`}
-            />
-            <div className="flex gap-3 shrink-0">
-              <button
-                type="submit"
-                disabled={pendingId !== null || !manualSong.trim() || !manualArtist.trim()}
-                className={`${mono} text-body cursor-pointer px-2 py-3 text-foreground/[0.58] hover:text-accent disabled:opacity-40 disabled:cursor-default transition-colors`}
-              >
-                [add it]
-              </button>
-              <button
-                type="button"
-                onClick={() => setManualOpen(false)}
-                className={`${mono} text-body cursor-pointer px-2 py-3 text-foreground/[0.40] hover:text-accent transition-colors`}
-              >
-                [cancel]
-              </button>
-            </div>
-          </form>
-        ) : (
-          <button
-            onClick={() => setManualOpen(true)}
-            className={`${mono} text-body cursor-pointer text-foreground/[0.40] hover:text-accent transition-colors`}
+        {/* Escape hatch — Apple's search index doesn't have everything, and
+            the export resolves songs by name anyway, so typed-in entries work. */}
+        <div className="mt-5">
+          {manualOpen ? (
+            <form onSubmit={addManual} className="flex flex-col sm:flex-row gap-3">
+              <input
+                autoFocus
+                value={manualSong}
+                onChange={(e) => setManualSong(e.target.value)}
+                placeholder="song title"
+                className={`${inputClass} bg-background`}
+              />
+              <input
+                value={manualArtist}
+                onChange={(e) => setManualArtist(e.target.value)}
+                placeholder="artist"
+                className={`${inputClass} bg-background`}
+              />
+              <div className="flex gap-2 shrink-0 justify-center">
+                <button
+                  type="submit"
+                  disabled={pendingId !== null || !manualSong.trim() || !manualArtist.trim()}
+                  className={`${puff} camp-button cursor-pointer px-6 py-3.5 text-[15px]`}
+                >
+                  Add it
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setManualOpen(false)}
+                  className="cursor-pointer px-3 py-3.5 text-[15px] text-foreground/50 hover:text-accent transition-colors"
+                >
+                  cancel
+                </button>
+              </div>
+            </form>
+          ) : (
+            <button
+              onClick={() => setManualOpen(true)}
+              className="cursor-pointer text-[15px] text-foreground/55 hover:text-accent transition-colors"
+            >
+              Can&apos;t find it? Type it in yourself →
+            </button>
+          )}
+        </div>
+
+        {message && (
+          <p
+            className="text-[15px] text-accent mt-4 px-2 font-semibold"
+            role="status"
           >
-            Can&apos;t find it? Type it in →
-          </button>
+            {message}
+          </p>
         )}
       </div>
 
-      {message && (
-        <p className={`${mono} text-body text-accent mt-4`} role="status">
-          {message}
-        </p>
-      )}
-
-      <h2 className={`${mono} text-body text-foreground/[0.58] mt-12 mb-4 tracking-wide`}>
-        [The Playlist] — {playlist.length} {playlist.length === 1 ? "song" : "songs"}
-      </h2>
+      {/* ---------- The playlist ---------- */}
+      <div className="flex items-baseline justify-between gap-4 mt-14 mb-5 px-2 flex-wrap">
+        <h2 className={`${puff} text-[30px]`}>The pile</h2>
+        <span className="text-[15px] text-foreground/60">
+          {playlist.length} {playlist.length === 1 ? "song" : "songs"} so far
+        </span>
+      </div>
 
       {playlist.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-2 rounded-xl border border-dashed border-foreground/[0.20] bg-foreground/[0.02] py-16">
-          <p className={`${mono} text-body text-foreground/[0.40]`}>[ Nothing yet ]</p>
-          <p className={`${mono} text-[11px] text-foreground/[0.30]`}>
-            Somebody has to go first.
-          </p>
+        <div className="flex flex-col items-center justify-center gap-2 rounded-[28px] border-2 border-dashed border-foreground/25 py-16 px-6 text-center">
+          <span className="text-[30px]">🪵</span>
+          <p className={`${puff} text-[20px]`}>Nothing here yet</p>
+          <p className="text-[15px] text-foreground/60">Somebody has to go first.</p>
         </div>
       ) : (
-        <ol className="divide-y divide-foreground/10 border-y border-foreground/10">
+        <ol className="flex flex-col gap-3">
           {playlist.map((track, i) => (
-            <li key={track.id} className="flex items-center gap-4 py-3">
-              <span className={`${mono} text-body text-foreground/[0.40] w-6 shrink-0 tabular-nums`}>
-                {String(i + 1).padStart(2, "0")}
+            <li
+              key={track.id}
+              className="camp-tilt flex items-center gap-4 bg-[var(--camp-cream)] rounded-3xl p-3.5 pr-5 border-2 border-foreground/10 shadow-[0_2px_0_rgba(27,67,50,0.12)]"
+            >
+              <span className={`${puff} text-[17px] text-foreground/35 w-7 shrink-0 text-center`}>
+                {i + 1}
               </span>
               <Artwork src={track.artwork} alt={`${track.song} cover art`} />
               <div className="min-w-0 flex-1">
-                <p className={`${serif} text-card text-foreground truncate`}>{track.song}</p>
-                <p className={`${mono} text-body text-foreground/[0.58] truncate`}>
+                <p className="text-[17px] font-semibold text-foreground truncate">
+                  {track.song}
+                </p>
+                <p className="text-[14px] text-foreground/60 truncate">
                   {track.artist}
                   {track.manual && (
-                    <span className="text-foreground/[0.40]"> · typed in</span>
+                    <span className="text-foreground/40"> · typed in</span>
                   )}
                 </p>
               </div>
-              <span className={`${mono} text-body text-foreground/[0.40] shrink-0 hidden sm:block`}>
+              <span className="text-[14px] text-foreground/45 shrink-0 hidden sm:block">
                 {track.addedBy}
               </span>
             </li>
