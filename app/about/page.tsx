@@ -70,7 +70,7 @@ export default async function About() {
               </p>
 
               <br />
-              <p className="text-body text-foreground/[0.58]">Always open new opportunities. If you're working on something cool, interesting, let's chat!</p>
+              <p className="text-body text-foreground/[0.58]">Always open new opportunities. If you're working on something cool or interesting, let's chat!</p>
             </div>
 
             <div className="mt-12 mb-0 lg:mb-0 lg:mt-auto">
