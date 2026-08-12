@@ -97,13 +97,33 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   const token = req.headers.get("x-camping-token");
-  if (!token || token !== process.env.CAMPING_ADMIN_TOKEN) {
+  const isAdmin = Boolean(token && token === process.env.CAMPING_ADMIN_TOKEN);
+
+  // A wrong key is worth calling out rather than silently falling through
+  // to the weaker name check.
+  if (token && !isAdmin) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
   const body = await req.json().catch(() => null);
   const id = body?.id ? String(body.id) : "";
+  const addedBy = String(body?.addedBy ?? "").trim();
   if (!id) return NextResponse.json({ error: "Missing id" }, { status: 400 });
+
+  const entry = await redis.hget<CampingTrack>(KEY, id);
+  if (!entry) {
+    // Already gone — treat as success so double-clicks don't error.
+    return NextResponse.json({ playlist: await readPlaylist() });
+  }
+
+  // Anyone can take back their own pick; only the admin key removes someone
+  // else's. Name matching is not real auth — see the note in the README.
+  if (!isAdmin && entry.addedBy !== addedBy) {
+    return NextResponse.json(
+      { error: "That's not yours to remove" },
+      { status: 403 }
+    );
+  }
 
   await redis.hdel(KEY, id);
   return NextResponse.json({ playlist: await readPlaylist() });

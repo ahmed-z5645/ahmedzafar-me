@@ -53,6 +53,9 @@ export default function CampingPlaylist() {
   const [manualSong, setManualSong] = useState("");
   const [manualArtist, setManualArtist] = useState("");
 
+  // Removal: two-step, so nobody nukes a song with a stray tap
+  const [confirmId, setConfirmId] = useState<string | null>(null);
+
   // Ignore responses from searches the user has already typed past
   const searchSeq = useRef(0);
 
@@ -156,6 +159,37 @@ export default function CampingPlaylist() {
   // hand still shows as "already added" when the next person finds it in search.
   const addedBy = new Map(playlist.map((t) => [t.nkey, t.addedBy]));
 
+  async function removeTrack(track: PlaylistTrack) {
+    setConfirmId(null);
+    setPendingId(track.id);
+    setMessage("");
+
+    const previous = playlist;
+    setPlaylist((prev) => prev.filter((t) => t.id !== track.id));
+
+    try {
+      const res = await fetch("/api/camping", {
+        method: "DELETE",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ id: track.id, addedBy: name }),
+      });
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok) {
+        setPlaylist(data.playlist);
+        setMessage(`Took “${track.song}” back out.`);
+      } else {
+        setPlaylist(previous);
+        setMessage(data.error ?? "Couldn't remove that one.");
+      }
+    } catch {
+      setPlaylist(previous);
+      setMessage("Couldn't remove that one — check your connection.");
+    } finally {
+      setPendingId(null);
+    }
+  }
+
   async function addManual(e: React.FormEvent) {
     e.preventDefault();
     const song = manualSong.trim();
@@ -196,7 +230,7 @@ export default function CampingPlaylist() {
             type="submit"
             className={`${puff} camp-button cursor-pointer px-7 py-3.5 text-[16px] shrink-0`}
           >
-            Let&apos;s go
+            RAHHH
           </button>
         </form>
       </div>
@@ -371,10 +405,38 @@ export default function CampingPlaylist() {
               <span className="text-[14px] text-foreground/45 shrink-0 hidden sm:block">
                 {track.addedBy}
               </span>
+
+              {track.addedBy === name &&
+                (confirmId === track.id ? (
+                  <span className="flex items-center gap-2 shrink-0">
+                    <button
+                      onClick={() => removeTrack(track)}
+                      disabled={pendingId !== null}
+                      className="cursor-pointer text-[14px] font-semibold text-[var(--camp-sun)] hover:underline disabled:opacity-40"
+                    >
+                      remove?
+                    </button>
+                    <button
+                      onClick={() => setConfirmId(null)}
+                      className="cursor-pointer text-[14px] text-foreground/45 hover:text-accent"
+                    >
+                      no
+                    </button>
+                  </span>
+                ) : (
+                  <button
+                    onClick={() => setConfirmId(track.id)}
+                    aria-label={`Remove ${track.song}`}
+                    className="cursor-pointer shrink-0 w-7 h-7 rounded-full text-[16px] leading-none text-foreground/35 hover:text-[var(--camp-sun)] hover:bg-foreground/5 transition-colors"
+                  >
+                    ×
+                  </button>
+                ))}
             </li>
           ))}
         </ol>
       )}
+
     </div>
   );
 }

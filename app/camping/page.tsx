@@ -33,7 +33,10 @@ export default function Camping() {
           </p>
           <p>...</p>
 
-          <p className="text-[17px] leading-relaxed text-foreground/75 max-w-[520px] mx-auto" >If I'm put on aux for the whole trip, <span className="font-bold">i will kill myself 🔥🔥</span></p>
+          <p className="text-[17px] leading-relaxed text-foreground/75 max-w-[520px] mx-auto">
+            If I&apos;m put on aux for the whole trip,{" "}
+            <span className="font-bold">i will kill myself 🔥🔥</span>
+          </p>
         </div>
 
         <CampingPlaylist />
