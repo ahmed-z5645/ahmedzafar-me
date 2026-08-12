@@ -70,7 +70,7 @@ export default async function About() {
               </p>
 
               <br />
-              <p className="text-body text-foreground/[0.58]">Always open new opportunities. If you're working on something cool, interesting, let's chat!</p>
+              <p className="text-body text-foreground/[0.58]">Always open new opportunities. If you're working on something cool or interesting, let's chat!</p>
             </div>
 
             <div className="mt-12 mb-0 lg:mb-0 lg:mt-auto">
@@ -85,7 +85,10 @@ export default async function About() {
               <h2 className="font-[family-name:var(--font-geist-mono)] text-body text-foreground/[0.58] mb-6 tracking-wide">
                 [Photos]
               </h2>
-              <div className="columns-2 md:columns-3 gap-6 w-full">
+              {/* Grid, not columns: every photo is a fixed-aspect square, so
+                  multicol gains nothing and Safari re-fragments the columns on
+                  the hover repaint. Vertical rhythm still comes from the card's mb-8. */}
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-x-6 w-full">
                 {photos.map((photo) => (
                   <ProjectCard key={photo.id} project={photo} square />
                 ))}

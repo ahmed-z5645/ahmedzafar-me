@@ -93,15 +93,44 @@ html.show-notes li div.note-annotation {
   margin-top: 0 !important;
 }
 
-/* Full <li> note items — use display toggle, not the height/overflow trick */
+/* Full <li> note items — same blur/height reveal as .note-annotation.
+   The item stays rendered (display can't transition); collapsing is done with
+   max-height + overflow, so the disc is drawn as an inner ::before rather than
+   an outside marker, which overflow would clip. */
 .note-li {
-  display: none;
+  position: relative;
+  list-style: none;
   opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  max-height: 0;
+  transform: translateY(-8px);
+  filter: blur(4px);
+  overflow: hidden;
+  pointer-events: none;
+  /* max-height gets its own ease-in: the cap (3rem) is sized for a wrapped
+     line, but these items are ~1.3rem tall, so rendered height maxes out at
+     ~43% of the way through. On the shared fast-out curve that happens in the
+     first ~50ms and the row appears to snap open; ease-in spreads the visible
+     part of the growth across most of the duration. */
+  transition:
+    opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    filter 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    max-height 0.45s ease-in;
 }
+
+.note-li::before {
+  content: "•";
+  position: absolute;
+  left: -1em;
+  font-style: normal;
+}
+
 html.show-notes .note-li {
-  display: list-item;
   opacity: 1;
+  max-height: 3rem;
+  transform: translateY(0);
+  filter: blur(0);
+  pointer-events: auto;
 }
 
 /* Custom Sequential Left-to-Right Wipe */
@@ -457,4 +486,74 @@ a, button, [role="button"], .group {
 /* We now target the sibling .accordion-header instead of .accordion-label */
 .accordion-toggle:checked ~ .accordion-header .chevron {
   transform: rotate(180deg);
+}
+/* =========================================
+   CAMPING PAGE THEME
+   A deliberate break from the editorial palette — beige + forest green,
+   scoped to /camping only. Redefines the same variables the shared
+   tokens read from, so <Header /> and <Footer /> come along for free.
+   ========================================= */
+.camping-theme,
+.dark .camping-theme {
+  /* NB: the --color-* tokens are what the Tailwind utilities actually read.
+     @theme resolves them against :root, so overriding --background alone here
+     would do nothing — both halves have to be set. */
+  --background: #F2E7D3;      /* warm beige */
+  --foreground: #1B4332;      /* deep forest green ink */
+  --text-main: #1B4332;
+  --accent: #2D6A4F;          /* mid green — links, hovers */
+  --glass-bg: #FBF4E4;        /* cream card surfaces */
+  --glass-surface: #FBF4E4;
+  --notes-bg: #FBF4E4;
+
+  --color-background: #F2E7D3;
+  --color-foreground: #1B4332;
+  --color-accent: #2D6A4F;
+  --color-glass: #FBF4E4;
+  --color-surface: #FBF4E4;
+
+  --camp-cream: #FBF4E4;
+  --camp-deep: #14352A;       /* button fill */
+  --camp-sun: #C97B29;        /* one warm highlight, used sparingly */
+}
+
+/* Puffy headline treatment */
+.camp-title {
+  font-family: var(--font-dynapuff), system-ui, sans-serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+/* Chunky pill button */
+.camp-button {
+  background: var(--camp-deep);
+  color: var(--camp-cream);
+  border-radius: 9999px;
+  transition: transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.18s ease;
+}
+.camp-button:hover:not(:disabled) {
+  background: var(--accent);
+  transform: translateY(-2px) rotate(-1.5deg);
+}
+.camp-button:active:not(:disabled) {
+  transform: translateY(0) rotate(0deg);
+}
+.camp-button:disabled {
+  opacity: 0.35;
+}
+
+/* Cards lean a touch, like pinned photos */
+.camp-tilt {
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.camp-tilt:hover {
+  transform: rotate(-0.6deg) translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .camp-button:hover:not(:disabled),
+  .camp-tilt:hover {
+    transform: none;
+  }
 }

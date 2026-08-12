@@ -3,6 +3,8 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   images: {
     qualities: [75, 90],
+    // Apple's catalogue artwork (iTunes Search API) — used on /camping
+    remotePatterns: [{ protocol: "https", hostname: "*.mzstatic.com" }],
   },
 };
 
