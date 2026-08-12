@@ -81,6 +81,9 @@ export default function CampingPlaylist() {
   useEffect(() => {
     const q = query.trim();
     if (!q) {
+      // Bump the guard too, so a search still in flight when the box is
+      // cleared can't land its results afterwards.
+      searchSeq.current++;
       setResults([]);
       setSearching(false);
       return;
@@ -138,6 +141,9 @@ export default function CampingPlaylist() {
       if (res.ok) {
         setPlaylist(data.playlist);
         setMessage(`“${track.song}” is in! 🔥`);
+        // Clear the box so the next person starts fresh. The search effect
+        // sees the empty query and drops the results list with it.
+        setQuery("");
       } else {
         setPlaylist((prev) => prev.filter((t) => t !== optimistic));
         setMessage(
