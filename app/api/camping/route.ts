@@ -18,7 +18,7 @@ const redis = new Redis({
  *  "add only if nobody has added it yet" atomic, so two friends adding at the
  *  same moment can't clobber each other. */
 const KEY = "camping:playlist";
-const MAX_TRACKS = 200;
+const MAX_TRACKS = 800;
 const MAX_NAME_LENGTH = 24;
 const MAX_FIELD_LENGTH = 200;
 
