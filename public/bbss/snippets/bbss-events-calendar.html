@@ -1,0 +1,386 @@
+<!-- ============================================================
+     BBSS Events Calendar widget — paste this whole block into a
+     Squarespace Code Block.
+
+     Reads events from a small public JSON endpoint on ahmedzafar.me,
+     fed by a Notion-adjacent admin page — no API key needed here,
+     since the endpoint is public read-only with CORS enabled.
+
+     Shows a month grid on wide layouts and automatically collapses
+     to an agenda list of upcoming events on narrow layouts (mobile,
+     or a narrow Squarespace column) — based on the widget's own
+     width, not the browser window.
+     ============================================================ -->
+<bbss-events-calendar></bbss-events-calendar>
+<script>
+(function () {
+  if (customElements.get('bbss-events-calendar')) return; // guard against double-paste
+
+  var WEEKDAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  var MONTHS = ['January','February','March','April','May','June','July',
+                'August','September','October','November','December'];
+  var COMPACT_BREAKPOINT = 480; // px — below this, show agenda list instead of grid
+  var DEFAULT_ENDPOINT = 'https://ahmedzafar.me/api/bbss-events';
+
+  class BBSSEventsCalendar extends HTMLElement {
+    connectedCallback() {
+      var root = this.attachShadow({ mode: 'open' });
+
+      // --- CUSTOMIZE: brand tokens ---
+      var ACCENT = this.getAttribute('accent') || '#97A6D8'; // periwinkle
+      var NAVY   = '#1D1F3E';
+      var BODY   = '#242636';
+      var SOFT_BG = '#E6E9F6';
+      var MAX_EVENTS = parseInt(this.getAttribute('max-events'), 10) || 8;
+
+      var endpoint = this.getAttribute('endpoint') || DEFAULT_ENDPOINT;
+      var demo = this.hasAttribute('demo');
+
+      var CHEVRON_LEFT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+        'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<polyline points="15 18 9 12 15 6"></polyline></svg>';
+      var CHEVRON_RIGHT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+        'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+        '<polyline points="9 18 15 12 9 6"></polyline></svg>';
+
+      root.innerHTML =
+        '<style>' +
+        '  :host { display:block; font-family:inherit; color:' + BODY + '; }' +
+        '  .bbss-cal { background:#fff; border-radius:20px; padding:1.5rem;' +
+        '              width:100%; box-sizing:border-box;' +
+        '              border:1px solid rgba(16,24,40,.06);' +
+        '              box-shadow:0 1px 2px rgba(16,24,40,.04), 0 8px 24px -4px rgba(16,24,40,.08); }' +
+        '  .bbss-cal * { box-sizing:border-box; }' +
+        '  .cal-header { display:flex; align-items:center; justify-content:space-between;' +
+        '                margin-bottom:1.25rem; }' +
+        '  .cal-title { font-weight:700; font-size:1.15rem; color:' + NAVY + '; letter-spacing:-.01em; }' +
+        '  .nav-btn { display:flex; align-items:center; justify-content:center;' +
+        '             background:transparent; color:' + NAVY + '; border:none;' +
+        '             border-radius:50%; width:2.25rem; height:2.25rem; cursor:pointer;' +
+        '             transition:background .15s ease, transform .1s ease; }' +
+        '  .nav-btn svg { width:18px; height:18px; }' +
+        '  .nav-btn:hover { background:' + SOFT_BG + '; }' +
+        '  .nav-btn:active { transform:scale(.92); }' +
+        '  .nav-btn:focus-visible { outline:2px solid ' + ACCENT + '; outline-offset:2px; }' +
+        '  .weekdays { display:grid; grid-template-columns:repeat(7,1fr); margin-bottom:.5rem; }' +
+        '  .weekdays div { text-align:center; font-size:.7rem; font-weight:600;' +
+        '                  color:rgba(36,38,54,.4); text-transform:uppercase; letter-spacing:.06em; }' +
+        '  .days { display:grid; grid-template-columns:repeat(7,1fr); row-gap:.35rem; }' +
+        '  .day { position:relative; aspect-ratio:1; display:flex; flex-direction:column;' +
+        '         align-items:center; justify-content:center; gap:2px; border-radius:50%;' +
+        '         width:100%; max-width:2.4rem; margin:0 auto; font-size:.85rem; font-weight:500;' +
+        '         background:transparent; border:none; cursor:pointer;' +
+        '         color:' + BODY + '; transition:background .15s ease, color .15s ease; }' +
+        '  .day:hover { background:' + SOFT_BG + '; }' +
+        '  .day:focus-visible { outline:2px solid ' + ACCENT + '; outline-offset:1px; }' +
+        '  .day.is-outside { color:rgba(36,38,54,.25); }' +
+        '  .day.is-today { font-weight:700; box-shadow:inset 0 0 0 1.5px ' + ACCENT + '; }' +
+        '  .day.is-selected { background:' + NAVY + '; color:#fff; font-weight:700;' +
+        '                     box-shadow:none; }' +
+        '  .day.is-selected:hover { background:' + NAVY + '; }' +
+        '  .day .dot { width:4px; height:4px; border-radius:50%; background:' + ACCENT + '; }' +
+        '  .day.is-selected .dot { background:#fff; }' +
+        '  .day-detail { margin-top:1.25rem; padding-top:1rem; border-top:1px solid rgba(16,24,40,.06); }' +
+        '  .day-detail h4 { margin:0 0 .65rem; font-size:.75rem; font-weight:700;' +
+        '                   color:rgba(36,38,54,.45); text-transform:uppercase; letter-spacing:.05em; }' +
+        '  .day-events { list-style:none; margin:0; padding:0; display:flex;' +
+        '                flex-direction:column; gap:.6rem; }' +
+        '  .day-event { display:flex; align-items:flex-start; gap:.6rem; }' +
+        '  .event-time-chip { flex:0 0 auto; font-size:.7rem; font-weight:600; color:' + NAVY + ';' +
+        '                     background:' + SOFT_BG + '; padding:.3rem .6rem; border-radius:999px;' +
+        '                     white-space:nowrap; }' +
+        '  .day-event .event-title { font-size:.85rem; font-weight:600; color:' + NAVY + '; }' +
+        '  .day-event .event-location { font-size:.75rem; color:rgba(36,38,54,.55); margin-top:1px; }' +
+        '  .agenda-wrap .cal-title { margin-bottom:1rem; }' +
+        '  .agenda-list { list-style:none; margin:0; padding:0; display:flex;' +
+        '                 flex-direction:column; gap:.35rem; }' +
+        '  .agenda-item { display:flex; align-items:center; gap:.85rem; padding:.5rem;' +
+        '                 border-radius:14px; transition:background .15s ease; }' +
+        '  .agenda-item:hover { background:' + SOFT_BG + '; }' +
+        '  .date-chip { flex:0 0 auto; width:2.75rem; height:2.75rem; border-radius:12px;' +
+        '               background:' + SOFT_BG + '; display:flex; flex-direction:column;' +
+        '               align-items:center; justify-content:center; line-height:1.2; }' +
+        '  .chip-day { font-size:.95rem; font-weight:700; color:' + NAVY + '; }' +
+        '  .chip-month { font-size:.6rem; font-weight:700; color:rgba(36,38,54,.5);' +
+        '                text-transform:uppercase; letter-spacing:.03em; }' +
+        '  .agenda-title { font-size:.88rem; font-weight:600; color:' + NAVY + '; }' +
+        '  .agenda-time { font-size:.75rem; color:rgba(36,38,54,.55); margin-top:1px; }' +
+        '  .empty, .status { font-size:.85rem; color:rgba(36,38,54,.55); padding:.5rem 0; }' +
+        '  .grid-wrap { display:block; }' +
+        '  .agenda-wrap { display:none; }' +
+        '  :host(.is-compact) .grid-wrap { display:none; }' +
+        '  :host(.is-compact) .agenda-wrap { display:block; }' +
+        '  @media (max-width:400px){ .bbss-cal{ padding:1.1rem; border-radius:16px; } }' +
+        '</style>' +
+        '<div class="bbss-cal">' +
+        '  <div class="grid-wrap">' +
+        '    <div class="cal-header">' +
+        '      <button class="nav-btn prev" aria-label="Previous month">' + CHEVRON_LEFT + '</button>' +
+        '      <div class="cal-title"></div>' +
+        '      <button class="nav-btn next" aria-label="Next month">' + CHEVRON_RIGHT + '</button>' +
+        '    </div>' +
+        '    <div class="weekdays"></div>' +
+        '    <div class="days" role="grid"></div>' +
+        '    <div class="day-detail" hidden>' +
+        '      <h4></h4>' +
+        '      <ul class="day-events"></ul>' +
+        '    </div>' +
+        '  </div>' +
+        '  <div class="agenda-wrap">' +
+        '    <div class="cal-title">Upcoming Events</div>' +
+        '    <ul class="agenda-list"></ul>' +
+        '  </div>' +
+        '  <div class="status" hidden></div>' +
+        '</div>';
+
+      var els = {
+        card: root.querySelector('.bbss-cal'),
+        title: root.querySelector('.cal-title'),
+        weekdays: root.querySelector('.weekdays'),
+        days: root.querySelector('.days'),
+        prev: root.querySelector('.prev'),
+        next: root.querySelector('.next'),
+        detail: root.querySelector('.day-detail'),
+        detailHeading: root.querySelector('.day-detail h4'),
+        dayEvents: root.querySelector('.day-events'),
+        agendaList: root.querySelector('.agenda-list'),
+        status: root.querySelector('.status')
+      };
+
+      WEEKDAYS.forEach(function (d) {
+        var el = document.createElement('div');
+        el.textContent = d;
+        els.weekdays.appendChild(el);
+      });
+
+      var today = new Date();
+      var viewYear = today.getFullYear();
+      var viewMonth = today.getMonth(); // 0-based
+      var selectedKey = dateKey(today);
+      var allEventsPromise = null;
+      var self = this;
+
+      function dateKey(d) {
+        return d.getFullYear() + '-' + d.getMonth() + '-' + d.getDate();
+      }
+
+      function fmtTime(d) {
+        return d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+      }
+
+      // --- data loading ---
+      function sampleEvents() {
+        // Used when the demo attribute is set — lets execs preview the
+        // widget's look without hitting the real endpoint.
+        var today = new Date();
+        var y = today.getFullYear(), m = today.getMonth();
+        return [
+          { title: 'General Meeting', start: new Date(y, m, 5, 18, 0), end: new Date(y, m, 5, 19, 0), allDay: false, location: 'MDCL 1305' },
+          { title: 'Study Session', start: new Date(y, m, 12, 12, 0), end: new Date(y, m, 12, 14, 0), allDay: false, location: '' },
+          { title: 'Exec Sync', start: new Date(y, m, 12, 17, 0), end: new Date(y, m, 12, 18, 0), allDay: false, location: '' },
+          { title: 'Social Night', start: new Date(y, m, 20, 17, 0), end: new Date(y, m, 20, 20, 0), allDay: false, location: 'The Phoenix' },
+          { title: 'Bake Sale', start: new Date(y, m, 24), end: new Date(y, m, 24), allDay: true, location: 'MUSC Atrium' }
+        ];
+      }
+
+      function fetchAll() {
+        if (allEventsPromise) return allEventsPromise;
+        if (demo) {
+          allEventsPromise = Promise.resolve(sampleEvents());
+          return allEventsPromise;
+        }
+        allEventsPromise = fetch(endpoint).then(function (res) {
+          if (!res.ok) throw new Error('fetch-failed');
+          return res.json();
+        }).then(function (items) {
+          return (items || []).map(function (ev) {
+            return {
+              title: ev.title || '(untitled event)',
+              start: new Date(ev.start),
+              end: new Date(ev.end || ev.start),
+              allDay: !!ev.allDay,
+              location: ev.location || ''
+            };
+          });
+        });
+        return allEventsPromise;
+      }
+
+      function eventsForMonth(all, y, m) {
+        return all.filter(function (ev) {
+          return ev.start.getFullYear() === y && ev.start.getMonth() === m;
+        });
+      }
+
+      function upcomingEvents(all) {
+        var now = new Date();
+        return all
+          .filter(function (ev) { return ev.end >= now; })
+          .sort(function (a, b) { return a.start - b.start; })
+          .slice(0, MAX_EVENTS);
+      }
+
+      // --- rendering ---
+      function renderGrid(events) {
+        els.title.textContent = MONTHS[viewMonth] + ' ' + viewYear;
+        els.days.innerHTML = '';
+
+        var byDay = {};
+        events.forEach(function (ev) {
+          var k = dateKey(ev.start);
+          (byDay[k] = byDay[k] || []).push(ev);
+        });
+
+        var firstOfMonth = new Date(viewYear, viewMonth, 1);
+        var startOffset = firstOfMonth.getDay(); // 0=Sun
+        var daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+        var daysInPrevMonth = new Date(viewYear, viewMonth, 0).getDate();
+        var cellCount = Math.ceil((startOffset + daysInMonth) / 7) * 7;
+
+        for (var i = 0; i < cellCount; i++) {
+          var dayNum, cellYear = viewYear, cellMonth = viewMonth, outside = false;
+          if (i < startOffset) {
+            dayNum = daysInPrevMonth - (startOffset - 1 - i);
+            cellMonth = viewMonth - 1; outside = true;
+            if (cellMonth < 0) { cellMonth = 11; cellYear--; }
+          } else if (i >= startOffset + daysInMonth) {
+            dayNum = i - (startOffset + daysInMonth) + 1;
+            cellMonth = viewMonth + 1; outside = true;
+            if (cellMonth > 11) { cellMonth = 0; cellYear++; }
+          } else {
+            dayNum = i - startOffset + 1;
+          }
+
+          var cellDate = new Date(cellYear, cellMonth, dayNum);
+          var key = dateKey(cellDate);
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'day' + (outside ? ' is-outside' : '') +
+            (dateKey(today) === key ? ' is-today' : '') +
+            (selectedKey === key ? ' is-selected' : '');
+          btn.setAttribute('data-key', key);
+          btn.setAttribute('aria-label', cellDate.toDateString() + (byDay[key] ? ', ' + byDay[key].length + ' event(s)' : ''));
+          btn.textContent = dayNum;
+          if (byDay[key] && byDay[key].length) {
+            var dot = document.createElement('span');
+            dot.className = 'dot';
+            btn.appendChild(dot);
+          }
+          btn.addEventListener('click', function () {
+            selectedKey = this.getAttribute('data-key');
+            renderGrid(events);
+            renderDayDetail(byDay[selectedKey] || []);
+          });
+          els.days.appendChild(btn);
+        }
+      }
+
+      function renderDayDetail(dayEvents) {
+        if (!dayEvents.length) {
+          els.detail.hidden = true;
+          return;
+        }
+        els.detail.hidden = false;
+        var parts = selectedKey.split('-').map(Number);
+        var d = new Date(parts[0], parts[1], parts[2]);
+        els.detailHeading.textContent = d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
+        els.dayEvents.innerHTML = '';
+        dayEvents.forEach(function (ev) {
+          var li = document.createElement('li');
+          li.className = 'day-event';
+          li.innerHTML = '<span class="event-time-chip"></span>' +
+            '<span><div class="event-title"></div>' +
+            (ev.location ? '<div class="event-location"></div>' : '') + '</span>';
+          li.querySelector('.event-time-chip').textContent = ev.allDay ? 'All day' : fmtTime(ev.start);
+          li.querySelector('.event-title').textContent = ev.title;
+          if (ev.location) li.querySelector('.event-location').textContent = ev.location;
+          els.dayEvents.appendChild(li);
+        });
+      }
+
+      function renderAgenda(events) {
+        els.agendaList.innerHTML = '';
+        if (!events.length) {
+          var li = document.createElement('li');
+          li.className = 'empty';
+          li.textContent = 'No upcoming events.';
+          els.agendaList.appendChild(li);
+          return;
+        }
+        events.forEach(function (ev) {
+          var li = document.createElement('li');
+          li.className = 'agenda-item';
+          li.innerHTML =
+            '<span class="date-chip"><span class="chip-day"></span><span class="chip-month"></span></span>' +
+            '<span><div class="agenda-title"></div><div class="agenda-time"></div></span>';
+          li.querySelector('.chip-day').textContent = ev.start.getDate();
+          li.querySelector('.chip-month').textContent = ev.start.toLocaleDateString(undefined, { month: 'short' });
+          li.querySelector('.agenda-title').textContent = ev.title;
+          li.querySelector('.agenda-time').textContent =
+            ev.start.toLocaleDateString(undefined, { weekday: 'short' }) +
+            (ev.allDay ? ' · All day' : ' · ' + fmtTime(ev.start)) +
+            (ev.location ? ' · ' + ev.location : '');
+          els.agendaList.appendChild(li);
+        });
+      }
+
+      function setStatus(msg) {
+        els.status.hidden = !msg;
+        els.status.textContent = msg || '';
+      }
+
+      function loadAndRender() {
+        setStatus('Loading events…');
+        fetchAll()
+          .then(function (all) {
+            setStatus('');
+            var monthEvents = eventsForMonth(all, viewYear, viewMonth);
+            renderGrid(monthEvents);
+            var byDay = monthEvents.filter(function (ev) {
+              return dateKey(ev.start) === selectedKey;
+            });
+            renderDayDetail(byDay);
+            renderAgenda(upcomingEvents(all));
+          })
+          .catch(function () {
+            renderGrid([]);
+            els.detail.hidden = true;
+            setStatus('Unable to load events right now.');
+            renderAgenda([]);
+          });
+      }
+
+      els.prev.addEventListener('click', function () {
+        viewMonth--;
+        if (viewMonth < 0) { viewMonth = 11; viewYear--; }
+        loadAndRender();
+      });
+      els.next.addEventListener('click', function () {
+        viewMonth++;
+        if (viewMonth > 11) { viewMonth = 0; viewYear++; }
+        loadAndRender();
+      });
+
+      try {
+        loadAndRender();
+
+        // Switch to agenda view based on the widget's own width, not the
+        // viewport — a widget can be narrow even on a wide desktop screen.
+        if (window.ResizeObserver) {
+          var ro = new ResizeObserver(function (entries) {
+            var width = entries[0].contentRect.width;
+            self.classList.toggle('is-compact', width < COMPACT_BREAKPOINT);
+          });
+          ro.observe(this);
+        } else {
+          this.classList.toggle('is-compact', this.getBoundingClientRect().width < COMPACT_BREAKPOINT);
+        }
+      } catch (e) {
+        els.card.textContent = 'Unable to load this content.';
+      }
+    }
+  }
+
+  customElements.define('bbss-events-calendar', BBSSEventsCalendar);
+})();
+</script>

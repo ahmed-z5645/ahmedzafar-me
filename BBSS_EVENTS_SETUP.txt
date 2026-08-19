@@ -1,0 +1,122 @@
+BBSS EVENTS SETUP GUIDE
+========================
+
+Feeds a small public events API from this site, so a widget on the BBSS
+Squarespace site can display them. Redis is the real source of truth:
+events get into it two ways —
+
+  (a) pulled in from the BBSS Notion events database (read-only, one-way
+      sync — this site never writes back to Notion), automatically once a
+      day via Vercel Cron, or on demand via the "Sync from Notion" button
+      at /admin/bbss-events
+  (b) added directly by hand through the same admin page's form
+
+Both kinds of events live side by side in Redis and both show up on the
+site. Re-syncing only touches Notion-sourced events (tagged internally) —
+it never overwrites or deletes anything added by hand.
+
+1. REDIS
+--------
+Reuses the same Upstash Redis database as the lyrics feature
+(UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN) — nothing new to set up
+there.
+
+2. NOTION INTEGRATION
+----------------------
+a) Go to https://www.notion.so/my-integrations → "+ New integration".
+   Name it something like "BBSS Events Sync", pick the BBSS workspace,
+   and under capabilities leave only "Read content" checked (no insert/
+   update/delete — this integration should never be able to write to
+   Notion). Save, then copy the "Internal Integration Secret".
+
+b) Open the BBSS events database as a full page in Notion (if it's embedded
+   inline in another page, click the expand icon first — you need its own
+   URL, not the parent page's). Click "•••" (top right) → "Connections" →
+   add the integration you just created, so it's allowed to read that
+   specific database.
+
+c) Copy the database's URL. The 32-character id right after notion.so/
+   (before any "?v=") is the database id.
+
+d) Paste both values into .env.local:
+     NOTION_TOKEN         → the integration secret from (a)
+     NOTION_DATABASE_ID   → the database id from (c)
+
+e) Check the database's column (property) names match what the sync code
+   expects, in app/lib/notion-events.ts:
+     TITLE_PROP       = "Name"
+     DATE_PROP        = "Date"
+     LOCATION_PROP    = "Location"
+     DESCRIPTION_PROP = "Description"
+   If your database uses different names, edit those constants to match —
+   the title and date properties are required, location/description are
+   optional (leave the property out of Notion entirely and it's just blank
+   on the site). The date property should be a Notion date (with or
+   without an end date / time — both work; a date with no time becomes an
+   all-day event).
+
+3. SET ENV VARS IN VERCEL
+--------------------------
+Vercel dashboard → your project → Settings → Environment Variables
+
+Add:
+  BBSS_EVENTS_ADMIN_TOKEN   → same value as in .env.local (don't reuse
+                               LYRICS_UPDATE_TOKEN or CAMPING_ADMIN_TOKEN)
+  NOTION_TOKEN               → same value as in .env.local
+  NOTION_DATABASE_ID         → same value as in .env.local
+  CRON_SECRET                → same value as in .env.local — Vercel reads
+                               this automatically and sends it as
+                               "Authorization: Bearer <value>" on its daily
+                               cron request to /api/bbss-events/sync, which
+                               is how that request authenticates itself.
+
+The daily schedule itself lives in vercel.json ("0 8 * * *" = 8am UTC /
+~4am ET) — edit that file directly to change frequency or time.
+
+4. MANAGING EVENTS
+-------------------
+Go to https://ahmedzafar.me/admin/bbss-events, enter the password
+(BBSS_EVENTS_ADMIN_TOKEN):
+  - "Sync from Notion" pulls in anything new/changed/removed from Notion
+    immediately, instead of waiting for the next daily cron run.
+  - The form below adds one-off events that don't need to go in Notion.
+  - Events pulled from Notion are labelled "Notion" in the list; editing
+    one by hand still works, but the next sync will overwrite it back to
+    whatever's in Notion, since Notion-sourced entries are always
+    upserted from there.
+
+Anyone with the password can manage events — share it only with BBSS execs
+who need it.
+
+Note: the page itself isn't behind real auth (no login), it's just a
+password box that gates the write/sync requests. The events LIST is public
+and unauthenticated by design — GET /api/bbss-events has no secret and is
+readable by anyone (including the Squarespace widget, cross-origin). That's
+fine: event titles/times/locations aren't sensitive. Only adding, editing,
+deleting, and syncing require the token, enforced server-side. NOTION_TOKEN
+itself is never sent to the browser — it's only used server-side inside the
+sync route.
+
+5. THE PUBLIC ENDPOINT
+------------------------
+GET https://ahmedzafar.me/api/bbss-events
+Returns a JSON array of events:
+
+  [
+    {
+      "id": "evt-...",           (or "notion-<page id>" for synced ones)
+      "title": "General Meeting",
+      "start": "2026-09-05T18:00:00",
+      "end": "2026-09-05T19:00:00",
+      "allDay": false,
+      "location": "MDCL 1305",
+      "description": "",
+      "source": "manual"          ("manual" or "notion")
+    },
+    ...
+  ]
+
+This is what the BBSS-website-widgets repo's `bbss-events-calendar` widget
+fetches directly from Squarespace. No API key needed on that end — it's a
+public read-only GET with CORS enabled. The widget ignores the `source`
+field; it's only meaningful in the admin page.
