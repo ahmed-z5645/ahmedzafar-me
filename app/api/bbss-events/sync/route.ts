@@ -1,7 +1,7 @@
 import { Redis } from "@upstash/redis";
 import { NextRequest, NextResponse } from "next/server";
 import { BBSS_EVENTS_KEY as KEY, type BBSSEvent } from "../../../lib/bbss-events";
-import { fetchNotionEvents } from "../../../lib/notion-events";
+import { fetchNotionEvents, isNotionConfigured } from "../../../lib/notion-events";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 30;
@@ -50,6 +50,19 @@ async function runSync(): Promise<{ synced: number; removed: number }> {
 async function handleSyncRequest(req: NextRequest) {
   if (!isAuthorized(req)) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Not having Notion set up is a valid state, not a failure: the events list
+  // works on manually-added events alone. Answering 200 keeps the daily cron
+  // from logging an error every morning on a deployment that never intended to
+  // sync. A bad token still 502s below — that one is worth surfacing.
+  if (!isNotionConfigured()) {
+    return NextResponse.json({
+      synced: 0,
+      removed: 0,
+      skipped: true,
+      reason: "Notion sync is not set up, so nothing was pulled in. Events added by hand are unaffected.",
+    });
   }
 
   try {
