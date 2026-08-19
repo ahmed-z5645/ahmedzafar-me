@@ -67,8 +67,19 @@ function pageToEvent(page: NotionPage): BBSSEvent | null {
   };
 }
 
+/** Whether the Notion credentials are present. Callers use this to skip the
+ *  sync entirely rather than treating an unconfigured deployment as a failure —
+ *  the site runs fine on manually-added events alone. */
+export function isNotionConfigured(): boolean {
+  return Boolean(process.env.NOTION_TOKEN && process.env.NOTION_DATABASE_ID);
+}
+
 /** Fetches every row from the Notion events database and maps it to a
- *  BBSSEvent. Read-only — never writes back to Notion. */
+ *  BBSSEvent. Read-only — never writes back to Notion.
+ *
+ *  Throws if called without credentials; check isNotionConfigured() first. A
+ *  bad token or an unreachable Notion still throws, and should — that is a
+ *  real failure, unlike simply not having set it up. */
 export async function fetchNotionEvents(): Promise<BBSSEvent[]> {
   const token = process.env.NOTION_TOKEN;
   const databaseId = process.env.NOTION_DATABASE_ID;

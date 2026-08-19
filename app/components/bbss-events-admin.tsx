@@ -166,6 +166,10 @@ export default function BBSSEventsAdmin() {
         setSyncMessage(data.error ?? "Sync failed.");
         return;
       }
+      if (data.skipped) {
+        setSyncMessage(data.reason ?? "Notion sync is not set up.");
+        return;
+      }
       setSyncMessage(`Synced ${data.synced} from Notion${data.removed ? `, removed ${data.removed} stale` : ""}.`);
       refresh();
     } catch {
