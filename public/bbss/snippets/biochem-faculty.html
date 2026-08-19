@@ -1,0 +1,190 @@
+<!-- ============================================================
+     BBSS — Biochemistry Faculty Directory
+     Paste this whole block into a Squarespace Code Block.
+
+     Shows the active faculty of the Department of Biochemistry &
+     Biomedical Sciences at McMaster, with a search box to filter by
+     name or research area. Photos are hotlinked from the department's
+     own site (biochem.healthsci.mcmaster.ca) with a text-initials
+     fallback if an image fails to load. Each row links out (new tab) to
+     the department's people page — see PEOPLE_URL below.
+
+     To edit the roster, update the DATA array below. Source page:
+     https://biochem.healthsci.mcmaster.ca/people/
+     ============================================================ -->
+<bbss-biochem-faculty></bbss-biochem-faculty>
+<script>
+(function () {
+  if (customElements.get('bbss-biochem-faculty')) return; // guard vs double-paste
+
+  // ---- CUSTOMIZE: palette (BBSS brand tokens) -------------------------------
+  var NAVY = '#1D1F3E';
+  var BODY = '#242636';
+  var SOFT_BG = '#E6E9F6';
+  var LINE = 'rgba(29,31,62,.12)';
+
+  // ---- CUSTOMIZE: the roster --------------------------------------------
+  // name / title / subtitle (chair, endowed chair, admin role) / research
+  // (comma-separated areas, or '' if none listed) / email / img
+  //
+  // Don't retype this by hand — regenerate it with tools/scrape-faculty.js and
+  // replace everything between the two markers below. See the widget README.
+  // ==== DATA START ====
+  var DATA = [
+    { name: 'Sara Andres', title: 'Associate Professor', subtitle: 'Director, Biomedical Discovery & Commercialization', research: 'DNA repair, X-ray crystallography', email: 'andressn@mcmaster.ca', img: '2023/01/sara-andres-2_jpg.jpeg' },
+    { name: 'Mick Bhatia', title: 'Professor', subtitle: 'Endowed Research Chair in Stem Cell and Cancer Biology', research: 'Stem cell biology, Cancer stem cells', email: 'mbhatia@mcmaster.ca', img: '2023/01/bhatia-mick_contact-1.jpeg' },
+    { name: 'Russell Bishop', title: 'Associate Professor', subtitle: '', research: '', email: 'bishopr@mcmaster.ca', img: '2023/01/bishop_russell.jpeg' },
+    { name: 'Eric Brown', title: 'Professor', subtitle: 'Canada Research Chair in Microbial Chemical Biology', research: 'Microbial chemical biology, Chemical genomics', email: 'ebrown@mcmaster.ca', img: '2023/01/brown-eric_contact.jpeg' },
+    { name: 'Lori Burrows', title: 'Professor Emerita', subtitle: '', research: 'Molecular microbiology, Antibiotic resistance', email: 'burrowl@mcmaster.ca', img: '2023/01/Lori-Burrows-FHS-2020-scaled.jpg' },
+    { name: 'Brian Coombes', title: 'Professor and Chair', subtitle: '', research: "Bacterial pathogenesis, Crohn's Disease", email: 'coombes@mcmaster.ca', img: '2023/01/brian-coombes-2_jpgjpg-11.jpeg' },
+    { name: 'Cameron Currie', title: 'Professor', subtitle: 'Endowed Research Chair — Stephen A. Jarislowsky Chair in Pandemic Research and Prevention', research: 'Insect-microbe symbioses, Microbial communities', email: 'ccurrie@mcmaster.ca', img: '2023/01/2023_Cameron-Currie.jpg' },
+    { name: 'Monica De Paoli', title: 'Assistant Professor – Teaching Track', subtitle: '', research: '', email: 'depaolim@mcmaster.ca', img: '2023/09/Monica-De-Paoli_web.jpg' },
+    { name: 'Radhey Gupta', title: 'Professor', subtitle: '', research: 'Phylogenomics, Comparative genomics', email: 'gupta@mcmaster.ca', img: '2023/01/radhey-gupta-2_jpg.jpeg' },
+    { name: 'Hong Han', title: 'Assistant Professor', subtitle: 'Canada Research Chair in Cancer Systems Biology', research: 'Cancer RNA biology, Single-cell sequencing', email: 'hanh33@mcmaster.ca', img: '2023/01/honghan.jpeg' },
+    { name: 'Isaac Harris', title: 'Associate Professor', subtitle: '', research: '', email: 'isaac.harris@mcmaster.ca', img: '2026/08/Harris_Isaac-300x300.jpg' },
+    { name: 'Katie Houlahan', title: 'Assistant Professor', subtitle: 'Canada Research Chair in Computational Oncology', research: 'Cancer genomics, Computational oncology', email: 'houlahke@mcmaster.ca', img: '2024/07/Houlahan_Katie.jpeg' },
+    { name: 'Lindsay Kalan', title: 'Associate Professor', subtitle: 'Canada Research Chair in Skin Microbiome and Infectious Disease', research: 'Skin microbiome, Microbial interactions', email: 'kalanlr@mcmaster.ca', img: '2023/01/lindsay-kalan-web.jpeg' },
+    { name: 'Yingfu Li', title: 'Professor', subtitle: '', research: 'Functional nucleic acids, Directed evolution', email: 'liying@mcmaster.ca', img: '2023/01/Yingfu-Li-3-scaled-e1695238342273.jpg' },
+    { name: 'Michelle MacDonald', title: 'Associate Professor', subtitle: '', research: '', email: 'macdonml@mcmaster.ca', img: '2023/01/michelle-macdonald-2_jpgjpg.jpeg' },
+    { name: 'Lesley MacNeil', title: 'Associate Professor', subtitle: '', research: 'C. elegans, Developmental biology', email: 'macneil@mcmaster.ca', img: '2023/01/lesley-macneil-2_jpg.jpeg' },
+    { name: 'Nathan Magarvey', title: 'Associate Professor', subtitle: '', research: 'Microbial natural products, Machine learning', email: 'magarv@mcmaster.ca', img: '2023/01/Nathan-Magarvey_jpg-scaled-e1695238158550.jpg' },
+    { name: 'Jakob Magolan', title: 'Professor', subtitle: 'Endowed Research Chair — Boris Family Chair in Drug Discovery', research: 'Medicinal chemistry, Organic synthesis', email: 'magolanj@mcmaster.ca', img: '2023/01/jakob-magolan-2_jpg.jpeg' },
+    { name: 'Lindsey Marmont', title: 'Assistant Professor', subtitle: '', research: '', email: 'marmontl@mcmaster.ca', img: '2025/03/Marmont_photo-scaled.jpg' },
+    { name: 'Andrew McArthur', title: 'Professor', subtitle: 'Endowed Research Chair — David Braley Chair in Computational Biology', research: 'Bioinformatics, Database design', email: 'mcarthua@mcmaster.ca', img: '2023/01/a-mcarthur10f7974985994b75af40feefa8639b5a.jpeg' },
+    { name: 'Matthew Miller', title: 'Professor', subtitle: 'Scientific Director, Michael G. DeGroote Institute for Infectious Disease Research (IIDR); Canada Research Chair in Viral Pandemics', research: 'Viral immunology, Influenza A virus', email: 'mmiller@mcmaster.ca', img: '2023/01/matthew-miller-2_jpg.jpeg' },
+    { name: 'Caitlin Mullarkey', title: 'Associate Professor', subtitle: 'Associate Chair, Biochemistry Undergraduate Education', research: '', email: 'mullarkc@mcmaster.ca', img: '2025/08/Cait-Mullarkey_DS12167-3.jpg' },
+    { name: 'Jonathan Schertzer', title: 'Professor', subtitle: 'Canada Research Chair in Metabolic Inflammation', research: 'Metabolism, Obesity, Diabetes', email: 'schertze@mcmaster.ca', img: '2023/01/jonathan-schertzer-2_jpg.jpeg' },
+    { name: 'Deborah Sloboda', title: 'Professor', subtitle: 'Associate Chair, Research; Canada Research Chair in Early Origins of Health and Disease', research: 'Reproductive biology, Metabolism', email: 'sloboda@mcmaster.ca', img: '2023/01/HS-Deborah-Sloboda-scaled.jpg' },
+    { name: 'Jon Stokes', title: 'Assistant Professor', subtitle: '', research: 'Microbial chemical biology, Machine learning', email: 'stokesjm@mcmaster.ca', img: '2023/01/Jon-Stokes_jpg-scaled-e1695238418545.jpg' },
+    { name: 'Bernardo Trigatti', title: 'Professor', subtitle: '', research: 'Lipid transport, Atherosclerosis', email: 'trigatt@mcmaster.ca', img: '2023/01/bernardo-trigatti_jpg.jpeg' },
+    { name: 'Ray Truant', title: 'Professor', subtitle: '', research: "Cell biology, Huntington's disease", email: 'truantr@mcmaster.ca', img: '2023/01/ray-truant-2_jpg.jpeg' },
+    { name: 'Felicia Vulcu', title: 'Associate Professor', subtitle: '', research: 'Medicine, Education & Innovation', email: 'vulcuf@mcmaster.ca', img: '2023/01/felicia-vulcu_jpgjpg.jpeg' },
+    { name: 'John Whitney', title: 'Associate Professor', subtitle: 'Associate Chair and Assistant Dean of the Biochemistry Graduate Program; Canada Research Chair in Molecular Microbiology', research: 'Molecular microbiology, Bacterial secretion systems', email: 'jwhitney@mcmaster.ca', img: '2023/01/john_whitney.jpeg' },
+    { name: 'Dawit Wolday', title: 'Associate Professor', subtitle: '', research: 'Chronic immune activation, Pathogen genomic epidemiology', email: 'woldayd@mcmaster.ca', img: '2023/08/Dawit-Wolday.jpg' },
+    { name: 'Gerard Wright', title: 'Professor', subtitle: 'Endowed Research Chair in Infection and Anti-Infective Research; Executive Director, Global Nexus School for Pandemic Prevention & Response', research: 'Microbial natural products, Antibiotic resistance', email: 'wrightge@mcmaster.ca', img: '2023/01/gerry-wright_jpgjpg.jpeg' },
+    { name: 'Daniel Yang', title: 'Professor', subtitle: '', research: '', email: 'yang@mcmaster.ca', img: '2023/01/daniel-yang.jpeg' },
+    { name: 'Boris Zhorov', title: 'Professor Emeritus', subtitle: '', research: '', email: 'zhorov@mcmaster.ca', img: '2023/01/borls-zhorov_jpg.jpeg' }
+  ];
+  // ==== DATA END ====
+
+  var IMG_BASE = 'https://biochem.healthsci.mcmaster.ca/wp-content/uploads/';
+  // Individual faculty don't have their own bio pages (McMaster shows bios in an
+  // in-page JS modal, not a URL-addressable page), so every row links to the
+  // department's general people page rather than a person-specific one.
+  var PEOPLE_URL = 'https://biochem.healthsci.mcmaster.ca/people/';
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  function initials(name) {
+    var parts = name.split(' ').filter(Boolean);
+    return ((parts[0] || '')[0] || '') + ((parts[parts.length - 1] || '')[0] || '');
+  }
+
+  class BBSSBiochemFaculty extends HTMLElement {
+    connectedCallback() {
+      var root = this.attachShadow({ mode: 'open' });
+      root.innerHTML =
+        '<style>' +
+        ':host{display:block;font-family:inherit;color:' + BODY + ';}' +
+        '*{box-sizing:border-box;}' +
+        '.wrap{max-width:720px;margin:0 auto;}' +
+        '.toolbar{display:flex;gap:.6rem;align-items:center;margin-bottom:.25rem;flex-wrap:wrap;' +
+          'padding-bottom:1rem;border-bottom:1px solid ' + LINE + ';}' +
+        '.search{flex:1 1 240px;position:relative;}' +
+        '.search input{width:100%;padding:.6rem .8rem;border:1px solid rgba(29,31,62,.25);' +
+          'border-radius:8px;font:inherit;font-size:.92rem;color:' + BODY + ';background:#fff;}' +
+        '.search input:focus{outline:2px solid ' + NAVY + ';outline-offset:1px;}' +
+        '.count{font-size:.8rem;color:' + BODY + ';opacity:.65;white-space:nowrap;}' +
+        '.list{display:flex;flex-direction:column;}' +
+        '.row{display:flex;gap:1rem;align-items:flex-start;padding:1.1rem .6rem;margin:0 -.6rem;' +
+          'border-bottom:1px solid ' + LINE + ';text-decoration:none;color:inherit;' +
+          'border-radius:8px;transition:background-color .15s ease;}' +
+        '.row:hover,.row:focus-visible{background-color:' + SOFT_BG + ';}' +
+        '.row:focus-visible{outline:2px solid ' + NAVY + ';outline-offset:-2px;}' +
+        '.photo-wrap{width:56px;height:56px;border-radius:50%;overflow:hidden;flex:0 0 auto;' +
+          'background:' + SOFT_BG + ';display:flex;align-items:center;justify-content:center;}' +
+        '.photo-wrap img{width:100%;height:100%;object-fit:cover;display:block;}' +
+        '.initials{font-weight:700;font-size:.85rem;color:' + NAVY + ';}' +
+        '.info{flex:1 1 auto;min-width:0;}' +
+        '.name-line{display:flex;flex-wrap:wrap;align-items:baseline;gap:.1rem .5rem;}' +
+        '.name{margin:0;font-size:.98rem;font-weight:700;color:' + NAVY + ';line-height:1.3;}' +
+        '.title{margin:0;font-size:.82rem;font-weight:500;color:' + BODY + ';opacity:.8;}' +
+        '.subtitle{margin:.15rem 0 0;font-size:.8rem;color:' + BODY + ';opacity:.7;line-height:1.4;}' +
+        '.tags{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.4rem;}' +
+        '.tag{font-size:.72rem;color:' + NAVY + ';opacity:.75;}' +
+        '.tag:not(:last-child)::after{content:"·";margin-left:.4rem;opacity:.6;}' +
+        '.email{display:block;margin-top:.35rem;font-size:.78rem;color:' + NAVY + ';opacity:.65;}' +
+        '.empty{padding:2rem 1rem;text-align:center;color:' + BODY + ';opacity:.7;font-size:.9rem;}' +
+        '@media(max-width:400px){.photo-wrap{width:44px;height:44px;}.row{padding:.9rem 0;gap:.75rem;}}' +
+        '</style>' +
+        '<div class="wrap">' +
+          '<div class="toolbar">' +
+            '<div class="search">' +
+              '<label for="q" class="sr-only" style="position:absolute;left:-9999px;">Search faculty</label>' +
+              '<input id="q" type="text" placeholder="Search by name or research area…" autocomplete="off">' +
+            '</div>' +
+            '<div class="count" aria-live="polite"></div>' +
+          '</div>' +
+          '<div class="list"></div>' +
+          '<div class="empty" hidden>No faculty match that search.</div>' +
+        '</div>';
+
+      try {
+        this._render(root, DATA);
+        var input = root.getElementById('q');
+        var self = this;
+        input.addEventListener('input', function () {
+          var q = input.value.trim().toLowerCase();
+          var filtered = !q ? DATA : DATA.filter(function (p) {
+            return (p.name + ' ' + p.title + ' ' + p.subtitle + ' ' + p.research)
+              .toLowerCase().indexOf(q) !== -1;
+          });
+          self._render(root, filtered);
+        });
+      } catch (e) {
+        root.querySelector('.wrap').textContent = 'Unable to load this content.';
+      }
+    }
+
+    _render(root, list) {
+      var listEl = root.querySelector('.list');
+      var empty = root.querySelector('.empty');
+      var count = root.querySelector('.count');
+      count.textContent = list.length + (list.length === 1 ? ' faculty member' : ' faculty members');
+      empty.hidden = list.length !== 0;
+      listEl.innerHTML = list.map(function (p) {
+        var tags = (p.research ? p.research.split(',') : [])
+          .map(function (t) { return t.trim(); })
+          .filter(Boolean)
+          .map(function (t) { return '<span class="tag">' + esc(t) + '</span>'; })
+          .join('');
+        var photoSrc = IMG_BASE + p.img;
+        return (
+          '<a class="row" href="' + esc(PEOPLE_URL) + '" target="_blank" rel="noopener" ' +
+            'aria-label="' + esc(p.name + ' — view on the department people page') + '">' +
+            '<div class="photo-wrap">' +
+              '<img src="' + esc(photoSrc) + '" alt="" loading="lazy" ' +
+                'onerror="this.parentNode.innerHTML=\'<span class=&quot;initials&quot;>' + esc(initials(p.name)) + '</span>\'">' +
+            '</div>' +
+            '<div class="info">' +
+              '<div class="name-line">' +
+                '<h3 class="name">' + esc(p.name) + '</h3>' +
+                '<span class="title">' + esc(p.title) + '</span>' +
+              '</div>' +
+              (p.subtitle ? '<p class="subtitle">' + esc(p.subtitle) + '</p>' : '') +
+              (tags ? '<div class="tags">' + tags + '</div>' : '') +
+              '<span class="email">' + esc(p.email) + '</span>' +
+            '</div>' +
+          '</a>'
+        );
+      }).join('');
+    }
+  }
+
+  customElements.define('bbss-biochem-faculty', BBSSBiochemFaculty);
+})();
+</script>
