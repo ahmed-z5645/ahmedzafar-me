@@ -28,7 +28,7 @@ const SCRAPER = fs.readFileSync(
   "utf8",
 );
 
-const SAMPLE_OUTPUT = `Found 33 faculty on the page (widget.html currently has 32).
+const SAMPLE_OUTPUT = `Found 33 faculty on the page (the widget currently has 32).
 ADDED:   Isaac Harris
 REMOVED: (none)
 ⚠ REVIEW these rows before shipping (5):
@@ -126,7 +126,7 @@ export default function FacultyPage() {
             },
             {
               title: "Read what it prints",
-              body: "— see below — then follow Update the widget.",
+              body: "— see below. The finished widget is then on your clipboard, ready to paste.",
             },
           ]}
         />
@@ -162,29 +162,20 @@ export default function FacultyPage() {
       </Section>
 
       <Section title="Update the widget">
-        <P>The new list is already on your clipboard.</P>
+        <P>
+          The complete widget is already on your clipboard — not just the list of
+          names, but the whole thing, ready to paste. There is nothing to splice
+          together and no text editor involved.
+        </P>
         <Steps
           steps={[
             {
-              title: "Press Copy snippet above",
-              body: "to get the current widget code, and paste it into any plain text editor.",
+              title: "Open the Code Block in Squarespace",
+              body: "that already holds the faculty directory.",
             },
             {
-              title: "Find the two lines",
-              body: (
-                <>
-                  <Mono>{"// ==== DATA START ===="}</Mono> and{" "}
-                  <Mono>{"// ==== DATA END ===="}</Mono>.
-                </>
-              ),
-            },
-            {
-              title: "Select everything between them",
-              body: "and paste over it with what the script gave you.",
-            },
-            {
-              title: "Copy the whole edited snippet",
-              body: "and paste it into the Squarespace Code Block, replacing what's there.",
+              title: "Select everything in it, delete it, and paste.",
+              body: "Then save.",
             },
             {
               title: "Check the live page:",
@@ -192,6 +183,14 @@ export default function FacultyPage() {
             },
           ]}
         />
+        <Callout>
+          If the script warns that it couldn&rsquo;t fetch the current widget, it
+          falls back to copying just the list of names. In that case press{" "}
+          <strong>Copy snippet</strong> above, paste it into any plain text editor,
+          and replace everything between{" "}
+          <Mono>{"// ==== DATA START ===="}</Mono> and{" "}
+          <Mono>{"// ==== DATA END ===="}</Mono> with what the script gave you.
+        </Callout>
       </Section>
 
       <Section title="If the script prints an error">
