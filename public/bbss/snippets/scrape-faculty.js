@@ -1,9 +1,9 @@
 /* ============================================================================
    BBSS — Faculty roster re-scraper  (browser console snippet)
 
-   Rebuilds the DATA array for widgets/biochem-faculty/widget.html from the
-   department's own people page. Nothing to install — you run it in your
-   browser's developer console.
+   Rebuilds the faculty roster from the department's own people page and puts
+   the COMPLETE, ready-to-paste widget on your clipboard. Nothing to install —
+   you run it in your browser's developer console.
 
    HOW TO RUN
    1. Open  https://biochem.healthsci.mcmaster.ca/people/  and stay on the
@@ -12,28 +12,27 @@
       If the console warns about pasting, type  allow pasting  and press Enter.
    3. Paste this whole file, press Enter.
    4. Read the ADDED / REMOVED summary and the ⚠ REVIEW list it prints.
-   5. The new DATA array is on your clipboard. In widget.html, replace
-      everything between  // ==== DATA START ====  and  // ==== DATA END ====
-      with what you pasted.
+   5. Paste your clipboard straight into the Squarespace Code Block, replacing
+      everything already in it. No editing, no splicing by hand.
+
+   It fetches the current widget from the repo and swaps the roster into it, so
+   there is never a second copy of the widget living inside this script.
 
    THIS DRAFTS, YOU CONFIRM. The department page crams job titles, degrees and
    research areas into one freeform block, so the rules below are best-effort.
    Always skim the output before shipping it.
    ============================================================================ */
-(function () {
+(async function () {
   'use strict';
 
-  // ---- CUSTOMIZE: the roster currently in widget.html -----------------------
-  // Only used to print an ADDED / REMOVED diff. Set to [] to skip the diff.
-  var CURRENT = [
-    'Sara Andres', 'Mick Bhatia', 'Russell Bishop', 'Eric Brown', 'Lori Burrows',
-    'Brian Coombes', 'Cameron Currie', 'Monica De Paoli', 'Radhey Gupta', 'Hong Han',
-    'Katie Houlahan', 'Lindsay Kalan', 'Yingfu Li', 'Michelle MacDonald',
-    'Lesley MacNeil', 'Nathan Magarvey', 'Jakob Magolan', 'Lindsey Marmont',
-    'Andrew McArthur', 'Matthew Miller', 'Caitlin Mullarkey', 'Jonathan Schertzer',
-    'Deborah Sloboda', 'Jon Stokes', 'Bernardo Trigatti', 'Ray Truant', 'Felicia Vulcu',
-    'John Whitney', 'Dawit Wolday', 'Gerard Wright', 'Daniel Yang', 'Boris Zhorov'
-  ];
+  // The widget this script rebuilds. Fetched fresh every run so the output is
+  // always the current widget with only the roster swapped out.
+  var WIDGET_URL = 'https://raw.githubusercontent.com/ahmed-z5645/BBSS-website-widgets/main/widgets/biochem-faculty/widget.html';
+
+  // Sentinels in widget.html that bracket the roster. Must match byte for byte,
+  // leading two spaces included.
+  var START = '  // ==== DATA START ====';
+  var END = '  // ==== DATA END ====';
 
   // Must match IMG_BASE in widget.html — photo paths are stored relative to it.
   var IMG_BASE = 'https://biochem.healthsci.mcmaster.ca/wp-content/uploads/';
@@ -67,8 +66,10 @@
 
   // Quote a value the way widget.html does: single quotes, unless the value
   // contains an apostrophe (e.g. "Crohn's Disease"), then double quotes.
+  // The `</` escape matters now that we emit a whole widget: a stray closing tag
+  // in scraped text would otherwise terminate the widget's own <script>.
   function q(s) {
-    s = String(s == null ? '' : s);
+    s = String(s == null ? '' : s).replace(/<\//g, '<\\/');
     if (s.indexOf("'") !== -1 && s.indexOf('"') === -1) return '"' + s + '"';
     return "'" + s.replace(/\\/g, '\\\\').replace(/'/g, "\\'") + "'";
   }
@@ -145,14 +146,39 @@
   });
 
   // ---- format ---------------------------------------------------------------
-  var out = 'var DATA = [\n' + people.map(function (p) {
+  var dataSource = '  var DATA = [\n' + people.map(function (p) {
     return '    { name: ' + q(p.name) +
            ', title: ' + q(p.title) +
            ', subtitle: ' + q(p.subtitle) +
            ', research: ' + q(p.research) +
            ', email: ' + q(p.email) +
            ', img: ' + q(p.img) + ' }';
-  }).join(',\n') + '\n  ];';
+  }).join(',\n') + '\n  ];\n';
+
+  // ---- fetch the current widget and swap the roster in ----------------------
+  var snippet = null;
+  var CURRENT = [];
+  try {
+    var res = await fetch(WIDGET_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    var template = await res.text();
+
+    var a = template.indexOf(START);
+    var b = template.indexOf(END);
+    if (a === -1 || b === -1 || b < a) throw new Error('DATA markers not found in widget.html');
+
+    // Diff against whatever the shipped widget actually lists, rather than a
+    // hand-maintained roster in this file that would drift.
+    var block = template.slice(a + START.length, b);
+    var m, re = /name:\s*(['"])([\s\S]*?)\1/g;
+    while ((m = re.exec(block)) !== null) CURRENT.push(m[2]);
+
+    snippet = template.slice(0, a) + START + '\n' + dataSource + template.slice(b);
+  } catch (err) {
+    console.warn('[BBSS] Could not fetch the current widget (' + err.message + ').');
+    console.warn('Falling back to copying just the roster — paste it between the');
+    console.warn('// ==== DATA START ==== and // ==== DATA END ==== lines by hand.');
+  }
 
   // ---- report ---------------------------------------------------------------
   var names = people.map(function (p) { return p.name; });
@@ -160,7 +186,8 @@
   var removed = CURRENT.filter(function (n) { return names.indexOf(n) === -1; });
 
   console.log('%c[BBSS] Faculty scrape complete', 'font-weight:bold');
-  console.log('Found ' + people.length + ' faculty on the page (widget.html currently has ' + CURRENT.length + ').');
+  console.log('Found ' + people.length + ' faculty on the page' +
+    (CURRENT.length ? ' (the widget currently has ' + CURRENT.length + ').' : '.'));
   if (CURRENT.length) {
     console.log('ADDED:   ' + (added.join(', ') || '(none)'));
     console.log('REMOVED: ' + (removed.join(', ') || '(none)'));
@@ -174,21 +201,22 @@
     console.warn('⚠ Missing email or photo: ' + missing.map(function (p) { return p.name; }).join(', '));
   }
 
+  // ---- clipboard ------------------------------------------------------------
+  var out = snippet || dataSource;
   console.log(out);
 
-  // ---- clipboard ------------------------------------------------------------
   try {
     if (typeof copy === 'function') {         // Chrome / Edge / Safari console helper
       copy(out);
-      console.log('%c✓ Copied to clipboard.', 'color:#1E5B1A;font-weight:bold');
     } else if (navigator.clipboard) {
-      navigator.clipboard.writeText(out).then(function () {
-        console.log('%c✓ Copied to clipboard.', 'color:#1E5B1A;font-weight:bold');
-      });
+      await navigator.clipboard.writeText(out);
     } else {
       throw new Error('no clipboard');
     }
+    console.log('%c✓ ' + (snippet
+      ? 'The complete widget is on your clipboard — paste it straight into the Squarespace Code Block.'
+      : 'The roster is on your clipboard.'), 'color:#1E5B1A;font-weight:bold');
   } catch (e) {
-    console.log('Clipboard unavailable — select the array printed above and copy it manually.');
+    console.log('Clipboard unavailable — select the text printed above and copy it manually.');
   }
 })();

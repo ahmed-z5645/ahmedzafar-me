@@ -62,10 +62,10 @@ export default function EventsCalendarPage() {
           change what it shows. Events live in a small list on this site, managed
           at{" "}
           <Link
-            href="/admin/bbss-events"
+            href="/bbss/admin"
             className="text-accent hover:underline font-semibold"
           >
-            /admin/bbss-events
+            /bbss/admin
           </Link>
           :
         </P>
@@ -97,7 +97,7 @@ export default function EventsCalendarPage() {
         <Troubleshoot q="It's empty.">
           There are just no upcoming events in the list right now — press{" "}
           <strong className="text-foreground">Sync from Notion</strong> on the{" "}
-          <Link href="/admin/bbss-events" className="text-accent hover:underline">
+          <Link href="/bbss/admin" className="text-accent hover:underline">
             admin page
           </Link>{" "}
           if events were added to Notion recently, or add one by hand there to

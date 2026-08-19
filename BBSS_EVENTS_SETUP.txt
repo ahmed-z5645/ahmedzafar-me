@@ -8,7 +8,7 @@ events get into it two ways —
   (a) pulled in from the BBSS Notion events database (read-only, one-way
       sync — this site never writes back to Notion), automatically once a
       day via Vercel Cron, or on demand via the "Sync from Notion" button
-      at /admin/bbss-events
+      at /bbss/admin
   (b) added directly by hand through the same admin page's form
 
 Both kinds of events live side by side in Redis and both show up on the
@@ -75,7 +75,7 @@ The daily schedule itself lives in vercel.json ("0 8 * * *" = 8am UTC /
 
 4. MANAGING EVENTS
 -------------------
-Go to https://ahmedzafar.me/admin/bbss-events, enter the password
+Go to https://ahmedzafar.me/bbss/admin, enter the password
 (BBSS_EVENTS_ADMIN_TOKEN):
   - "Sync from Notion" pulls in anything new/changed/removed from Notion
     immediately, instead of waiting for the next daily cron run.

@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import Header from "../header/header";
 import Footer from "../footer/footer";
 
 /** Single-column editorial shell shared by every /bbss page. */
@@ -15,8 +14,7 @@ export function BbssPage({
   return (
     <div className="min-h-screen">
       <main className="max-w-[1600px] mx-auto px-6 sm:px-8 lg:px-24">
-        <Header />
-        <div className="max-w-[880px] mx-auto pt-10 pb-16 lg:pt-16 lg:pb-24">
+        <div className="max-w-[880px] mx-auto pt-20 pb-16 lg:pt-28 lg:pb-24">
           <p className="font-[family-name:var(--font-geist-mono)] text-[11px] uppercase tracking-widest text-foreground/[0.40]">
             BBSS Website Widgets
           </p>
