@@ -5,6 +5,7 @@ import Link from "next/link";
 import WidgetPreview from "../../components/bbss/widget-preview";
 import CopyButton from "../../components/bbss/copy-button";
 import Steps from "../../components/bbss/steps";
+import Walkthrough from "../../components/bbss/walkthrough";
 import {
   BbssPage,
   Callout,
@@ -92,6 +93,11 @@ export default function FacultyPage() {
           You don&rsquo;t retype it. A short script reads the department&rsquo;s
           own people page and rebuilds the whole list for you.
         </P>
+        <Walkthrough
+          videoId="t1GgNDYViIE"
+          title="Faculty scraper walkthrough"
+          caption="The whole update, start to finish. The same steps are written out below if you'd rather read them."
+        />
         <Steps
           steps={[
             {
