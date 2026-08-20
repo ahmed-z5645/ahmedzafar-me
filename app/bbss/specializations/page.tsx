@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import SpecEditor from "../../components/bbss/spec-editor";
+import Walkthrough from "../../components/bbss/walkthrough";
 import {
   BbssPage,
   Callout,
@@ -75,6 +76,17 @@ export default function SpecializationsPage() {
         <div className="mt-8">
           <SpecEditor />
         </div>
+      </Section>
+
+      <Section title="Watch how it works">
+        <P>
+          A walkthrough of the widget and its editor. Worth watching before you
+          change anything.
+        </P>
+        <Walkthrough
+          videoId="dxXbsvnddoI"
+          title="Biochemistry Specializations widget walkthrough"
+        />
       </Section>
 
       <Section title="Put it on the site">
