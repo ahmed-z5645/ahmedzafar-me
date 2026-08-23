@@ -316,6 +316,83 @@ export default function BBSSEventsAdmin() {
         )}
       </div>
       {syncMessage && <p className="text-foreground/60 text-sm mb-3">{syncMessage}</p>}
+
+      {token && (
+        <div className="mb-5 p-4 rounded-lg border border-foreground/15 text-sm text-foreground/75">
+          <p className="mb-3">
+            <strong className="text-foreground">
+              The Notion database needs these four columns, named exactly this way
+            </strong>{" "}
+            — spelling, capitalisation and column type all have to match.
+          </p>
+
+          {/* An empty stand-in for the Notion database itself, so the column
+              names can be copied across exactly as they need to appear. */}
+          {/* The blank rows fade out at the bottom rather than stopping dead —
+              they stand in for "and so on", not for exactly three events. */}
+          <div className="relative">
+            <div className="overflow-x-auto -mx-1 px-1">
+              <table className="w-full min-w-[420px] border-collapse text-left border-x border-t border-foreground/15 rounded-t">
+                <thead>
+                  <tr className="border-b border-foreground/15 bg-foreground/[0.04]">
+                    {[
+                      { name: "Name", type: "Title" },
+                      { name: "Date", type: "Date" },
+                      { name: "Location", type: "Text" },
+                      { name: "Description", type: "Text" },
+                    ].map((col) => (
+                      <th
+                        key={col.name}
+                        className="py-2 px-3 font-normal border-r border-foreground/10 last:border-0"
+                      >
+                        <span className="block text-foreground font-[family-name:var(--font-geist-mono)]">
+                          {col.name}
+                        </span>
+                        <span className="block text-[11px] uppercase tracking-wide text-foreground/40">
+                          {col.type}
+                        </span>
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {[0, 1, 2, 3].map((row) => (
+                    <tr key={row} className="border-b border-foreground/10">
+                      {[0, 1, 2, 3].map((cell) => (
+                        <td
+                          key={cell}
+                          className="h-9 px-3 border-r border-foreground/10 last:border-0"
+                        />
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-b from-transparent to-background"
+            />
+          </div>
+
+          <p className="mt-3">
+            <span className="text-foreground font-[family-name:var(--font-geist-mono)]">
+              Name
+            </span>{" "}
+            and{" "}
+            <span className="text-foreground font-[family-name:var(--font-geist-mono)]">
+              Date
+            </span>{" "}
+            are required — an event missing either one is skipped by the sync, with
+            no warning, and renaming{" "}
+            <span className="text-foreground font-[family-name:var(--font-geist-mono)]">
+              Date
+            </span>{" "}
+            stops everything from syncing. The other two are optional and come
+            through blank if they aren&rsquo;t there.
+          </p>
+        </div>
+      )}
       {loading && <p className="text-foreground/60">Loading…</p>}
       {loadError && <p className="text-red-600">{loadError}</p>}
       {!loading && events.length === 0 && (

@@ -22,9 +22,10 @@ export default function EventsCalendarPage() {
       standfirst="A calendar of BBSS events for the site."
     >
       <P>
-        Shows a full month grid — click any date to see what&rsquo;s on it — and
-        automatically switches to a simple list of upcoming events on narrow
-        screens, so it still works in a tight mobile column. Unlike the other two
+        Shows a full month grid — click any date to see what&rsquo;s on it — with
+        the next event coming up underneath it, and automatically switches to a
+        simple list of upcoming events on narrow screens, so it still works in a
+        tight mobile column. Unlike the other two
         widgets, there&rsquo;s nothing to fill in and nothing to splice into the
         code: it fetches events live, every time someone loads the page, from an
         events list kept on this site.
@@ -40,6 +41,7 @@ export default function EventsCalendarPage() {
           <WidgetPreview
             src="/bbss/snippets/bbss-events-calendar.html"
             title="BBSS Events Calendar demo"
+            previewEndpoint="/api/bbss-events"
           />
         </div>
       </Section>
