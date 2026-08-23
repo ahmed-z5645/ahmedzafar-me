@@ -91,6 +91,14 @@
         '                     white-space:nowrap; }' +
         '  .day-event .event-title { font-size:.85rem; font-weight:600; color:' + NAVY + '; }' +
         '  .day-event .event-location { font-size:.75rem; color:rgba(36,38,54,.55); margin-top:1px; }' +
+        '  .next-event { margin-top:1.25rem; padding-top:1rem;' +
+        '                border-top:1px solid rgba(16,24,40,.06); }' +
+        '  .next-label { margin:0 0 .65rem; font-size:.75rem; font-weight:700;' +
+        '                color:rgba(36,38,54,.45); text-transform:uppercase; letter-spacing:.05em; }' +
+        '  .next-card { display:flex; align-items:center; gap:.85rem; }' +
+        '  .next-title { font-size:.9rem; font-weight:600; color:' + NAVY + '; }' +
+        '  .next-meta { font-size:.75rem; color:rgba(36,38,54,.55); margin-top:1px; }' +
+        '  .next-empty { font-size:.85rem; color:rgba(36,38,54,.55); }' +
         '  .agenda-wrap .cal-title { margin-bottom:1rem; }' +
         '  .agenda-list { list-style:none; margin:0; padding:0; display:flex;' +
         '                 flex-direction:column; gap:.35rem; }' +
@@ -125,6 +133,10 @@
         '      <h4></h4>' +
         '      <ul class="day-events"></ul>' +
         '    </div>' +
+        '    <div class="next-event" hidden>' +
+        '      <div class="next-label">Next event</div>' +
+        '      <div class="next-body"></div>' +
+        '    </div>' +
         '  </div>' +
         '  <div class="agenda-wrap">' +
         '    <div class="cal-title">Upcoming Events</div>' +
@@ -143,6 +155,8 @@
         detail: root.querySelector('.day-detail'),
         detailHeading: root.querySelector('.day-detail h4'),
         dayEvents: root.querySelector('.day-events'),
+        nextEvent: root.querySelector('.next-event'),
+        nextBody: root.querySelector('.next-body'),
         agendaList: root.querySelector('.agenda-list'),
         status: root.querySelector('.status')
       };
@@ -298,6 +312,38 @@
         });
       }
 
+      // Sits under the month grid on wide layouts. The agenda view already
+      // leads with the next event, so this is inside .grid-wrap and hides with
+      // it when the widget goes compact.
+      function renderNextEvent(events) {
+        els.nextEvent.hidden = false;
+        els.nextBody.innerHTML = '';
+
+        if (!events.length) {
+          var empty = document.createElement('div');
+          empty.className = 'next-empty';
+          empty.textContent = 'No upcoming events.';
+          els.nextBody.appendChild(empty);
+          return;
+        }
+
+        var ev = events[0];
+        var card = document.createElement('div');
+        card.className = 'next-card';
+        card.innerHTML =
+          '<span class="date-chip"><span class="chip-day"></span><span class="chip-month"></span></span>' +
+          '<span><div class="next-title"></div><div class="next-meta"></div></span>';
+        card.querySelector('.chip-day').textContent = ev.start.getDate();
+        card.querySelector('.chip-month').textContent =
+          ev.start.toLocaleDateString(undefined, { month: 'short' });
+        card.querySelector('.next-title').textContent = ev.title;
+        card.querySelector('.next-meta').textContent =
+          ev.start.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }) +
+          (ev.allDay ? ' · All day' : ' · ' + fmtTime(ev.start)) +
+          (ev.location ? ' · ' + ev.location : '');
+        els.nextBody.appendChild(card);
+      }
+
       function renderAgenda(events) {
         els.agendaList.innerHTML = '';
         if (!events.length) {
@@ -340,11 +386,16 @@
               return dateKey(ev.start) === selectedKey;
             });
             renderDayDetail(byDay);
-            renderAgenda(upcomingEvents(all));
+            // Next event and agenda both look across the whole list, not just
+            // the month being viewed, so paging months leaves them alone.
+            var upcoming = upcomingEvents(all);
+            renderNextEvent(upcoming);
+            renderAgenda(upcoming);
           })
           .catch(function () {
             renderGrid([]);
             els.detail.hidden = true;
+            els.nextEvent.hidden = true;
             setStatus('Unable to load events right now.');
             renderAgenda([]);
           });
