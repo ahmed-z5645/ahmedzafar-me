@@ -11,7 +11,7 @@ import {
 export const metadata: Metadata = {
   title: "BBSS Events Calendar — BBSS Widgets",
   description:
-    "A calendar of BBSS events for the site, fed live from the events list on ahmedzafar.me.",
+    "A calendar of BBSS events for the site, fed live from the events list on ahmedzafar.ca.",
   robots: { index: false, follow: false },
 };
 
@@ -106,7 +106,7 @@ export default function EventsCalendarPage() {
           check.
         </Troubleshoot>
         <Troubleshoot q={'It shows "Unable to load events right now."'}>
-          The events API on this site is unreachable — check that ahmedzafar.me
+          The events API on this site is unreachable — check that ahmedzafar.ca
           itself is up. Nothing about the Squarespace side needs fixing in that
           case.
         </Troubleshoot>

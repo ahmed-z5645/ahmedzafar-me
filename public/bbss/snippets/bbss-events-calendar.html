@@ -2,7 +2,7 @@
      BBSS Events Calendar widget — paste this whole block into a
      Squarespace Code Block.
 
-     Reads events from a small public JSON endpoint on ahmedzafar.me,
+     Reads events from a small public JSON endpoint on ahmedzafar.ca,
      fed by a Notion-adjacent admin page — no API key needed here,
      since the endpoint is public read-only with CORS enabled.
 
@@ -20,7 +20,7 @@
   var MONTHS = ['January','February','March','April','May','June','July',
                 'August','September','October','November','December'];
   var COMPACT_BREAKPOINT = 480; // px — below this, show agenda list instead of grid
-  var DEFAULT_ENDPOINT = 'https://ahmedzafar.me/api/bbss-events';
+  var DEFAULT_ENDPOINT = 'https://ahmedzafar.ca/api/bbss-events';
 
   class BBSSEventsCalendar extends HTMLElement {
     connectedCallback() {
