@@ -17,10 +17,6 @@ module.exports = {
         // And sends it to the static index.html of your old app
         destination: '/old-portfolio/index.html',
       },
-      {
-        source: '/gait-demo',
-        destination: '/gait-demo/index.html',
-      },
     ]
   },
 }
