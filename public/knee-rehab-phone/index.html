@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>TRACL Demo</title>
+<meta name="description" content="Interactive demo of the TRACL knee rehabilitation app with a simulated sensor (McMaster BMETT).">
+<style>
+  :root { --bg: #f4f4f2; --fg: #1a1a1a; --muted: #6b7280; --bezel: #111; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #121417; --fg: #f4f4f2; --muted: #9aa3ad; } }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: var(--bg); color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+  .stage { min-height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; padding: 24px 16px; }
+  .caption { text-align: center; font-size: 13px; color: var(--muted); line-height: 1.5; max-width: 420px; }
+  .caption strong { color: var(--fg); font-weight: 600; }
+  /* Layout box is sized to the scaled phone so the page doesn't overflow */
+  .fit { width: calc(417px * var(--s, 1)); height: calc(876px * var(--s, 1)); }
+  .phone { width: 417px; height: 876px; padding: 12px; background: var(--bezel); border-radius: 62px;
+    box-shadow: 0 0 0 2px #333 inset, 0 30px 60px rgba(0,0,0,.28); position: relative;
+    transform: scale(var(--s, 1)); transform-origin: top left; }
+  .screen { width: 393px; height: 852px; border-radius: 50px; overflow: hidden; background: #fff; position: relative; }
+  .screen iframe { width: 100%; height: 100%; border: 0; display: block; }
+  .island { position: absolute; top: 28px; left: 50%; transform: translateX(-50%); width: 112px; height: 32px;
+    background: #000; border-radius: 20px; z-index: 2; pointer-events: none; }
+  @media (max-width: 480px) {
+    .stage { padding: 0; } .caption { display: none; }
+    .fit { width: 100vw; height: 100dvh; }
+    .phone { width: 100vw; height: 100dvh; padding: 0; border-radius: 0; box-shadow: none; transform: none; background: none; }
+    .screen { width: 100%; height: 100%; border-radius: 0; } .island { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="fit" id="fit">
+    <div class="phone">
+      <div class="island"></div>
+      <div class="screen"><iframe src="/knee-rehab-demo/" title="TRACL knee rehab app demo" allow="fullscreen"></iframe></div>
+    </div>
+  </div>
+  <p class="caption"><strong>TRACL</strong> knee rehabilitation app, running in your browser with a <strong>simulated sensor</strong>.
+  Start a session from the Session tab. No real Bluetooth device is used.</p>
+</div>
+<script>
+  // Shrink the phone to fit short windows (about 876px tall plus caption).
+  function fit() {
+    var s = Math.min(1, (window.innerHeight - 90) / 876);
+    document.documentElement.style.setProperty("--s", Math.max(0.5, s));
+  }
+  fit(); window.addEventListener("resize", fit);
+</script>
+</body>
+</html>
