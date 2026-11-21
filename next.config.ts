@@ -26,6 +26,10 @@ module.exports = {
         destination: '/gait-demo/index.html',
       },
       {
+        source: '/oec',
+        destination: '/oec/index.html',
+      },
+      {
         source: '/knee-rehab-demo',
         destination: '/knee-rehab-demo/index.html',
       },
